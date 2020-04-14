@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import cuid from "cuid";
 import { Grid, Button } from "semantic-ui-react";
 import EventList from "../EventList/EventList";
 import EventForm from "../EventForm/EventForm";
@@ -60,10 +61,19 @@ class EventsDashboard extends Component {
     isOpen: false,
   };
   hadleIsOpenToggle = () => {
-    this.setState(({isOpen}) => ({
-      isOpen: !isOpen
-    }))
-  }
+    this.setState(({ isOpen }) => ({
+      isOpen: !isOpen,
+    }));
+  };
+  handleCreateEvent = (newEvent) => {
+    newEvent.id = cuid();
+    newEvent.hostPhotoURL = "/assets/user.png";
+    this.setState(({ events }) => ({
+      // Destructure events from prevState
+      events: [...events, newEvent],
+      isOpen: false
+    }));
+  };
   render() {
     const { events, isOpen } = this.state;
     return (
@@ -72,8 +82,17 @@ class EventsDashboard extends Component {
           <EventList events={events} />
         </Grid.Column>
         <Grid.Column width={6}>
-          <Button onClick={this.hadleIsOpenToggle} positive content='Create Event' />
-          {isOpen && <EventForm cancelFormOpen={this.hadleIsOpenToggle} />}
+          <Button
+            onClick={this.hadleIsOpenToggle}
+            positive
+            content='Create Event'
+          />
+          {isOpen && (
+            <EventForm
+              createEvent={this.handleCreateEvent}
+              cancelFormOpen={this.hadleIsOpenToggle}
+            />
+          )}
         </Grid.Column>
       </Grid>
     );
