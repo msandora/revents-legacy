@@ -19,7 +19,7 @@ class EventForm extends Component {
   //     [e.target.name]: e.target.value,
   //   });
   // }; // Destructure Below
-  handleInputChange = ({target: {name, value}}) => {
+  handleInputChange = ({ target: { name, value } }) => {
     this.setState({
       [name]: value,
     });
