@@ -4,7 +4,7 @@ import EventListAttendee from "./EventListAttendee";
 
 class EventListItem extends Component {
   render() {
-    const { event, selectEvent } = this.props;
+    const { event, selectEvent, deleteEvent } = this.props;
     return (
       <Segment.Group>
         <Segment>
@@ -38,12 +38,19 @@ class EventListItem extends Component {
           <span>{event.description}</span>
           {/* Arrow function allows me to not immediatly execute selectEvent */}
           <Button
-            onClick={() => selectEvent(event)}
+            onClick={() => deleteEvent(event.id)}
             as='a'
-            color='teal'
+            color='red'
             floated='right'
-            content='View'
+            content='Delete'
           />
+          <Button
+          onClick={() => selectEvent(event)}
+          as='a'
+          color='teal'
+          floated='right'
+          content='View'
+        />
         </Segment>
       </Segment.Group>
     );
