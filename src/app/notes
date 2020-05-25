@@ -1,3 +1,11 @@
 https://revents-2c2ee.firebaseapp.com/
 https://semantic-ui.com/
 https://react.semantic-ui.com/
+
+
+Stateless Functional Components
+- Simple (dumb) components
+- Do not have state *without react hooks
+- Do not have access to React Lifecycle methods
+- Offer no performance improvements over class components
+- Designed to simplify code

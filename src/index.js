@@ -3,15 +3,17 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './app/layout/App';
 import * as serviceWorker from './serviceWorker';
+import { BrowserRouter } from 'react-router-dom';
 
 // Hot Module Replacement for better development experience
 const rootEl = document.getElementById('root');
 
 let render = () => {
   ReactDOM.render(
-    <React.StrictMode>
+    <BrowserRouter>
       <App />
-    </React.StrictMode>, rootEl
+    </BrowserRouter>, 
+    rootEl
   );
 }
 
