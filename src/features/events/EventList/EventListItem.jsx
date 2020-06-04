@@ -1,18 +1,19 @@
 import React, { Component } from "react";
 import { Segment, Item, Icon, List, Button } from "semantic-ui-react";
 import EventListAttendee from "./EventListAttendee";
+import { Link } from "react-router-dom";
 
 class EventListItem extends Component {
   render() {
-    const { event, selectEvent, deleteEvent } = this.props;
+    const { event, deleteEvent } = this.props;
     return (
       <Segment.Group>
         <Segment>
           <Item.Group>
             <Item>
-              <Item.Image size='tiny' circular src={event.hostPhotoURL} />
+              <Item.Image size="tiny" circular src={event.hostPhotoURL} />
               <Item.Content>
-                <Item.Header as='b'>{event.title}</Item.Header>
+                <Item.Header as="b">{event.title}</Item.Header>
                 <Item.Description>
                   Hosted by <b>{event.hostedBy}</b>
                 </Item.Description>
@@ -22,8 +23,8 @@ class EventListItem extends Component {
         </Segment>
         <Segment>
           <span>
-            <Icon name='clock' /> {event.date} |
-            <Icon name='marker' /> {event.venue}
+            <Icon name="clock" /> {event.date} |
+            <Icon name="marker" /> {event.venue}
           </span>
         </Segment>
         <Segment secondary>
@@ -39,18 +40,18 @@ class EventListItem extends Component {
           {/* Arrow function allows me to not immediatly execute selectEvent */}
           <Button
             onClick={() => deleteEvent(event.id)}
-            as='a'
-            color='red'
-            floated='right'
-            content='Delete'
+            as="a"
+            color="red"
+            floated="right"
+            content="Delete"
           />
           <Button
-          onClick={() => selectEvent(event)}
-          as='a'
-          color='teal'
-          floated='right'
-          content='View'
-        />
+            as={Link}
+            to={`/events/${event.id}`}
+            color="teal"
+            floated="right"
+            content="View"
+          />
         </Segment>
       </Segment.Group>
     );
