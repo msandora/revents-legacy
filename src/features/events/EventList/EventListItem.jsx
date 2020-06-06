@@ -35,8 +35,10 @@ class EventListItem extends Component {
               ))}
           </List>
         </Segment>
-        <Segment clearing>
+        <Segment>
           <span>{event.description}</span>
+        </Segment>
+        <Segment clearing>
           {/* Arrow function allows me to not immediatly execute selectEvent */}
           <Button
             onClick={() => deleteEvent(event.id)}
