@@ -1,6 +1,6 @@
-import React from "react";
-import { Form, Label } from "semantic-ui-react";
-import DatePicker from "react-datepicker";
+import React from 'react';
+import { Form, Label } from 'semantic-ui-react';
+import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 const DateInput = ({
@@ -21,7 +21,7 @@ const DateInput = ({
         onChangeRaw={(e) => e.preventDefault()}
       />
       {touched && error && (
-        <Label basic color="red">
+        <Label basic color='red'>
           {error}
         </Label>
       )}

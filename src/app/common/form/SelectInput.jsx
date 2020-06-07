@@ -1,5 +1,5 @@
-import React from "react";
-import { Form, Label, Select } from "semantic-ui-react";
+import React from 'react';
+import { Form, Label, Select } from 'semantic-ui-react';
 
 const SelectInput = ({
   input,
@@ -19,7 +19,7 @@ const SelectInput = ({
         multiple={multiple}
       />
       {touched && error && (
-        <Label basic color="red">
+        <Label basic color='red'>
           {error}
         </Label>
       )}

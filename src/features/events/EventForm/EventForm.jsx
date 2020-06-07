@@ -45,7 +45,7 @@ const validate = combineValidators({
   )(),
   city: isRequired("city"),
   venue: isRequired("venue"),
-  date: isRequired('date')
+  date: isRequired("date"),
 });
 
 const category = [
@@ -82,7 +82,7 @@ class EventForm extends Component {
       submitting,
       pristine,
     } = this.props;
-    
+
     return (
       <Grid>
         <Grid.Column width={10}>
@@ -123,9 +123,9 @@ class EventForm extends Component {
               <Field
                 name="date"
                 component={DateInput}
-                dateFormat='dd LLL yyyy h:mm a'
+                dateFormat="dd LLL yyyy h:mm a"
                 showTimeSelect
-                timeFormat='HH:mm'
+                timeFormat="HH:mm"
                 placeholder="Event Date"
               />
 

@@ -1,19 +1,19 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import "./index.css";
-import App from "./app/layout/App";
-import { Provider } from "react-redux";
-import * as serviceWorker from "./serviceWorker";
-import { BrowserRouter } from "react-router-dom";
-import { configureStore } from "./app/store/configureStore";
-import ScrollToTop from "./app/common/util/ScrollToTop";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './app/layout/App';
+import { Provider } from 'react-redux';
+import * as serviceWorker from './serviceWorker';
+import { BrowserRouter } from 'react-router-dom';
+import { configureStore } from './app/store/configureStore';
+import ScrollToTop from './app/common/util/ScrollToTop';
 
 const store = configureStore();
 
 // console.log(store.getState());
 
 // Hot Module Replacement for better development experience
-const rootEl = document.getElementById("root");
+const rootEl = document.getElementById('root');
 
 let render = () => {
   ReactDOM.render(
@@ -29,7 +29,7 @@ let render = () => {
 };
 
 if (module.hot) {
-  module.hot.accept("./app/layout/App", () => {
+  module.hot.accept('./app/layout/App', () => {
     setTimeout(render);
   });
 }

@@ -1,5 +1,5 @@
-import React from "react";
-import { Form, Label } from "semantic-ui-react";
+import React from 'react';
+import { Form, Label } from 'semantic-ui-react';
 
 const TextInput = ({
   input,
@@ -12,7 +12,7 @@ const TextInput = ({
     <Form.Field error={touched && !!error}>
       <input {...input} placeholder={placeholder} type={type} />
       {touched && error && (
-        <Label basic color="red">
+        <Label basic color='red'>
           {error}
         </Label>
       )}
