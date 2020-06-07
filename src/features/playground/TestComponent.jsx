@@ -1,24 +1,34 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { incrementCounter, decrementCounter } from './testActions';
+import { incrementAsync, decrementAsync } from './testActions';
 import { Button } from 'semantic-ui-react';
 import { openModal } from '../modals/modalActions';
 
 // mapStateToProps
 const mapState = (state) => ({
   data: state.test.data,
+  loading: state.async.loading,
+  buttonName: state.async.elementName,
 });
 
 // mapDispatchToProps
 const actions = {
-  incrementCounter,
-  decrementCounter,
+  incrementAsync,
+  decrementAsync,
   openModal,
 };
 
 class TestComponent extends Component {
   render() {
-    const { data, incrementCounter, decrementCounter, openModal } = this.props;
+    const {
+      data,
+      incrementAsync,
+      decrementAsync,
+      openModal,
+      loading,
+      buttonName,
+    } = this.props;
+
     return (
       <div>
         <h1>Test Component</h1>
@@ -26,12 +36,16 @@ class TestComponent extends Component {
           The answer is: {this.props.data} | ({data})
         </h3>
         <Button
-          onClick={incrementCounter}
+          name='increment'
+          loading={buttonName === 'increment' && loading}
+          onClick={(e) => incrementAsync(e.target.name)}
           positive
           content='Increment'
         ></Button>
         <Button
-          onClick={decrementCounter}
+          name='decrement'
+          loading={buttonName === 'decrement' && loading}
+          onClick={(e) => decrementAsync(e.target.name)}
           negative
           content='Decrement'
         ></Button>

@@ -7,9 +7,10 @@ import * as serviceWorker from './serviceWorker';
 import { BrowserRouter } from 'react-router-dom';
 import { configureStore } from './app/store/configureStore';
 import ScrollToTop from './app/common/util/ScrollToTop';
+import { loadEvents } from './features/events/eventActions';
 
 const store = configureStore();
-
+store.dispatch(loadEvents());
 // console.log(store.getState());
 
 // Hot Module Replacement for better development experience
