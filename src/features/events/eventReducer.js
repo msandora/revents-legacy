@@ -5,7 +5,7 @@ import {
   DELETE_EVENT,
   FETCH_EVENTS,
 } from './eventConstants';
-import { fetchSampleData } from '../../app/data/mockApi';
+// import { fetchSampleData } from '../../app/data/mockApi';
 
 const initialState = [];
 

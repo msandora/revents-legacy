@@ -93,9 +93,9 @@ body {
   margin-left: 0.5em;
 }
 
-.ui.menu .item > img:not(.ui) {
+/* .ui.menu .item > img:not(.ui) {
   margin-right: 1.5em !important;
-}
+} */
 
 .ui.menu:not(.vertical) .item > .button {
   margin-left: 0.5em;

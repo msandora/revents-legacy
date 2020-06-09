@@ -9,3 +9,5 @@ Stateless Functional Components
 - Do not have access to React Lifecycle methods
 - Offer no performance improvements over class components
 - Designed to simplify code
+
+
