@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { incrementAsync, decrementAsync } from './testActions';
 import { Button } from 'semantic-ui-react';
 import { openModal } from '../modals/modalActions';
+import TestPlaceInput from './TestPlaceInput';
 
 // mapStateToProps
 const mapState = (state) => ({
@@ -54,6 +55,8 @@ class TestComponent extends Component {
           color='teal'
           content='Open Modal'
         ></Button>
+        <br /> <br />
+        <TestPlaceInput />
       </div>
     );
   }
