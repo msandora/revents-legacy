@@ -13,7 +13,7 @@ const interests = [
   { key: 'film', text: 'Film', value: 'film' },
   { key: 'food', text: 'Food', value: 'food' },
   { key: 'music', text: 'Music', value: 'music' },
-  { key: 'travel', text: 'Travel', value: 'travel' },
+  { key: 'travel', text: 'Travel', value: 'travel' }
 ];
 
 const AboutPage = ({ pristine, submitting, handleSubmit, updateProfile }) => {
@@ -69,7 +69,7 @@ const AboutPage = ({ pristine, submitting, handleSubmit, updateProfile }) => {
           name='origin'
           options={{ types: ['(regions)'] }}
           component={PlaceInput}
-          placeholder='Country/Region of Origin'
+          placeholder='Country of Origin'
         />
         <Divider />
         <Button
@@ -86,5 +86,5 @@ const AboutPage = ({ pristine, submitting, handleSubmit, updateProfile }) => {
 export default reduxForm({
   form: 'userProfile',
   enableReinitialize: true,
-  destroyOnUnmount: false,
+  destroyOnUnmount: false
 })(AboutPage);

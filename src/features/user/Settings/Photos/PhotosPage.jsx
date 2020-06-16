@@ -2,13 +2,20 @@ import React, { useState, useEffect, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
-import { Segment, Header, Divider, Grid, Button } from 'semantic-ui-react';
+import {
+  Image,
+  Segment,
+  Header,
+  Divider,
+  Grid,
+  Button
+} from 'semantic-ui-react';
 import DropzoneInput from './DropzoneInput';
 import CropperInput from './CropperInput';
 import {
   uploadProfileImage,
   deletePhoto,
-  setMainPhoto,
+  setMainPhoto
 } from '../../userActions';
 import { toastr } from 'react-redux-toastr';
 import UserPhotos from './UserPhotos';
@@ -19,39 +26,42 @@ const query = ({ auth }) => {
       collection: 'users',
       doc: auth.uid,
       subcollections: [{ collection: 'photos' }],
-      storeAs: 'photos',
-    },
+      storeAs: 'photos'
+    }
   ];
 };
 
 const actions = {
   uploadProfileImage,
   deletePhoto,
-  setMainPhoto,
+  setMainPhoto
 };
 
-const mapState = (state) => ({
+const mapState = state => ({
   auth: state.firebase.auth,
   profile: state.firebase.profile,
   photos: state.firestore.ordered.photos,
-  loading: state.async.loading,
+  loading: state.async.loading
 });
 
 const PhotosPage = ({
   uploadProfileImage,
-  deletePhoto,
-  setMainPhoto,
   photos,
   profile,
-  loading,
+  deletePhoto,
+  setMainPhoto,
+  loading
 }) => {
   const [files, setFiles] = useState([]);
+  const [cropResult, setCropResult] = useState('');
   const [image, setImage] = useState(null);
+
   useEffect(() => {
     return () => {
-      files.forEach((file) => URL.revokeObjectURL(file.preview));
+      files.forEach(file => URL.revokeObjectURL(file.preview));
+      URL.revokeObjectURL(cropResult);
     };
-  }, [files]);
+  }, [files, cropResult]);
 
   const handleUploadImage = async () => {
     try {
@@ -59,27 +69,27 @@ const PhotosPage = ({
       handleCancelCrop();
       toastr.success('Success', 'Photo has been uploaded');
     } catch (error) {
-      console.log(error);
-      toastr.error('Oops', 'Something went Wrong');
+      toastr.error('Oops', 'Something went wrong');
     }
   };
 
-  const handleCancelCrop = async () => {
+  const handleCancelCrop = () => {
     setFiles([]);
     setImage(null);
+    setCropResult('');
   };
 
-  const handleDeletePhoto = async (photo) => {
+  const handleSetMainPhoto = async photo => {
     try {
-      await deletePhoto(photo);
+      await setMainPhoto(photo);
     } catch (error) {
       toastr.error('Oops', error.message);
     }
   };
 
-  const handleSetMainPhoto = async (photo) => {
+  const handleDeletePhoto = async photo => {
     try {
-      await setMainPhoto(photo);
+      await deletePhoto(photo);
     } catch (error) {
       toastr.error('Oops', error.message);
     }
@@ -96,9 +106,13 @@ const PhotosPage = ({
         </Grid.Column>
         <Grid.Column width={1} />
         <Grid.Column width={4}>
-          <Header sub color='teal' content='Step 2 - Resize Image' />
+          <Header sub color='teal' content='Step 2 - Resize image' />
           {files.length > 0 && (
-            <CropperInput setImage={setImage} imagePreview={files[0].preview} />
+            <CropperInput
+              imagePreview={files[0].preview}
+              setCropResult={setCropResult}
+              setImage={setImage}
+            />
           )}
         </Grid.Column>
         <Grid.Column width={1} />
@@ -106,18 +120,14 @@ const PhotosPage = ({
           <Header sub color='teal' content='Step 3 - Preview & Upload' />
           {files.length > 0 && (
             <Fragment>
-              <div
-                className='img-preview'
-                style={{
-                  minHeight: '200px',
-                  minWidth: '200px',
-                  overflow: 'hidden',
-                }}
+              <Image
+                src={cropResult}
+                style={{ minHeight: '200px', minWidth: '200px' }}
               />
               <Button.Group>
                 <Button
-                  loading={loading}
                   onClick={handleUploadImage}
+                  loading={loading}
                   style={{ width: '100px' }}
                   positive
                   icon='check'
@@ -140,12 +150,16 @@ const PhotosPage = ({
         profile={profile}
         deletePhoto={handleDeletePhoto}
         setMainPhoto={handleSetMainPhoto}
+        loading={loading}
       />
     </Segment>
   );
 };
 
 export default compose(
-  connect(mapState, actions),
-  firestoreConnect((auth) => query(auth))
+  connect(
+    mapState,
+    actions
+  ),
+  firestoreConnect(auth => query(auth))
 )(PhotosPage);

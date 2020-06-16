@@ -1,8 +1,8 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { Route, Redirect, Switch } from 'react-router-dom';
 import { Grid } from 'semantic-ui-react';
 import SettingsNav from './SettingsNav';
+import { Route, Redirect, Switch } from 'react-router-dom';
+import { connect } from 'react-redux';
 import BasicPage from './BasicPage';
 import AboutPage from './AboutPage';
 import PhotosPage from './Photos/PhotosPage';
@@ -12,19 +12,19 @@ import { updateProfile } from '../../user/userActions';
 
 const actions = {
   updatePassword,
-  updateProfile,
+  updateProfile
 };
 
-const mapState = (state) => ({
+const mapState = state => ({
   providerId: state.firebase.auth.providerData[0].providerId,
-  user: state.firebase.profile,
+  user: state.firebase.profile
 });
 
 const SettingsDashboard = ({
   updatePassword,
-  updateProfile,
   providerId,
   user,
+  updateProfile
 }) => {
   return (
     <Grid>
@@ -62,4 +62,7 @@ const SettingsDashboard = ({
   );
 };
 
-export default connect(mapState, actions)(SettingsDashboard);
+export default connect(
+  mapState,
+  actions
+)(SettingsDashboard);

@@ -6,15 +6,15 @@ import {
   Divider,
   Label,
   Button,
-  Icon,
+  Icon
 } from 'semantic-ui-react';
-import { Field, reduxForm } from 'redux-form';
 import {
   combineValidators,
-  composeValidators,
   matchesField,
   isRequired,
+  composeValidators
 } from 'revalidate';
+import { Field, reduxForm } from 'redux-form';
 import TextInput from '../../../app/common/form/TextInput';
 
 const validate = combineValidators({
@@ -22,7 +22,7 @@ const validate = combineValidators({
   newPassword2: composeValidators(
     isRequired({ message: 'Please confirm your new password' }),
     matchesField('newPassword1')({ message: 'Passwords do not match' })
-  )(),
+  )()
 });
 
 const AccountPage = ({
@@ -31,7 +31,7 @@ const AccountPage = ({
   submitting,
   handleSubmit,
   updatePassword,
-  providerId,
+  providerId
 }) => {
   return (
     <Segment>
@@ -87,7 +87,7 @@ const AccountPage = ({
           </Button>
         </div>
       )}
-      
+
       {providerId && providerId === 'google.com' && (
         <div>
           <Header color='teal' sub content='Google Account' />
