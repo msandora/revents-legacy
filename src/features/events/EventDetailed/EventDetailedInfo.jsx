@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Segment, Grid, Icon, Button } from 'semantic-ui-react';
-import { format, parseISO } from 'date-fns';
+import { format } from 'date-fns';
+import EventDetailedMap from './EventDetailedMap';
 
 const EventDetailedInfo = ({ event }) => {
+  const [isMapOpen, showMapToggle] = useState(false);
+
   return (
     <Segment.Group>
       <Segment attached='top'>
@@ -23,8 +26,8 @@ const EventDetailedInfo = ({ event }) => {
           <Grid.Column width={15}>
             {event.date && (
               <span>
-                {format(parseISO(event.date), 'EEEE do LLL')} at{' '}
-                {format(parseISO(event.date), 'h:mm a')}
+                {format(event.date.toDate(), 'EEEE do LLL')} at{' '}
+                {format(event.date.toDate(), 'h:mm a')}
               </span>
             )}
           </Grid.Column>
@@ -39,10 +42,22 @@ const EventDetailedInfo = ({ event }) => {
             <span>{event.venue}</span>
           </Grid.Column>
           <Grid.Column width={4}>
-            <Button color='teal' size='tiny' content='Show Map' />
+            <Button
+              onClick={() => showMapToggle(!isMapOpen)}
+              color='teal'
+              size='tiny'
+              floated='right'
+              content={isMapOpen ? 'Hide Map' : 'Show Map'}
+            />
           </Grid.Column>
         </Grid>
       </Segment>
+      {isMapOpen && (
+        <EventDetailedMap
+          lat={event.venueLatLng.lat}
+          lng={event.venueLatLng.lng}
+        />
+      )}
     </Segment.Group>
   );
 };

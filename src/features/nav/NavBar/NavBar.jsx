@@ -43,7 +43,10 @@ class NavBar extends Component {
           {authenticated && (
             <Fragment>
               <Menu.Item as={NavLink} to='/people' name='People' />
+              <Menu.Item as={NavLink} to='/family-tree' name='Family Tree' />
+              <Menu.Item as={NavLink} to='/recipes' name='Recipes' />
               <Menu.Item as={NavLink} to='/test' name='Test' />
+
               <Menu.Item>
                 <Button
                   as={Link}
@@ -54,6 +57,7 @@ class NavBar extends Component {
                   content='Create Event'
                 />
               </Menu.Item>
+
             </Fragment>
           )}
           {authenticated ? (

@@ -13,7 +13,7 @@ const UserPhotos = ({ photos, profile, deletePhoto, setMainPhoto }) => {
       <Divider />
       <Header sub color='teal' content='All Photos' />
 
-      <Card.Group itemsPerRow={5}>
+      <Card.Group itemsPerRow={4}>
         <Card>
           <Image src={profile.photoURL || '/assets/user.png'} />
           <Button positive>Main Photo</Button>
