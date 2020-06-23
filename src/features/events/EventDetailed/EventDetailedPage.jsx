@@ -6,7 +6,7 @@ import EventDetailedHeader from './EventDetailedHeader';
 import EventDetailedInfo from './EventDetailedInfo';
 import EventDetailedChat from './EventDetailedChat';
 import EventDetailedSidebar from './EventDetailedSidebar';
-import { objectToArray } from '../../../app/common/util/helper';
+import { objectToArray } from '../../../app/common/util/helpers';
 import { goingToEvent, cancelGoingToEvent } from '../../user/userActions';
 
 const mapState = (state, ownProps) => {
@@ -48,7 +48,7 @@ class EventDetailedPage extends Component {
     // }
   }
   async componentWillUnmount() {
-    const { firestore, match, history } = this.props;
+    const { firestore, match } = this.props;
     await firestore.unsetListener(`events/${match.params.id}`);
   }
   render() {

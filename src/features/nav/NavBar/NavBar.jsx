@@ -40,13 +40,13 @@ class NavBar extends Component {
             <img src='/assets/logo.png' alt='logo' />
           </Menu.Item>
           <Menu.Item as={NavLink} exact to='/events' name='Events' />
+          <Menu.Item as={NavLink} to='/screams' name='Social' />
+          <Menu.Item as={NavLink} to='/family-tree' name='Family Tree' />
+          <Menu.Item as={NavLink} to='/recipes' name='Recipes' />
+
           {authenticated && (
             <Fragment>
-              <Menu.Item as={NavLink} to='/people' name='People' />
-              <Menu.Item as={NavLink} to='/family-tree' name='Family Tree' />
-              <Menu.Item as={NavLink} to='/recipes' name='Recipes' />
               <Menu.Item as={NavLink} to='/test' name='Test' />
-
               <Menu.Item>
                 <Button
                   as={Link}
@@ -57,7 +57,6 @@ class NavBar extends Component {
                   content='Create Event'
                 />
               </Menu.Item>
-
             </Fragment>
           )}
           {authenticated ? (
