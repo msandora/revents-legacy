@@ -1,8 +1,8 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withFirebase } from 'react-redux-firebase';
-import { Menu, Container, Button } from 'semantic-ui-react';
-import { NavLink, Link, withRouter } from 'react-router-dom';
+import { Menu, Container } from 'semantic-ui-react';
+import { NavLink, withRouter } from 'react-router-dom';
 import SignedOutMenu from '../Menus/SignedOutMenu';
 import SignedInMenu from '../Menus/SignedInMenu';
 import { openModal } from '../../modals/modalActions';
@@ -43,22 +43,8 @@ class NavBar extends Component {
           <Menu.Item as={NavLink} to='/screams' name='Social' />
           <Menu.Item as={NavLink} to='/family-tree' name='Family Tree' />
           <Menu.Item as={NavLink} to='/recipes' name='Recipes' />
+          <Menu.Item as={NavLink} to='/test' name='Test' />
 
-          {authenticated && (
-            <Fragment>
-              <Menu.Item as={NavLink} to='/test' name='Test' />
-              <Menu.Item>
-                <Button
-                  as={Link}
-                  to='/createEvent'
-                  floated='right'
-                  positive
-                  inverted
-                  content='Create Event'
-                />
-              </Menu.Item>
-            </Fragment>
-          )}
           {authenticated ? (
             <SignedInMenu
               auth={auth}

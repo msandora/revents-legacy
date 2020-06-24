@@ -6,6 +6,7 @@ import { getEventsForDashboard } from '../eventActions';
 import LoadingComponent from '../../../app/layout/LoadingComponent';
 import EventActivity from '../EventActivity/EventActivity';
 import { firestoreConnect } from 'react-redux-firebase';
+import EventNav from '../EventNav/EventNav';
 
 const mapState = (state) => ({
   events: state.events,
@@ -71,6 +72,7 @@ class EventsDashboard extends Component {
           />
         </Grid.Column>
         <Grid.Column width={6}>
+          <EventNav/>
           <EventActivity />
         </Grid.Column>
         <Grid.Column width={10}>

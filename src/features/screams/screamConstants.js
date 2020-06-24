@@ -1,0 +1,4 @@
+export const CREATE_SCREAM = 'CREATE_SCREAM';
+export const UPDATE_SCREAM = 'UPDATE_SCREAM';
+export const DELETE_SCREAM = 'DELETE_SCREAM';
+export const FETCH_SCREAMS = 'FETCH_SCREAMS';

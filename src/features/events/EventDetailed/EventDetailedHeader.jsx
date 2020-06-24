@@ -76,7 +76,7 @@ const EventDetailedHeader = ({
         {isHost && (
           <Button
             as={Link}
-            to={`/manage/${event.id}`}
+            to={`/manageEvent/${event.id}`}
             color='orange'
             floated='right'
           >

@@ -5,6 +5,7 @@ import { firestoreReducer } from 'redux-firestore';
 import { reducer as ToastrReducer } from 'react-redux-toastr';
 import testReducer from '../../features/playground/testReducer';
 import eventReducer from '../../features/events/eventReducer';
+import screamReducer from '../../features/screams/screamReducer';
 import modalReducer from '../../features/modals/modalReducer';
 import authReducer from '../../features/auth/authReducer';
 import asyncReducer from '../../features/async/asyncReducer';
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
   form: FormReducer,
   test: testReducer,
   events: eventReducer,
+  screams: screamReducer,
   modals: modalReducer,
   auth: authReducer,
   async: asyncReducer,

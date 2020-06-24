@@ -30,10 +30,15 @@ class App extends Component {
                   <Route exact path='/events' component={EventDashboard} />
                   <Route path='/events/:id' component={EventDetailedPage} />
                   <Route
-                    path={['/createEvent', '/manage/:id']}
+                    path={['/createEvent', '/manageEvent/:id']}
                     component={EventForm}
                   />
                   <Route path='/screams' component={ScreamDashboard} />
+                  <Route path='/screams/:id' component={ScreamDashboard} />
+                  <Route
+                    path={['/createScream', '/manageScream/:id']}
+                    component={ScreamDashboard}
+                  />
                   <Route path='/recipes' component={RecipeDashboard} />
                   <Route path='/family-tree' component={FamilyDashboard} />
                   <Route path='/profile/:id' component={UserDetailedPage} />

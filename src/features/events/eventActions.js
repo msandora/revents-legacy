@@ -31,6 +31,15 @@ export const createEvent = (event) => {
   };
 };
 
+export const deleteEvent = (eventId) => {
+  return {
+    type: DELETE_EVENT,
+    payload: {
+      eventId,
+    },
+  };
+};
+
 export const updateEvent = (event) => {
   return async (dispatch, getState) => {
     const firestore = firebase.firestore();
@@ -95,20 +104,12 @@ export const cancelToggle = (cancelled, eventId) => async (
   }
 };
 
-export const deleteEvent = (eventId) => {
-  return {
-    type: DELETE_EVENT,
-    payload: {
-      eventId,
-    },
-  };
-};
 
 export const getEventsForDashboard = (lastEvent) => async (
   dispatch,
   getState
 ) => {
-  let today = new Date(Date.now());
+  // let today = new Date(Date.now());
   const firestore = firebase.firestore();
   const eventsRef = firestore.collection('events');
   try {
@@ -135,7 +136,7 @@ export const getEventsForDashboard = (lastEvent) => async (
       dispatch(asyncActionFinish());
       return querySnap;
     }
-    
+
     let events = [];
 
     for (let i = 0; i < querySnap.docs.length; i++) {
