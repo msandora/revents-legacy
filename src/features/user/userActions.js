@@ -2,13 +2,13 @@ import { toastr } from 'react-redux-toastr';
 import {
   asyncActionStart,
   asyncActionFinish,
-  asyncActionError
+  asyncActionError,
 } from '../async/asyncActions';
 import cuid from 'cuid';
 import firebase from '../../app/config/firebase';
 import { FETCH_EVENTS } from '../events/eventConstants';
 
-export const updateProfile = user => async (
+export const updateProfile = (user) => async (
   dispatch,
   getState,
   { getFirebase }
@@ -34,7 +34,7 @@ export const uploadProfileImage = (file, fileName) => async (
   const user = firebase.auth().currentUser;
   const path = `${user.uid}/user_images`;
   const options = {
-    name: imageName
+    name: imageName,
   };
   try {
     dispatch(asyncActionStart());
@@ -47,10 +47,10 @@ export const uploadProfileImage = (file, fileName) => async (
     // check if user has photo, if not update profile
     if (!userDoc.data().photoURL) {
       await firebase.updateProfile({
-        photoURL: downloadURL
+        photoURL: downloadURL,
       });
       await user.updateProfile({
-        photoURL: downloadURL
+        photoURL: downloadURL,
       });
     }
     // add the image to firestore
@@ -58,11 +58,11 @@ export const uploadProfileImage = (file, fileName) => async (
       {
         collection: 'users',
         doc: user.uid,
-        subcollections: [{ collection: 'photos' }]
+        subcollections: [{ collection: 'photos' }],
       },
       {
         name: imageName,
-        url: downloadURL
+        url: downloadURL,
       }
     );
     dispatch(asyncActionFinish());
@@ -72,7 +72,7 @@ export const uploadProfileImage = (file, fileName) => async (
   }
 };
 
-export const deletePhoto = photo => async (
+export const deletePhoto = (photo) => async (
   dispatch,
   getState,
   { getFirebase, getFirestore }
@@ -85,7 +85,7 @@ export const deletePhoto = photo => async (
     await firestore.delete({
       collection: 'users',
       doc: user.uid,
-      subcollections: [{ collection: 'photos', doc: photo.id }]
+      subcollections: [{ collection: 'photos', doc: photo.id }],
     });
   } catch (error) {
     console.log(error);
@@ -93,10 +93,10 @@ export const deletePhoto = photo => async (
   }
 };
 
-export const setMainPhoto = photo => async (dispatch, getState) => {
+export const setMainPhoto = (photo) => async (dispatch, getState) => {
   const firestore = firebase.firestore();
   const user = firebase.auth().currentUser;
-  const today = new Date();
+  const today = new Date(); // Do this for any future event
   let userDocRef = firestore.collection('users').doc(user.uid);
   let eventAttendeeRef = firestore.collection('event_attendee');
   try {
@@ -104,7 +104,7 @@ export const setMainPhoto = photo => async (dispatch, getState) => {
     let batch = firestore.batch();
 
     batch.update(userDocRef, {
-      photoURL: photo.url
+      photoURL: photo.url,
     });
 
     let eventQuery = await eventAttendeeRef
@@ -121,11 +121,11 @@ export const setMainPhoto = photo => async (dispatch, getState) => {
       if (event.data().hostUid === user.uid) {
         batch.update(eventDocRef, {
           hostPhotoURL: photo.url,
-          [`attendees.${user.uid}.photoURL`]: photo.url
+          [`attendees.${user.uid}.photoURL`]: photo.url,
         });
       } else {
         batch.update(eventDocRef, {
-          [`attendees.${user.uid}.photoURL`]: photo.url
+          [`attendees.${user.uid}.photoURL`]: photo.url,
         });
       }
     }
@@ -139,7 +139,7 @@ export const setMainPhoto = photo => async (dispatch, getState) => {
   }
 };
 
-export const goingToEvent = event => async (dispatch, getState) => {
+export const goingToEvent = (event) => async (dispatch, getState) => {
   dispatch(asyncActionStart());
   const firestore = firebase.firestore();
   const user = firebase.auth().currentUser;
@@ -149,20 +149,24 @@ export const goingToEvent = event => async (dispatch, getState) => {
     joinDate: new Date(),
     photoURL: profile.photoURL || '/assets/user.png',
     displayName: profile.displayName,
-    host: false
+    host: false,
   };
   try {
     let eventDocRef = firestore.collection('events').doc(event.id);
     let eventAttendeeDocRef = firestore
       .collection('event_attendee')
       .doc(`${event.id}_${user.uid}`);
-
-    await firestore.runTransaction(async transaction => {
+    await firestore.runTransaction(async (transaction) => {
       await transaction.get(eventDocRef);
       await transaction.update(eventDocRef, {
-        [`attendees.${user.uid}`]: attendee
+        [`attendees.${user.uid}`]: attendee,
       });
-      await transaction.set(eventAttendeeDocRef, {});
+      await transaction.set(eventAttendeeDocRef, {
+        eventId: event.id,
+        userUid: user.uid,
+        eventDate: event.date,
+        host: false,
+      });
     });
     dispatch(asyncActionFinish());
     toastr.success('Success', 'You have signed up to the event');
@@ -173,7 +177,7 @@ export const goingToEvent = event => async (dispatch, getState) => {
   }
 };
 
-export const cancelGoingToEvent = event => async (
+export const cancelGoingToEvent = (event) => async (
   dispatch,
   getState,
   { getFirestore, getFirebase }
@@ -183,7 +187,7 @@ export const cancelGoingToEvent = event => async (
   const user = firebase.auth().currentUser;
   try {
     await firestore.update(`events/${event.id}`, {
-      [`attendees.${user.uid}`]: firestore.FieldValue.delete()
+      [`attendees.${user.uid}`]: firestore.FieldValue.delete(),
     });
     await firestore.delete(`event_attendee/${event.id}_${user.uid}`);
     toastr.success('Success', 'You have removed yourself from the event');

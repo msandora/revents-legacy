@@ -8,14 +8,14 @@ import {
   Header,
   Divider,
   Grid,
-  Button
+  Button,
 } from 'semantic-ui-react';
 import DropzoneInput from './DropzoneInput';
 import CropperInput from './CropperInput';
 import {
   uploadProfileImage,
   deletePhoto,
-  setMainPhoto
+  setMainPhoto,
 } from '../../userActions';
 import { toastr } from 'react-redux-toastr';
 import UserPhotos from './UserPhotos';
@@ -26,22 +26,22 @@ const query = ({ auth }) => {
       collection: 'users',
       doc: auth.uid,
       subcollections: [{ collection: 'photos' }],
-      storeAs: 'photos'
-    }
+      storeAs: 'photos',
+    },
   ];
 };
 
 const actions = {
   uploadProfileImage,
   deletePhoto,
-  setMainPhoto
+  setMainPhoto,
 };
 
-const mapState = state => ({
+const mapState = (state) => ({
   auth: state.firebase.auth,
   profile: state.firebase.profile,
   photos: state.firestore.ordered.photos,
-  loading: state.async.loading
+  loading: state.async.loading,
 });
 
 const PhotosPage = ({
@@ -50,7 +50,7 @@ const PhotosPage = ({
   profile,
   deletePhoto,
   setMainPhoto,
-  loading
+  loading,
 }) => {
   const [files, setFiles] = useState([]);
   const [cropResult, setCropResult] = useState('');
@@ -58,7 +58,7 @@ const PhotosPage = ({
 
   useEffect(() => {
     return () => {
-      files.forEach(file => URL.revokeObjectURL(file.preview));
+      files.forEach((file) => URL.revokeObjectURL(file.preview));
       URL.revokeObjectURL(cropResult);
     };
   }, [files, cropResult]);
@@ -79,7 +79,7 @@ const PhotosPage = ({
     setCropResult('');
   };
 
-  const handleSetMainPhoto = async photo => {
+  const handleSetMainPhoto = async (photo) => {
     try {
       await setMainPhoto(photo);
     } catch (error) {
@@ -87,7 +87,7 @@ const PhotosPage = ({
     }
   };
 
-  const handleDeletePhoto = async photo => {
+  const handleDeletePhoto = async (photo) => {
     try {
       await deletePhoto(photo);
     } catch (error) {
@@ -157,9 +157,6 @@ const PhotosPage = ({
 };
 
 export default compose(
-  connect(
-    mapState,
-    actions
-  ),
-  firestoreConnect(auth => query(auth))
+  connect(mapState, actions),
+  firestoreConnect((auth) => query(auth))
 )(PhotosPage);

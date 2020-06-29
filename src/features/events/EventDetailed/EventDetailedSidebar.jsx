@@ -1,11 +1,11 @@
-import React, { Fragment } from 'react';
-import { Segment, Item, Label, List } from 'semantic-ui-react';
+import React from 'react';
+import { Segment, Item, Label, List, Sticky } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
-const EventDetailedSidebar = ({ attendees }) => {
+const EventDetailedSidebar = ({ attendees, contextRef }) => {
   const isHost = false;
   return (
-    <Fragment>
+    <Sticky context={contextRef} offset={78} styleElement={{ zIndex: 0 }}>
       <Segment
         textAlign='center'
         style={{ border: 'none' }}
@@ -48,7 +48,7 @@ const EventDetailedSidebar = ({ attendees }) => {
             ))}
         </List>
       </Segment>
-    </Fragment>
+    </Sticky>
   );
 };
 

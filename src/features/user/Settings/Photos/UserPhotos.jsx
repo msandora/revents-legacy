@@ -6,11 +6,11 @@ const UserPhotos = ({
   profile,
   deletePhoto,
   setMainPhoto,
-  loading
+  loading,
 }) => {
   let filteredPhotos;
   if (photos) {
-    filteredPhotos = photos.filter(photo => {
+    filteredPhotos = photos.filter((photo) => {
       return photo.url !== profile.photoURL;
     });
   }
@@ -24,7 +24,7 @@ const UserPhotos = ({
           <Button positive>Main Photo</Button>
         </Card>
         {photos &&
-          filteredPhotos.map(photo => (
+          filteredPhotos.map((photo) => (
             <Card key={photo.id}>
               <Image src={photo.url} />
               <div className='ui two buttons'>

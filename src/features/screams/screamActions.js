@@ -7,6 +7,7 @@ import {
   asyncActionFinish,
   asyncActionError,
 } from '../async/asyncActions';
+// import { getFirestore } from 'redux-firestore';
 
 export const createScream = (scream) => {
   return async (dispatch, getState, { getFirestore, getFirebase }) => {
@@ -57,7 +58,7 @@ export const getScreamsForDashboard = (lastScream) => async (
       dispatch(asyncActionFinish());
       return querySnap;
     }
-    
+
     let screams = [];
 
     for (let i = 0; i < querySnap.docs.length; i++) {
@@ -74,43 +75,12 @@ export const getScreamsForDashboard = (lastScream) => async (
 };
 
 export const updateScream = (scream) => {
-  return async (dispatch, getState) => {
-    const firestore = firebase.firestore();
+  return async (dispatch, getState, { getFirestore }) => {
+    const firestore = getFirestore();
     try {
-      dispatch(asyncActionStart());
-      let screamDocRef = firestore.collection('screams').doc(scream.id);
-      let dateEqual = getState().firestore.ordered.screams[0].date.isEqual(
-        scream.date
-      );
-      if (!dateEqual) {
-        let batch = firestore.batch();
-        batch.update(screamDocRef, scream);
-
-        let screamAttendeeRef = firestore.collection('scream_attendee');
-        let screamAttendeeQuery = await screamAttendeeRef.where(
-          'screamId',
-          '==',
-          scream.id
-        );
-        let screamAttendeeQuerySnap = await screamAttendeeQuery.get();
-
-        for (let i = 0; i < screamAttendeeQuerySnap.docs.length; i++) {
-          let screamAttendeeDocRef = firestore
-            .collection('scream_attendee')
-            .doc(screamAttendeeQuerySnap.docs[i].id);
-
-          batch.update(screamAttendeeDocRef, {
-            screamDate: scream.date,
-          });
-        }
-        await batch.commit();
-      } else {
-        await screamDocRef.update(scream);
-      }
-      dispatch(asyncActionFinish());
+      await firestore.update(`screams/${scream.id}`, scream);
       toastr.success('Success!', 'Post has been updated');
     } catch (error) {
-      dispatch(asyncActionError());
       toastr.error('Oops', 'Something went wrong');
     }
   };
