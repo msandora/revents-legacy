@@ -72,3 +72,46 @@ export const getScreamsForDashboard = (lastScream) => async (
     dispatch(asyncActionError());
   }
 };
+
+export const updateScream = (scream) => {
+  return async (dispatch, getState) => {
+    const firestore = firebase.firestore();
+    try {
+      dispatch(asyncActionStart());
+      let screamDocRef = firestore.collection('screams').doc(scream.id);
+      let dateEqual = getState().firestore.ordered.screams[0].date.isEqual(
+        scream.date
+      );
+      if (!dateEqual) {
+        let batch = firestore.batch();
+        batch.update(screamDocRef, scream);
+
+        let screamAttendeeRef = firestore.collection('scream_attendee');
+        let screamAttendeeQuery = await screamAttendeeRef.where(
+          'screamId',
+          '==',
+          scream.id
+        );
+        let screamAttendeeQuerySnap = await screamAttendeeQuery.get();
+
+        for (let i = 0; i < screamAttendeeQuerySnap.docs.length; i++) {
+          let screamAttendeeDocRef = firestore
+            .collection('scream_attendee')
+            .doc(screamAttendeeQuerySnap.docs[i].id);
+
+          batch.update(screamAttendeeDocRef, {
+            screamDate: scream.date,
+          });
+        }
+        await batch.commit();
+      } else {
+        await screamDocRef.update(scream);
+      }
+      dispatch(asyncActionFinish());
+      toastr.success('Success!', 'Post has been updated');
+    } catch (error) {
+      dispatch(asyncActionError());
+      toastr.error('Oops', 'Something went wrong');
+    }
+  };
+};

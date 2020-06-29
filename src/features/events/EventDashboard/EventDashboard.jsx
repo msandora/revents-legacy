@@ -1,45 +1,55 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { Component, createRef } from 'react';
 import { Grid, Loader } from 'semantic-ui-react';
+import { connect } from 'react-redux';
 import EventList from '../EventList/EventList';
 import { getEventsForDashboard } from '../eventActions';
 import LoadingComponent from '../../../app/layout/LoadingComponent';
-import EventActivity from '../EventActivity/EventActivity';
+// import EventActivity from '../EventActivity/EventActivity';
+import EventSidebar from '../EventSidebar/EventSidebar';
 import { firestoreConnect } from 'react-redux-firebase';
-import EventNav from '../EventNav/EventNav';
 
-const mapState = (state) => ({
+const query = [
+  {
+    collection: 'activity',
+    orderBy: ['timestamp', 'desc'],
+    limit: 5
+  }
+];
+
+const mapState = state => ({
   events: state.events,
   loading: state.async.loading,
+  activities: state.firestore.ordered.activity
 });
 
 const actions = {
-  getEventsForDashboard,
+  getEventsForDashboard
 };
 
-class EventsDashboard extends Component {
+class EventDashboard extends Component {
+  contextRef = createRef();
+
   state = {
     moreEvents: false,
     loadingInitial: true,
-    loadedEvents: [],
+    loadedEvents: []
   };
 
   async componentDidMount() {
     let next = await this.props.getEventsForDashboard();
-    console.log(next);
 
     if (next && next.docs && next.docs.length > 1) {
       this.setState({
         moreEvents: true,
-        loadingInitial: false,
+        loadingInitial: false
       });
     }
   }
 
-  componentDidUpdate = (prevProps) => {
+  componentDidUpdate = prevProps => {
     if (this.props.events !== prevProps.events) {
       this.setState({
-        loadedEvents: [...this.state.loadedEvents, ...this.props.events],
+        loadedEvents: [...this.state.loadedEvents, ...this.props.events]
       });
     }
   };
@@ -47,44 +57,42 @@ class EventsDashboard extends Component {
   getNextEvents = async () => {
     const { events } = this.props;
     let lastEvent = events && events[events.length - 1];
-    // console.log(lastEvent);
     let next = await this.props.getEventsForDashboard(lastEvent);
     if (next && next.docs && next.docs.length <= 1) {
       this.setState({
-        moreEvents: false,
+        moreEvents: false
       });
-      console.log(next);
     }
   };
 
   render() {
-    const { loading } = this.props;
+    const { loading, activities } = this.props;
     const { moreEvents, loadedEvents } = this.state;
     if (this.state.loadingInitial) return <LoadingComponent />;
     return (
       <Grid>
         <Grid.Column width={10}>
-          <EventList
-            loading={loading}
-            events={loadedEvents}
-            moreEvents={moreEvents}
-            getNextEvents={this.getNextEvents}
-          />
+          <div ref={this.contextRef}>
+            <EventList
+              loading={loading}
+              events={loadedEvents}
+              moreEvents={moreEvents}
+              getNextEvents={this.getNextEvents}
+            />
+          </div>
         </Grid.Column>
         <Grid.Column width={6}>
-          <EventNav/>
-          <EventActivity />
+          <EventSidebar activities={activities} contextRef={this.contextRef} />
         </Grid.Column>
         <Grid.Column width={10}>
-          <Loader active={loading}/>
+          <Loader active={loading} />
         </Grid.Column>
       </Grid>
     );
   }
 }
 
-// export default connect(mapState, actions)(EventsDashboard);
 export default connect(
   mapState,
   actions
-)(firestoreConnect([{ collection: 'events' }])(EventsDashboard));
+)(firestoreConnect(query)(EventDashboard));

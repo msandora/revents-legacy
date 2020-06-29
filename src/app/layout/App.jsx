@@ -7,6 +7,7 @@ import EventDashboard from '../../features/events/EventDashboard/EventDashboard'
 import EventDetailedPage from '../../features/events/EventDetailed/EventDetailedPage';
 import EventForm from '../../features/events/EventForm/EventForm';
 import ScreamDashboard from '../../features/screams/ScreamDashboard/ScreamDashboard';
+import ScreamForm from '../../features/screams/ScreamForm/ScreamForm';
 import RecipeDashboard from '../../features/recipes/RecipeDashboard/RecipeDashboard';
 import FamilyDashboard from '../../features/family/FamilyDashboard/FamilyDashboard';
 import SettingsDashboard from '../../features/user/Settings/SettingsDashboard';
@@ -37,7 +38,7 @@ class App extends Component {
                   <Route path='/screams/:id' component={ScreamDashboard} />
                   <Route
                     path={['/createScream', '/manageScream/:id']}
-                    component={ScreamDashboard}
+                    component={ScreamForm}
                   />
                   <Route path='/recipes' component={RecipeDashboard} />
                   <Route path='/family-tree' component={FamilyDashboard} />

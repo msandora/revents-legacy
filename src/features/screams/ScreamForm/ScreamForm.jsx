@@ -1,4 +1,3 @@
-/* global google */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
@@ -10,8 +9,7 @@ import {
   hasLengthGreaterThan,
 } from 'revalidate';
 import { Segment, Form, Button, Grid, Header } from 'semantic-ui-react';
-import { createScream, updateEvent } from '../screamActions';
-import TextInput from '../../../app/common/form/TextInput';
+import { createScream, updateScream } from '../screamActions';
 import TextArea from '../../../app/common/form/TextArea';
 
 const mapState = (state, ownProps) => {
@@ -36,8 +34,8 @@ const mapState = (state, ownProps) => {
 };
 
 const actions = {
-  createEvent,
-  updateEvent,
+  createScream,
+  updateScream,
 };
 
 const validate = combineValidators({
@@ -67,20 +65,16 @@ class ScreamForm extends Component {
   onFormSubmit = async (values) => {
     try {
       if (this.props.initialValues.id) {
-        // if (Object.keys(values.venueLatLng).length === 0) {
-        //   values.venueLatLng = this.props.event.venueLatLng;
-        // }
-        this.props.updateEvent(values);
+        this.props.updateScream(values);
         this.props.history.push(`/screams/${this.props.initialValues.id}`);
       } else {
-        let createdEvent = await this.props.createEvent(values);
-        this.props.history.push(`/screams/${createdEvent.id}`);
+        let createdScream = await this.props.createScream(values);
+        this.props.history.push(`/screams/${createdScream.id}`);
       }
     } catch (error) {
       console.log(error);
     }
   };
-
 
 
   render() {
@@ -90,7 +84,7 @@ class ScreamForm extends Component {
       invalid,
       submitting,
       pristine,
-      scream,
+      // scream,
     } = this.props;
 
     return (
@@ -103,17 +97,10 @@ class ScreamForm extends Component {
               autoComplete='off'
             >
               <Field
-                name='title'
-                component={TextInput}
-                placeholder='Give your scream name'
-              />
-
-              <Field
-                name='description'
+                name='body'
                 component={TextArea}
-                placeholder='Tell us about your scream'
+                placeholder='What is on your mind?'
               />
-
 
               <Button
                 disabled={invalid || submitting || pristine}

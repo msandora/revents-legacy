@@ -1,19 +1,20 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withFirebase } from 'react-redux-firebase';
-import { Button, Segment } from 'semantic-ui-react';
+import { Button, Segment, Sticky } from 'semantic-ui-react';
 import { Link, withRouter } from 'react-router-dom';
+import EventActivity from '../EventActivity/EventActivity';
 
 const mapState = (state) => ({
   auth: state.firebase.auth,
 });
 
-class EventNav extends Component {
+class EventSidebar extends Component {
   render() {
-    const { auth } = this.props;
+    const { auth, contextRef, activities } = this.props;
     const authenticated = auth.isLoaded && !auth.isEmpty;
     return (
-      <Fragment>
+      <Sticky context={contextRef} offset={78} styleElement={{ zIndex: 0 }}>
         {authenticated && (
           <Segment clearing>
             <Button
@@ -25,9 +26,10 @@ class EventNav extends Component {
             />
           </Segment>
         )}
-      </Fragment>
+        <EventActivity activities={activities} />
+      </Sticky>
     );
   }
 }
 
-export default withRouter(withFirebase(connect(mapState, null)(EventNav)));
+export default withRouter(withFirebase(connect(mapState, null)(EventSidebar)));
