@@ -15,6 +15,7 @@ import UserDetailedPage from '../../features/user/UserDetailed/UserDetailedPage'
 import TestComponent from '../../features/playground/TestComponent';
 import ModalManager from '../../features/modals/ModalManager';
 import { UserIsAuthenticated } from '../../features/auth/AuthWrapper';
+import NotFound from './NotFound';
 
 class App extends Component {
   render() {
@@ -46,6 +47,7 @@ class App extends Component {
                   <Route path='/profile/:id' component={UserIsAuthenticated(UserDetailedPage)} />
                   <Route path='/settings' component={UserIsAuthenticated(SettingsDashboard)} />
                   <Route path='/test' component={TestComponent} />
+                  <Route component={NotFound} />
                 </Switch>
               </Container>
             </Fragment>

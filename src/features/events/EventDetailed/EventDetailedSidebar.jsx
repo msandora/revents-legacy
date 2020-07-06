@@ -3,7 +3,6 @@ import { Segment, Item, Label, List, Sticky } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
 const EventDetailedSidebar = ({ attendees, contextRef }) => {
-  const isHost = false;
   return (
     <Sticky context={contextRef} offset={78} styleElement={{ zIndex: 0 }}>
       <Segment
@@ -23,7 +22,7 @@ const EventDetailedSidebar = ({ attendees, contextRef }) => {
             attendees.map((attendee) => (
               <Item.Group divided key={attendee.id}>
                 <Item key={attendee.id} style={{ position: 'relative' }}>
-                  {isHost && (
+                  {attendee.host && (
                     <Label
                       style={{ position: 'absolute' }}
                       color='orange'
