@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 import { Grid } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import EventDetailedHeader from './EventDetailedHeader';
@@ -48,6 +48,8 @@ const actions = {
 };
 
 class EventDetailedPage extends Component {
+  contextRef = createRef();
+
   async componentDidMount() {
     const { firestore, match } = this.props;
     await firestore.setListener(`events/${match.params.id}`);
@@ -78,27 +80,33 @@ class EventDetailedPage extends Component {
     return (
       <Grid>
         <Grid.Column width={10}>
-          <EventDetailedHeader
-            event={event}
-            isHost={isHost}
-            isGoing={isGoing}
-            goingToEvent={goingToEvent}
-            cancelGoingToEvent={cancelGoingToEvent}
-            loading={loading}
-            authenticated={authenticated}
-            openModal={openModal}
-          />
-          <EventDetailedInfo event={event} />
-          {authenticated && (
-            <EventDetailedChat
-              addEventComment={addEventComment}
-              eventId={event.id}
-              eventChat={chatTree}
+          <div ref={this.contextRef}>
+            <EventDetailedHeader
+              event={event}
+              isHost={isHost}
+              isGoing={isGoing}
+              goingToEvent={goingToEvent}
+              cancelGoingToEvent={cancelGoingToEvent}
+              loading={loading}
+              authenticated={authenticated}
+              openModal={openModal}
             />
-          )}
+            <EventDetailedInfo event={event} />
+            {authenticated && (
+              <EventDetailedChat
+                addEventComment={addEventComment}
+                eventId={event.id}
+                eventChat={chatTree}
+              />
+            )}
+          </div>
         </Grid.Column>
         <Grid.Column width={6}>
-          <EventDetailedSidebar attendees={attendees} eventId={event.id} />
+          <EventDetailedSidebar
+            contextRef={this.contextRef}
+            attendees={attendees}
+            eventId={event.id}
+          />
         </Grid.Column>
       </Grid>
     );

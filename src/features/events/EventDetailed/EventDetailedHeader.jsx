@@ -17,12 +17,14 @@ const eventImageTextStyle = {
 };
 
 const EventDetailedHeader = ({
-  loading,
   event,
   isHost,
   isGoing,
   goingToEvent,
   cancelGoingToEvent,
+  loading,
+  authenticated,
+  openModal,
 }) => {
   return (
     <Segment.Group>
@@ -32,6 +34,7 @@ const EventDetailedHeader = ({
           fluid
           style={eventImageStyle}
         />
+
         <Segment basic style={eventImageTextStyle}>
           <Item.Group>
             <Item>
@@ -45,7 +48,7 @@ const EventDetailedHeader = ({
                   {event.date && format(event.date.toDate(), 'EEEE do LLLL')}
                 </p>
                 <p>
-                  Hosted by
+                  Hosted by{' '}
                   <strong>
                     <Link
                       to={`/profile/${event.hostUid}`}
@@ -60,28 +63,40 @@ const EventDetailedHeader = ({
           </Item.Group>
         </Segment>
       </Segment>
+
       <Segment attached='bottom' clearing>
         {!isHost && (
           <Fragment>
-            {isGoing ? (
+            {isGoing && (
               <Button onClick={() => cancelGoingToEvent(event)}>
                 Cancel My Place
               </Button>
-            ) : (
+            )}
+            {!isGoing && authenticated && (
               <Button
-                loading={loading}
                 onClick={() => goingToEvent(event)}
+                loading={loading}
                 color='teal'
               >
-                JOIN EVENT
+                JOIN THIS EVENT
+              </Button>
+            )}
+            {!authenticated && (
+              <Button
+                onClick={() => openModal('UnauthModal')}
+                loading={loading}
+                color='teal'
+              >
+                JOIN THIS EVENT
               </Button>
             )}
           </Fragment>
         )}
+
         {isHost && (
           <Button
             as={Link}
-            to={`/manageEvent/${event.id}`}
+            to={`/manage/${event.id}`}
             color='orange'
             floated='right'
           >

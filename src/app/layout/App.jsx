@@ -14,6 +14,7 @@ import SettingsDashboard from '../../features/user/Settings/SettingsDashboard';
 import UserDetailedPage from '../../features/user/UserDetailed/UserDetailedPage';
 import TestComponent from '../../features/playground/TestComponent';
 import ModalManager from '../../features/modals/ModalManager';
+import { UserIsAuthenticated } from '../../features/auth/AuthWrapper';
 
 class App extends Component {
   render() {
@@ -32,18 +33,18 @@ class App extends Component {
                   <Route path='/events/:id' component={EventDetailedPage} />
                   <Route
                     path={['/createEvent', '/manageEvent/:id']}
-                    component={EventForm}
+                    component={UserIsAuthenticated(EventForm)}
                   />
                   <Route path='/screams' component={ScreamDashboard} />
                   <Route path='/screams/:id' component={ScreamDashboard} />
                   <Route
                     path={['/createScream', '/manageScream/:id']}
-                    component={ScreamForm}
+                    component={UserIsAuthenticated(ScreamForm)}
                   />
                   <Route path='/recipes' component={RecipeDashboard} />
                   <Route path='/family-tree' component={FamilyDashboard} />
-                  <Route path='/profile/:id' component={UserDetailedPage} />
-                  <Route path='/settings' component={SettingsDashboard} />
+                  <Route path='/profile/:id' component={UserIsAuthenticated(UserDetailedPage)} />
+                  <Route path='/settings' component={UserIsAuthenticated(SettingsDashboard)} />
                   <Route path='/test' component={TestComponent} />
                 </Switch>
               </Container>
