@@ -50,10 +50,10 @@ class TestComponent extends Component {
       .doc('caAC64HkTmT7I7FroxMBXZGepB23');
     try {
       await userDocRef.update({ displayName: 'testing' });
-      toastr.success('Success')
+      toastr.success('Success');
     } catch (error) {
       console.log(error);
-      toastr.error('Computer says no')
+      toastr.error('Computer says no');
     }
   };
 
@@ -62,12 +62,12 @@ class TestComponent extends Component {
     let eventDocRef = await firestore.collection('events').doc('DELETEME');
     try {
       await eventDocRef.set({
-        title: 'DELETEME'
+        title: 'DELETEME',
       });
-      toastr.success('Success')
+      toastr.success('Success');
     } catch (error) {
       console.log(error);
-      toastr.error('Computer says no')
+      toastr.error('Computer says no');
     }
   };
 
@@ -76,16 +76,16 @@ class TestComponent extends Component {
     let eventDocRef = await firestore.collection('events').doc('DELETEME');
     const attendee = {
       photoURL: '/assets/user.png',
-      displayName: 'Testing'
+      displayName: 'Testing',
     };
     try {
       await eventDocRef.update({
-        [`attendees.caAC64HkTmT7I7FroxMBXZGepB23`]: attendee
+        [`attendees.caAC64HkTmT7I7FroxMBXZGepB23`]: attendee,
       });
-      toastr.success('Success')
+      toastr.success('Success');
     } catch (error) {
       console.log(error);
-      toastr.error('Computer says no')
+      toastr.error('Computer says no');
     }
   };
 
@@ -94,14 +94,13 @@ class TestComponent extends Component {
     let eventDocRef = await firestore.collection('events').doc('DELETEME');
     try {
       await eventDocRef.update({
-        [`attendees.caAC64HkTmT7I7FroxMBXZGepB23`]: firebase.firestore.FieldValue.delete()
+        [`attendees.caAC64HkTmT7I7FroxMBXZGepB23`]: firebase.firestore.FieldValue.delete(),
       });
-      toastr.success('Success')
+      toastr.success('Success');
     } catch (error) {
       console.log(error);
-      toastr.error('Computer says no')
+      toastr.error('Computer says no');
     }
-
   };
 
   handleTestChangeAttendeePhotoInEvent = async () => {
@@ -109,12 +108,12 @@ class TestComponent extends Component {
     let eventDocRef = await firestore.collection('events').doc('DELETEME');
     try {
       await eventDocRef.update({
-        [`attendees.caAC64HkTmT7I7FroxMBXZGepB23.photoURL`]: 'testing123.jpg'
+        [`attendees.caAC64HkTmT7I7FroxMBXZGepB23.photoURL`]: 'testing123.jpg',
       });
-      toastr.success('Success')
+      toastr.success('Success');
     } catch (error) {
       console.log(error);
-      toastr.error('Computer says no')
+      toastr.error('Computer says no');
     }
   };
 
@@ -130,65 +129,71 @@ class TestComponent extends Component {
 
     return (
       <div>
-      <h1>Test Component</h1>
-      <h3>The answer is: {data}</h3>
-      <Button
-        name='increment'
-        loading={buttonName === 'increment' && loading}
-        onClick={e => incrementAsync(e.target.name)}
-        positive
-        content='Increment'
-      />
-      <Button
-        name='decrement'
-        loading={buttonName === 'decrement' && loading}
-        onClick={e => decrementAsync(e.target.name)}
-        negative
-        content='Decrement'
-      />
-      <Button
-        onClick={() => openModal('TestModal', { data: 42 })}
-        color='teal'
-        content='Open Modal'
-      />
-      <br />
-      <br />
-      <Header as='h2' content='Permissions tests' />
-      <Button
-        onClick={this.handleCreateTestEvent}
-        color='blue'
-        fluid
-        content='Test create event - should fail if anon'
-      />
-      <Button
-        onClick={this.handleTestUpdateProfile}
-        color='orange'
-        fluid
-        content='Test update dianas profile - should fail if anon/not diana - should succeed if diana'
-      />
-      <Button
-        onClick={this.handleTestJoinEvent}
-        color='olive'
-        fluid
-        content='Test joining an event - should fail if anon/not diana - should succeed if diana'
-      />
-      <Button
-        onClick={this.handleTestCancelGoingToEvent}
-        color='purple'
-        fluid
-        content='Test cancelling attendance to an event - should fail if anon/not diana - should succeed if diana'
-      />
-      <Button
-        onClick={this.handleTestChangeAttendeePhotoInEvent}
-        color='violet'
-        fluid
-        content='Test changing photo for event attendee - should fail if anon/not diana - should succeed if diana'
-      />
-      <br />
-      <br />
-      <TestPlaceInput selectAddress={this.handleSelect} />
-      <SimpleMap key={this.state.latlng.lng} latlng={this.state.latlng} />
-    </div>
+        <h1>Test Component</h1>
+        <h3>The answer is: {data}</h3>
+        <Button
+          onClick={(e) => console.log(e.target.name)}
+          name='TEST'
+          positive
+          content='TEST'
+        />
+        <Button
+          name='increment'
+          loading={buttonName === 'increment' && loading}
+          onClick={(e) => incrementAsync(e.target.name)}
+          positive
+          content='Increment'
+        />
+        <Button
+          name='decrement'
+          loading={buttonName === 'decrement' && loading}
+          onClick={(e) => decrementAsync(e.target.name)}
+          negative
+          content='Decrement'
+        />
+        <Button
+          onClick={() => openModal('TestModal', { data: 42 })}
+          color='teal'
+          content='Open Modal'
+        />
+        <br />
+        <br />
+        <Header as='h2' content='Permissions tests' />
+        <Button
+          onClick={this.handleCreateTestEvent}
+          color='blue'
+          fluid
+          content='Test create event - should fail if anon'
+        />
+        <Button
+          onClick={this.handleTestUpdateProfile}
+          color='orange'
+          fluid
+          content='Test update dianas profile - should fail if anon/not diana - should succeed if diana'
+        />
+        <Button
+          onClick={this.handleTestJoinEvent}
+          color='olive'
+          fluid
+          content='Test joining an event - should fail if anon/not diana - should succeed if diana'
+        />
+        <Button
+          onClick={this.handleTestCancelGoingToEvent}
+          color='purple'
+          fluid
+          content='Test cancelling attendance to an event - should fail if anon/not diana - should succeed if diana'
+        />
+        <Button
+          onClick={this.handleTestChangeAttendeePhotoInEvent}
+          color='violet'
+          fluid
+          content='Test changing photo for event attendee - should fail if anon/not diana - should succeed if diana'
+        />
+        <br />
+        <br />
+        <TestPlaceInput selectAddress={this.handleSelect} />
+        <SimpleMap key={this.state.latlng.lng} latlng={this.state.latlng} />
+      </div>
     );
   }
 }

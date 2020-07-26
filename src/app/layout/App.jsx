@@ -13,6 +13,8 @@ import FamilyDashboard from '../../features/family/FamilyDashboard/FamilyDashboa
 import SettingsDashboard from '../../features/user/Settings/SettingsDashboard';
 import UserDetailedPage from '../../features/user/UserDetailed/UserDetailedPage';
 import TestComponent from '../../features/playground/TestComponent';
+import PeopleDashboard from '../../features/user/PeopleDashboard/PeopleDashboard';
+
 import ModalManager from '../../features/modals/ModalManager';
 import { UserIsAuthenticated } from '../../features/auth/AuthWrapper';
 import NotFound from './NotFound';
@@ -46,6 +48,10 @@ class App extends Component {
                   <Route path='/family-tree' component={FamilyDashboard} />
                   <Route path='/profile/:id' component={UserIsAuthenticated(UserDetailedPage)} />
                   <Route path='/settings' component={UserIsAuthenticated(SettingsDashboard)} />
+                  <Route
+                    path='/people'
+                    component={UserIsAuthenticated(PeopleDashboard)}
+                  />
                   <Route path='/test' component={TestComponent} />
                   <Route component={NotFound} />
                 </Switch>

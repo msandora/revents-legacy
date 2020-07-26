@@ -11,13 +11,13 @@ export const createNewEvent = (user, photoURL, event) => {
     ...event,
     hostUid: user.uid,
     hostedBy: user.displayName,
-    hostPhotoURL: photoURL || 'assets/user.png',
+    hostPhotoURL: photoURL || '/assets/user.png',
     created: new Date(),
     attendees: {
       [user.uid]: {
         going: true,
         joinDate: new Date(),
-        photoURL: photoURL || 'assets/user.png',
+        photoURL: photoURL || '/assets/user.png',
         displayName: user.displayName,
         host: true,
       },
@@ -30,7 +30,7 @@ export const createNewScream = (user, photoURL, scream) => {
     ...scream,
     hostUid: user.uid,
     hostedBy: user.displayName,
-    hostPhotoURL: photoURL || 'assets/user.png',
+    hostPhotoURL: photoURL || '/assets/user.png',
     createdAt: new Date(),
     likeCount: 0,
     commentCount: 0
@@ -38,7 +38,7 @@ export const createNewScream = (user, photoURL, scream) => {
     //   [user.uid]: {
     //     going: true,
     //     joinDate: new Date(),
-    //     photoURL: photoURL || 'assets/user.png',
+    //     photoURL: photoURL || '/assets/user.png',
     //     displayName: user.displayName,
     //     host: true,
     //   },

@@ -1,111 +1,97 @@
-import React from 'react';
-import { Grid } from 'semantic-ui-react';
-import ScreamActivity from '../ScreamActivity/ScreamActivity';
+import React, { Component } from 'react';
+import { Grid, Button } from 'semantic-ui-react';
 import ScreamList from '../ScreamList/ScreamList';
-import ScreamSidebar from '../ScreamSidebar/ScreamSidebar';
+import cuid from 'cuid';
+import ScreamForm from '../ScreamForm/ScreamForm';
+// import ScreamSidebar from '../ScreamSidebar/ScreamSidebar';
+// import ScreamActivity from '../ScreamActivity/ScreamActivity';
 
-const ScreamDashboard = () => {
-  return (
-    <Grid>
-      <Grid.Column width={10}>
-        <ScreamList />
-      </Grid.Column>
-      <Grid.Column width={6}>
-        <ScreamSidebar/>
-        <ScreamActivity />
-      </Grid.Column>
-    </Grid>
-  );
-};
+const screamsFromDashboard = [
+  {
+    id: '1',
+    date: '2018-03-27T11:00:00+00:00',
+    body:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sollicitudin ligula eu leo tincidunt, quis scelerisque magna dapibus. Sed eget ipsum vel arcu vehicula ullamcorper.',
+    hostedBy: 'Bob',
+    hostPhotoURL: 'https://randomuser.me/api/portraits/men/20.jpg',
+    commentCount: 0,
+    likeCount: 0,
+  },
+  {
+    id: '2',
+    date: '2018-03-28T14:00:00+00:00',
+    body:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sollicitudin ligula eu leo tincidunt, quis scelerisque magna dapibus. Sed eget ipsum vel arcu vehicula ullamcorper.',
+    hostedBy: 'Tom',
+    hostPhotoURL: 'https://randomuser.me/api/portraits/men/22.jpg',
+    commentCount: 0,
+    likeCount: 0,
+  },
+];
+
+class ScreamDashboard extends Component {
+  state = {
+    screams: screamsFromDashboard,
+    isOpen: false,
+    selectedScream: null,
+  };
+
+  handleCreateFormOpen = () => {
+    this.setState({
+      isOpen: true,
+      selectedScream: null,
+    });
+  };
+
+  handleFormCancel = () => {
+    this.setState({
+      isOpen: false,
+    });
+  };
+
+  handleCreateScream = (newScream) => {
+    newScream.id = cuid();
+    newScream.hostPhotoURL = '/assets/user.png';
+    this.setState(({ screams }) => ({
+      screams: [...screams, newScream],
+      isOpen: false,
+    }));
+  };
+
+  handleSelectScream = (scream) => {
+    this.setState({
+      selectedScream: scream,
+      isOpen: true,
+    });
+  };
+
+  render() {
+    const { screams, isOpen, selectedScream } = this.state;
+    return (
+      <Grid>
+        <Grid.Column width={10}>
+          <ScreamList
+            screams={screams}
+            selectedScream={this.handleSelectScream}
+          />
+        </Grid.Column>
+        <Grid.Column width={6}>
+          <Button
+            onClick={this.handleCreateFormOpen}
+            positive
+            content='Create Scream'
+          />
+          {isOpen && (
+            <ScreamForm
+              selectedScream={selectedScream}
+              createScream={this.handleCreateScream}
+              cancelFormOpen={this.handleFormCancel}
+            />
+          )}
+        </Grid.Column>
+      </Grid>
+    );
+  }
+}
 
 export default ScreamDashboard;
-
-
-// import React, { Component } from 'react';
-// import { connect } from 'react-redux';
-// import { Grid, Loader } from 'semantic-ui-react';
-// import ScreamList from '../ScreamList/ScreamList';
-// import { getScreamsForDashboard } from '../screamActions';
-// import LoadingComponent from '../../../app/layout/LoadingComponent';
-// import ScreamActivity from '../ScreamActivity/ScreamActivity';
-// import { firestoreConnect } from 'react-redux-firebase';
-
-// const mapState = (state) => ({
-//   screams: state.screams,
-//   loading: state.async.loading,
-// });
-
-// const actions = {
-//   getScreamsForDashboard,
-// };
-
-// class ScreamsDashboard extends Component {
-//   state = {
-//     moreScreams: false,
-//     loadingInitial: true,
-//     loadedScreams: [],
-//   };
-
-//   async componentDidMount() {
-//     let next = await this.props.getScreamsForDashboard();
-//     console.log(next);
-
-//     if (next && next.docs && next.docs.length > 1) {
-//       this.setState({
-//         moreScreams: true,
-//         loadingInitial: false,
-//       });
-//     }
-//   }
-
-//   componentDidUpdate = (prevProps) => {
-//     if (this.props.screams !== prevProps.screams) {
-//       this.setState({
-//         loadedScreams: [...this.state.loadedScreams, ...this.props.screams],
-//       });
-//     }
-//   };
-
-//   getNextScreams = async () => {
-//     const { screams } = this.props;
-//     let lastScream = screams && screams[screams.length - 1];
-//     // console.log(lastScream);
-//     let next = await this.props.getScreamsForDashboard(lastScream);
-//     if (next && next.docs && next.docs.length <= 1) {
-//       this.setState({
-//         moreScreams: false,
-//       });
-//       console.log(next);
-//     }
-//   };
-
-//   render() {
-//     const { loading } = this.props;
-//     const { moreScreams, loadedScreams } = this.state;
-//     if (this.state.loadingInitial) return <LoadingComponent />;
-//     return (
-//       <Grid>
-//         <Grid.Column width={10}>
-//           <ScreamList
-//             loading={loading}
-//             screams={loadedScreams}
-//             moreScreams={moreScreams}
-//             getNextScreams={this.getNextScreams}
-//           />
-//         </Grid.Column>
-//         <Grid.Column width={6}>
-//           <ScreamActivity />
-//         </Grid.Column>
-//         <Grid.Column width={10}>
-//           <Loader active={loading}/>
-//         </Grid.Column>
-//       </Grid>
-//     );
-//   }
-// }
-
-// export default connect(
-//   mapState,
-//   actions
-// )(firestoreConnect([{ collection: 'screams' }])(ScreamsDashboard));
-

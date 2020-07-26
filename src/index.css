@@ -125,3 +125,7 @@ body {
 .ui.vertical.menu {
   width: auto;
 }
+
+.ui.header>.image:not(.icon), .ui.header>img {
+  width: 4em;
+}

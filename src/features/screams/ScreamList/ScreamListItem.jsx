@@ -1,41 +1,39 @@
 import React, { Component } from 'react';
 import { Segment, Item, Button } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
+// import { format } from 'date-fns';
+// import { objectToArray } from '../../../app/common/util/helpers';
 
 class ScreamListItem extends Component {
   render() {
+    const { scream, selectScream } = this.props;
     return (
       <Segment.Group>
         <Segment>
           <Item.Group>
             <Item>
-              <Item.Image size='tiny' circular src='/assets/user.png' />
+              <Item.Image size='tiny' circular src={scream.hostPhotoURL} />
               <Item.Content>
-                <Item.Header as={Link} to=''>
-                  Title
+                <Item.Header as={Link} to={`/screams/${scream.id}`}>
+                  {scream.hostedBy}
                 </Item.Header>
-                <Item.Description>
-                  Hosted by
-                  <Link as={Link} to=''>
-                    Host
-                  </Link>
-                </Item.Description>
+                <Item.Description>{scream.date}</Item.Description>
               </Item.Content>
             </Item>
           </Item.Group>
         </Segment>
         <Segment>
-          <span style={{ whiteSpace: 'pre-wrap' }}>description</span>
+          <span style={{ whiteSpace: 'pre-wrap' }}>{scream.body}</span>
         </Segment>
         <Segment clearing>
           <Button
-            onClick={() => console.log('click')}
-            as='a'
-            color='red'
+            onClick={() => selectScream(scream)}
+            as={Link}
+            to={`/screams/${scream.id}`}
+            color='teal'
             floated='right'
-            content='Delete'
+            content='View'
           />
-          <Button as={Link} to='' color='teal' floated='right' content='View' />
         </Segment>
       </Segment.Group>
     );

@@ -1,7 +1,7 @@
 import React from 'react';
-import { Segment, Item, Header, Grid } from 'semantic-ui-react';
+import { Segment, Header, Grid, Image } from 'semantic-ui-react';
 import { differenceInYears } from 'date-fns';
-import LazyLoad from 'react-lazyload';
+// import LazyLoad from 'react-lazyload';
 
 const UserDetailedHeader = ({ profile }) => {
   const age =
@@ -10,31 +10,15 @@ const UserDetailedHeader = ({ profile }) => {
   return (
     <Grid.Column width={16}>
       <Segment>
-        <Item.Group>
-          <Item>
-          <LazyLoad
-              height={150}
-              placeholder={<Item.Image avatar size='small' src='/assets/user.png' />}
-            >
-              <Item.Image
-                avatar
-                size='small'
-                src={profile.photoURL || '/assets/user.png'}
-              />
-            </LazyLoad>
-
-            <Item.Content verticalAlign='bottom'>
-              <Header as='h1'>{profile.displayName}</Header>
-              <br />
-              <Header as='h3'>{profile.occupation}</Header>
-              <br />
-              <Header as='h3'>
-                {age || 'unknown age'}, Lives in{' '}
-                {profile.city || 'unknown city'}
-              </Header>
-            </Item.Content>
-          </Item>
-        </Item.Group>
+        <Header as='h1'>
+          <Image circular src={profile.photoURL || '/assets/user.png'}  size='massive'/>   
+          <Header.Content>
+            {profile.displayName}
+            <Header.Subheader>{profile.occupation}</Header.Subheader>
+            <Header.Subheader>{age || 'unknown age'}, Lives in{' '}
+                {profile.city || 'unknown city'}</Header.Subheader>
+          </Header.Content>
+        </Header>
       </Segment>
     </Grid.Column>
   );
