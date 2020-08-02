@@ -3,13 +3,13 @@ import { Grid, Button } from 'semantic-ui-react';
 import ScreamList from '../ScreamList/ScreamList';
 import cuid from 'cuid';
 import ScreamForm from '../ScreamForm/ScreamForm';
-// import ScreamSidebar from '../ScreamSidebar/ScreamSidebar';
+import ScreamSidebar from '../ScreamSidebar/ScreamSidebar';
 // import ScreamActivity from '../ScreamActivity/ScreamActivity';
 
 const screamsFromDashboard = [
   {
     id: '1',
-    date: '2018-03-27T11:00:00+00:00',
+    date: '2018-03-27',
     body:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sollicitudin ligula eu leo tincidunt, quis scelerisque magna dapibus. Sed eget ipsum vel arcu vehicula ullamcorper.',
     hostedBy: 'Bob',
@@ -19,7 +19,7 @@ const screamsFromDashboard = [
   },
   {
     id: '2',
-    date: '2018-03-28T14:00:00+00:00',
+    date: '2018-03-28',
     body:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sollicitudin ligula eu leo tincidunt, quis scelerisque magna dapibus. Sed eget ipsum vel arcu vehicula ullamcorper.',
     hostedBy: 'Tom',
@@ -41,7 +41,6 @@ class ScreamDashboard extends Component {
       isOpen: true,
       selectedScream: null,
     });
-    console.log(this.state);
   };
 
   handleFormCancel = () => {
@@ -66,6 +65,26 @@ class ScreamDashboard extends Component {
     });
   };
 
+  handleUpdateScream = (updatedScream) => {
+    this.setState(({ screams }) => ({
+      screams: screams.map((scream) => {
+        if (scream.id === updatedScream.id) {
+          return { ...updatedScream };
+        } else {
+          return scream;
+        }
+      }),
+      isOpen: false,
+      selectedScream: null,
+    }));
+  };
+
+  handleDeleteScream = (id) => {
+    this.setState(({ screams }) => ({
+      screams: screams.filter((e) => e.id !== id),
+    }));
+  };
+
   render() {
     const { screams, isOpen, selectedScream } = this.state;
     return (
@@ -74,9 +93,11 @@ class ScreamDashboard extends Component {
           <ScreamList
             screams={screams}
             selectScream={this.handleSelectScream}
+            deleteScream={this.handleDeleteScream}
           />
         </Grid.Column>
         <Grid.Column width={6}>
+          <ScreamSidebar />
           <Button
             onClick={this.handleCreateFormOpen}
             positive
@@ -84,6 +105,8 @@ class ScreamDashboard extends Component {
           />
           {isOpen && (
             <ScreamForm
+              key={selectedScream ? selectedScream.id : 0}
+              updateScream={this.handleUpdateScream}
               selectedScream={selectedScream}
               createScream={this.handleCreateScream}
               cancelFormOpen={this.handleFormCancel}

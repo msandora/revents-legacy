@@ -3,7 +3,7 @@ import ScreamListItem from './ScreamListItem';
 
 class ScreamList extends Component {
   render() {
-    const { screams, selectScream } = this.props;
+    const { screams, selectScream, deleteScream } = this.props;
     return (
       <Fragment>
         {screams.map((scream) => (
@@ -11,6 +11,7 @@ class ScreamList extends Component {
             key={scream.id}
             scream={scream}
             selectScream={selectScream}
+            deleteScream={deleteScream}
           />
         ))}
       </Fragment>

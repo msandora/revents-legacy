@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 class ScreamListItem extends Component {
   render() {
-    const { scream, selectScream } = this.props;
+    const { scream, selectScream, deleteScream } = this.props;
     return (
       <Segment.Group>
         <Segment>
@@ -27,9 +27,16 @@ class ScreamListItem extends Component {
         </Segment>
         <Segment clearing>
           <Button
+            onClick={() => deleteScream(scream.id)}
+            as='a'
+            color='red'
+            floated='right'
+            content='Delete'
+          />
+          <Button
             onClick={() => selectScream(scream)}
             as={Link}
-            to={`/screams/${scream.id}`}
+            // to={`/screams/${scream.id}`}
             color='teal'
             floated='right'
             content='View'

@@ -8,9 +8,21 @@ class ScreamForm extends Component {
     hostedBy: '',
   };
 
+  componentDidMount() {
+    if (this.props.selectedScream !== null) {
+      this.setState({
+        ...this.props.selectedScream,
+      });
+    }
+  }
+
   handleFormSubmit = (evt) => {
     evt.preventDefault();
-    this.props.createScream(this.state);
+    if (this.state.id) {
+      this.props.updateScream(this.state);
+    } else {
+      this.props.createScream(this.state);
+    }
   };
 
   handleInputChange = ({ target: { name, value } }) => {
