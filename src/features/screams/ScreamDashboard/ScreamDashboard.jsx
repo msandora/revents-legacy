@@ -41,6 +41,7 @@ class ScreamDashboard extends Component {
       isOpen: true,
       selectedScream: null,
     });
+    console.log(this.state);
   };
 
   handleFormCancel = () => {
@@ -72,7 +73,7 @@ class ScreamDashboard extends Component {
         <Grid.Column width={10}>
           <ScreamList
             screams={screams}
-            selectedScream={this.handleSelectScream}
+            selectScream={this.handleSelectScream}
           />
         </Grid.Column>
         <Grid.Column width={6}>
