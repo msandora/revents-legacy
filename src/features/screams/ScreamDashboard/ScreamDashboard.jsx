@@ -63,6 +63,7 @@ class ScreamDashboard extends Component {
       selectedScream: scream,
       isOpen: true,
     });
+    alert('handleSelectScream');
   };
 
   handleUpdateScream = (updatedScream) => {
