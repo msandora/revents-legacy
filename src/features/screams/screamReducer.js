@@ -6,7 +6,28 @@ import {
   FETCH_SCREAMS,
 } from './screamConstants';
 
-const initialState = [];
+const initialState = [
+  {
+    id: '1',
+    date: '2018-03-27',
+    body:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sollicitudin ligula eu leo tincidunt, quis scelerisque magna dapibus. Sed eget ipsum vel arcu vehicula ullamcorper.',
+    hostedBy: 'Bobby',
+    hostPhotoURL: 'https://randomuser.me/api/portraits/men/20.jpg',
+    commentCount: 0,
+    likeCount: 0,
+  },
+  {
+    id: '2',
+    date: '2018-03-28',
+    body:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sollicitudin ligula eu leo tincidunt, quis scelerisque magna dapibus. Sed eget ipsum vel arcu vehicula ullamcorper.',
+    hostedBy: 'Tom',
+    hostPhotoURL: 'https://randomuser.me/api/portraits/men/22.jpg',
+    commentCount: 0,
+    likeCount: 0,
+  },
+];
 
 const createScream = (state, payload) => {
   return [...state, payload.scream];

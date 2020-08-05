@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Segment, Item, Button } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
-// import { format } from 'date-fns';
-// import { objectToArray } from '../../../app/common/util/helpers';
 
 class ScreamListItem extends Component {
   render() {

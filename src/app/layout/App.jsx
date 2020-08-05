@@ -8,7 +8,8 @@ import EventDetailedPage from '../../features/events/EventDetailed/EventDetailed
 import EventForm from '../../features/events/EventForm/EventForm';
 import ScreamDashboard from '../../features/screams/ScreamDashboard/ScreamDashboard';
 import ScreamForm from '../../features/screams/ScreamForm/ScreamForm';
-import RecipeDashboard from '../../features/recipes/RecipeDashboard/RecipeDashboard';
+import RecipesDashboard from '../../features/recipes/RecipesDashboard/RecipesDashboard';
+import RecipesForm from '../../features/recipes/RecipesForm/RecipesForm';
 import FamilyDashboard from '../../features/family/FamilyDashboard/FamilyDashboard';
 import SettingsDashboard from '../../features/user/Settings/SettingsDashboard';
 import UserDetailedPage from '../../features/user/UserDetailed/UserDetailedPage';
@@ -44,10 +45,21 @@ class App extends Component {
                     path={['/createScream', '/manageScream/:id']}
                     component={UserIsAuthenticated(ScreamForm)}
                   />
-                  <Route path='/recipes' component={RecipeDashboard} />
+                  <Route path='/recipes' component={RecipesDashboard} />
+                  <Route path='/recipes/:id' component={RecipesDashboard} />
+                  <Route
+                    path={['/createRecipe', '/manageRecipe/:id']}
+                    component={UserIsAuthenticated(RecipesForm)}
+                  />
                   <Route path='/family-tree' component={FamilyDashboard} />
-                  <Route path='/profile/:id' component={UserIsAuthenticated(UserDetailedPage)} />
-                  <Route path='/settings' component={UserIsAuthenticated(SettingsDashboard)} />
+                  <Route
+                    path='/profile/:id'
+                    component={UserIsAuthenticated(UserDetailedPage)}
+                  />
+                  <Route
+                    path='/settings'
+                    component={UserIsAuthenticated(SettingsDashboard)}
+                  />
                   <Route
                     path='/people'
                     component={UserIsAuthenticated(PeopleDashboard)}

@@ -1,37 +1,24 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Grid, Button } from 'semantic-ui-react';
 import ScreamList from '../ScreamList/ScreamList';
 import cuid from 'cuid';
 import ScreamForm from '../ScreamForm/ScreamForm';
 import ScreamSidebar from '../ScreamSidebar/ScreamSidebar';
-// import ScreamActivity from '../ScreamActivity/ScreamActivity';
+import { createScream, updateScream, deleteScream } from '../screamActions';
 
-const screamsFromDashboard = [
-  {
-    id: '1',
-    date: '2018-03-27',
-    body:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sollicitudin ligula eu leo tincidunt, quis scelerisque magna dapibus. Sed eget ipsum vel arcu vehicula ullamcorper.',
-    hostedBy: 'Bob',
-    hostPhotoURL: 'https://randomuser.me/api/portraits/men/20.jpg',
-    commentCount: 0,
-    likeCount: 0,
-  },
-  {
-    id: '2',
-    date: '2018-03-28',
-    body:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sollicitudin ligula eu leo tincidunt, quis scelerisque magna dapibus. Sed eget ipsum vel arcu vehicula ullamcorper.',
-    hostedBy: 'Tom',
-    hostPhotoURL: 'https://randomuser.me/api/portraits/men/22.jpg',
-    commentCount: 0,
-    likeCount: 0,
-  },
-];
+const mapState = (state) => ({
+  screams: state.screams,
+});
+
+const actions = {
+  createScream,
+  updateScream,
+  deleteScream,
+};
 
 class ScreamDashboard extends Component {
   state = {
-    screams: screamsFromDashboard,
     isOpen: false,
     selectedScream: null,
   };
@@ -52,8 +39,9 @@ class ScreamDashboard extends Component {
   handleCreateScream = (newScream) => {
     newScream.id = cuid();
     newScream.hostPhotoURL = '/assets/user.png';
+    this.props.createScream(newScream);
     this.setState(({ screams }) => ({
-      screams: [...screams, newScream],
+      // screams: [...screams, newScream],
       isOpen: false,
     }));
   };
@@ -63,31 +51,33 @@ class ScreamDashboard extends Component {
       selectedScream: scream,
       isOpen: true,
     });
-    alert('handleSelectScream');
   };
 
   handleUpdateScream = (updatedScream) => {
+    this.props.updateScream(updatedScream);
     this.setState(({ screams }) => ({
-      screams: screams.map((scream) => {
-        if (scream.id === updatedScream.id) {
-          return { ...updatedScream };
-        } else {
-          return scream;
-        }
-      }),
+      // screams: screams.map((scream) => {
+      //   if (scream.id === updatedScream.id) {
+      //     return { ...updatedScream };
+      //   } else {
+      //     return scream;
+      //   }
+      // }),
       isOpen: false,
       selectedScream: null,
     }));
   };
 
   handleDeleteScream = (id) => {
-    this.setState(({ screams }) => ({
-      screams: screams.filter((e) => e.id !== id),
-    }));
+    this.props.deleteScream(id);
+    // this.setState(({ screams }) => ({
+    //   screams: screams.filter((e) => e.id !== id),
+    // }));
   };
 
   render() {
-    const { screams, isOpen, selectedScream } = this.state;
+    const { isOpen, selectedScream } = this.state;
+    const { screams } = this.props;
     return (
       <Grid>
         <Grid.Column width={10}>
@@ -119,4 +109,4 @@ class ScreamDashboard extends Component {
   }
 }
 
-export default ScreamDashboard;
+export default connect(mapState, actions)(ScreamDashboard);
