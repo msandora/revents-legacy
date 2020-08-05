@@ -35,8 +35,8 @@ class RecipesListItem extends Component {
           />
           <Button
             onClick={() => selectRecipe(recipe)}
-            as='a'
-            // to={`/recipes/${recipe.id}`}
+            as={Link}
+            to={`/recipes/${recipe.id}`}
             color='teal'
             floated='right'
             content='View'

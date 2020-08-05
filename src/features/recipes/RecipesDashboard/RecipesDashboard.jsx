@@ -1,39 +1,24 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Grid, Button } from 'semantic-ui-react';
 import RecipesList from '../RecipesList/RecipesList';
 import cuid from 'cuid';
 import RecipesForm from '../RecipesForm/RecipesForm';
+import RecipesSidebar from '../RecipesSidebar/RecipesSidebar';
+import { createRecipe, updateRecipe, deleteRecipe } from '../RecipesActions';
 
-const recipesFromDashboard = [
-  {
-    id: '1',
-    title: 'Green Eggs and Ham',
-    date: '2018-03-27',
-    category: 'Breakfast',
-    ingredients: '2 Eggs, 1 slice of Ham',
-    body: 'I do not like Green Eggs and Ham.',
-    hostedBy: 'Bob',
-    hostPhotoURL: 'https://randomuser.me/api/portraits/men/20.jpg',
-    commentCount: 0,
-    likeCount: 0,
-  },
-  {
-    id: '2',
-    title: 'Chocolate Chip Pancakes',
-    date: '2018-03-28',
-    category: 'Breakfast',
-    ingredients: 'Pancake mix, Chocolate Chips',
-    body: 'I love Pancakes.',
-    hostedBy: 'Tom',
-    hostPhotoURL: 'https://randomuser.me/api/portraits/men/22.jpg',
-    commentCount: 0,
-    likeCount: 0,
-  },
-];
+const mapState = (state) => ({
+  recipes: state.recipes,
+});
+
+const actions = {
+  createRecipe,
+  updateRecipe,
+  deleteRecipe,
+};
 
 class RecipesDashboard extends Component {
   state = {
-    recipes: recipesFromDashboard,
     isOpen: false,
     selectedRecipe: null,
   };
@@ -54,8 +39,9 @@ class RecipesDashboard extends Component {
   handleCreateRecipe = (newRecipe) => {
     newRecipe.id = cuid();
     newRecipe.hostPhotoURL = '/assets/user.png';
+    this.props.createRecipe(newRecipe);
     this.setState(({ recipes }) => ({
-      recipes: [...recipes, newRecipe],
+      // recipes: [...recipes, newRecipe],
       isOpen: false,
     }));
   };
@@ -68,27 +54,30 @@ class RecipesDashboard extends Component {
   };
 
   handleUpdateRecipe = (updatedRecipe) => {
+    this.props.updateRecipe(updatedRecipe);
     this.setState(({ recipes }) => ({
-      recipes: recipes.map((recipe) => {
-        if (recipe.id === updatedRecipe.id) {
-          return { ...updatedRecipe };
-        } else {
-          return recipe;
-        }
-      }),
+      // recipes: recipes.map((recipe) => {
+      //   if (recipe.id === updatedRecipe.id) {
+      //     return { ...updatedRecipe };
+      //   } else {
+      //     return recipe;
+      //   }
+      // }),
       isOpen: false,
       selectedRecipe: null,
     }));
   };
 
   handleDeleteRecipe = (id) => {
-    this.setState(({ recipes }) => ({
-      recipes: recipes.filter((e) => e.id !== id),
-    }));
+    this.props.deleteRecipe(id);
+    // this.setState(({ recipes }) => ({
+    //   recipes: recipes.filter((e) => e.id !== id),
+    // }));
   };
 
   render() {
-    const { recipes, isOpen, selectedRecipe } = this.state;
+    const { isOpen, selectedRecipe } = this.state;
+    const { recipes } = this.props;
     return (
       <Grid>
         <Grid.Column width={10}>
@@ -99,6 +88,7 @@ class RecipesDashboard extends Component {
           />
         </Grid.Column>
         <Grid.Column width={6}>
+          <RecipesSidebar />
           <Button
             onClick={this.handleCreateFormOpen}
             positive
@@ -119,4 +109,4 @@ class RecipesDashboard extends Component {
   }
 }
 
-export default RecipesDashboard;
+export default connect(mapState, actions)(RecipesDashboard);

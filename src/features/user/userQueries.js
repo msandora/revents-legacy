@@ -1,4 +1,4 @@
-import { match } from 'date-fns/locale/af';
+// import { match } from 'date-fns/locale/af';
 
 export const userDetailedQuery = ({ auth, userUid, match }) => {
   if (userUid !== null) {

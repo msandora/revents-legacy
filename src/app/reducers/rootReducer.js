@@ -6,10 +6,10 @@ import { reducer as ToastrReducer } from 'react-redux-toastr';
 import testReducer from '../../features/playground/testReducer';
 import eventReducer from '../../features/events/eventReducer';
 import screamReducer from '../../features/screams/screamReducer';
+import RecipesReducer from '../../features/recipes/RecipesReducer';
 import modalReducer from '../../features/modals/modalReducer';
 import authReducer from '../../features/auth/authReducer';
 import asyncReducer from '../../features/async/asyncReducer';
-
 
 const rootReducer = combineReducers({
   firebase: firebaseReducer,
@@ -18,6 +18,7 @@ const rootReducer = combineReducers({
   test: testReducer,
   events: eventReducer,
   screams: screamReducer,
+  recipes: RecipesReducer,
   modals: modalReducer,
   auth: authReducer,
   async: asyncReducer,
