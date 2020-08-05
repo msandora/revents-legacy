@@ -1,11 +1,23 @@
 import React from 'react';
+import { Grid } from 'semantic-ui-react';
+import RecipesDetailedHeader from './RecipesDetailedHeader';
+import RecipesDetailedInfo from './RecipesDetailedInfo';
+import RecipesDetailedChat from './RecipesDetailedChat';
+import RecipesDetailedSidebar from './RecipesDetailedSidebar';
 
-const RecipesDetailedPage = () => {
+const ScreamDetailedPage = () => {
   return (
-    <div>
-      <h1>RecipesDetailedPage</h1>
-    </div>
+    <Grid>
+      <Grid.Column width={10}>
+        <RecipesDetailedHeader />
+        <RecipesDetailedInfo />
+        <RecipesDetailedChat />
+      </Grid.Column>
+      <Grid.Column width={6}>
+        <RecipesDetailedSidebar />
+      </Grid.Column>
+    </Grid>
   );
 };
 
-export default RecipesDetailedPage;
+export default ScreamDetailedPage;

@@ -7,7 +7,10 @@ import EventDashboard from '../../features/events/EventDashboard/EventDashboard'
 import EventDetailedPage from '../../features/events/EventDetailed/EventDetailedPage';
 import EventForm from '../../features/events/EventForm/EventForm';
 import ScreamDashboard from '../../features/screams/ScreamDashboard/ScreamDashboard';
+import ScreamDetailedPage from '../../features/screams/ScreamDetailed/ScreamDetailedPage';
+
 import ScreamForm from '../../features/screams/ScreamForm/ScreamForm';
+import RecipesDetailedPage from '../../features/recipes/RecipesDetailed/RecipesDetailedPage';
 import RecipesDashboard from '../../features/recipes/RecipesDashboard/RecipesDashboard';
 import RecipesForm from '../../features/recipes/RecipesForm/RecipesForm';
 import FamilyDashboard from '../../features/family/FamilyDashboard/FamilyDashboard';
@@ -39,14 +42,14 @@ class App extends Component {
                     path={['/createEvent', '/manageEvent/:id']}
                     component={UserIsAuthenticated(EventForm)}
                   />
-                  <Route path='/screams' component={ScreamDashboard} />
-                  <Route path='/screams/:id' component={ScreamDashboard} />
+                  <Route exact path='/screams' component={ScreamDashboard} />
+                  <Route path='/screams/:id' component={ScreamDetailedPage} />
                   <Route
                     path={['/createScream', '/manageScream/:id']}
                     component={UserIsAuthenticated(ScreamForm)}
                   />
-                  <Route path='/recipes' component={RecipesDashboard} />
-                  <Route path='/recipes/:id' component={RecipesDashboard} />
+                  <Route exact path='/recipes' component={RecipesDashboard} />
+                  <Route path='/recipes/:id' component={RecipesDetailedPage} />
                   <Route
                     path={['/createRecipe', '/manageRecipe/:id']}
                     component={UserIsAuthenticated(RecipesForm)}

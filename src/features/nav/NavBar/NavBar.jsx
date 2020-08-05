@@ -40,9 +40,9 @@ class NavBar extends Component {
             <img src='/assets/logo.png' alt='logo' />
           </Menu.Item>
           <Menu.Item as={NavLink} exact to='/events' name='Events' />
-          <Menu.Item as={NavLink} to='/screams' name='Social' />
+          <Menu.Item as={NavLink} exact to='/screams' name='Social' />
           <Menu.Item as={NavLink} to='/family-tree' name='Family Tree' />
-          <Menu.Item as={NavLink} to='/recipes' name='Recipes' />
+          <Menu.Item as={NavLink} exact to='/recipes' name='Recipes' />
           <Menu.Item as={NavLink} to='/test' name='Test' />
 
           {authenticated ? (

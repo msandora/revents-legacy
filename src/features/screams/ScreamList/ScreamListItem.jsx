@@ -33,8 +33,8 @@ class ScreamListItem extends Component {
           />
           <Button
             onClick={() => selectScream(scream)}
-            as='a'
-            // to={`/screams/${scream.id}`}
+            as={Link}
+            to={`/screams/${scream.id}`}
             color='teal'
             floated='right'
             content='View'
