@@ -1,20 +1,27 @@
 import React, { Fragment } from 'react';
-import { Segment, Header, Comment, Form, Button } from 'semantic-ui-react';
+import { Segment, Comment, Form, Button } from 'semantic-ui-react';
 
-const ScreamDetailedChat = () => {
+const ScreamDetailedChat = ({ scream }) => {
   return (
     <Fragment>
-      <Segment
-        textAlign='center'
-        attached='top'
-        inverted
-        color='teal'
-        style={{ border: 'none' }}
-      >
-        <Header>Chat about this event</Header>
+      <Segment attached='top'>
+        <Comment.Group>
+          <Comment>
+            <Comment.Avatar src='/assets/user.png' />
+            <Comment.Content>
+              <Comment.Author as='a'>{scream.hostedBy}</Comment.Author>
+              <Comment.Metadata>
+                <div>Today at {scream.date}</div>
+              </Comment.Metadata>
+              <Comment.Text>{scream.description}</Comment.Text>
+              <Comment.Actions>
+                <Comment.Action>Reply</Comment.Action>
+              </Comment.Actions>
+            </Comment.Content>
+          </Comment>
+        </Comment.Group>
       </Segment>
-
-      <Segment attached>
+      <Segment>
         <Comment.Group>
           <Comment>
             <Comment.Avatar src='/assets/user.png' />

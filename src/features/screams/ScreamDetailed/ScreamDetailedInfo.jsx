@@ -1,43 +1,59 @@
 import React from 'react';
-import { Segment, Grid, Icon, Button } from 'semantic-ui-react';
+import { Segment, Item, Button, Icon, Label, Popup } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
+import ScreamCarousel from './../ScreamList/ScreamCarousel';
 
-const ScreamDetailedInfo = () => {
+const ScreamDetailedInfo = ({ scream }) => {
   return (
-    <Segment.Group>
-      <Segment attached='top'>
-        <Grid>
-          <Grid.Column width={1}>
-            <Icon size='large' color='teal' name='info' />
-          </Grid.Column>
-          <Grid.Column width={15}>
-            <p>Description of Event</p>
-          </Grid.Column>
-        </Grid>
+    <div>
+      <Segment attached>
+        <Item.Group>
+          <Item>
+            <ScreamCarousel scream={scream} />
+          </Item>
+        </Item.Group>
       </Segment>
       <Segment attached>
-        <Grid verticalAlign='middle'>
-          <Grid.Column width={1}>
-            <Icon name='calendar' size='large' color='teal' />
-          </Grid.Column>
-          <Grid.Column width={15}>
-            <span>Event Date</span>
-          </Grid.Column>
-        </Grid>
+        <span style={{ whiteSpace: 'pre-wrap' }}>{scream.body}</span>
       </Segment>
-      <Segment attached>
-        <Grid verticalAlign='middle'>
-          <Grid.Column width={1}>
-            <Icon name='marker' size='large' color='teal' />
-          </Grid.Column>
-          <Grid.Column width={11}>
-            <span>Event Venue</span>
-          </Grid.Column>
-          <Grid.Column width={4}>
-            <Button color='teal' size='tiny' content='Show Map' />
-          </Grid.Column>
-        </Grid>
+      <Segment attached='bottom' clearing>
+        <Button as='div' labelPosition='right'>
+          <Button>
+            <Icon name='heart' />
+            Like
+          </Button>
+          <Label as='a' basic pointing='left'>
+            2,048
+          </Label>
+        </Button>
+        <Popup
+          content='Go back'
+          trigger={
+            <Button
+              floated='right'
+              icon
+              onClick={console.log('GO BACK')}
+              type='button'
+            >
+              <Icon name='cancel' />
+            </Button>
+          }
+        />
+        <Popup
+          content='Manage'
+          trigger={
+            <Button
+              floated='right'
+              icon
+              as={Link}
+              to={`/manageScream/${scream.id}`}
+            >
+              <Icon name='options' />
+            </Button>
+          }
+        />
       </Segment>
-    </Segment.Group>
+    </div>
   );
 };
 

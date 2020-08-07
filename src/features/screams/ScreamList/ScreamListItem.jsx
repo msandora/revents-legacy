@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Segment, Item, Button } from 'semantic-ui-react';
+import { Segment, Item, Button, Popup, Icon, Label } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
+import ScreamCarousel from './ScreamCarousel';
 
 class ScreamListItem extends Component {
   render() {
-    const { scream, selectScream, deleteScream } = this.props;
+    const { scream, deleteScream } = this.props;
     return (
       <Segment.Group>
         <Segment>
@@ -18,26 +19,70 @@ class ScreamListItem extends Component {
                 <Item.Description>{scream.date}</Item.Description>
               </Item.Content>
             </Item>
+            <Item>
+              <ScreamCarousel scream={scream} />
+            </Item>
           </Item.Group>
         </Segment>
         <Segment>
           <span style={{ whiteSpace: 'pre-wrap' }}>{scream.body}</span>
         </Segment>
-        <Segment clearing>
-          <Button
-            onClick={() => deleteScream(scream.id)}
-            as='a'
-            color='red'
-            floated='right'
-            content='Delete'
+        <Segment attached clearing>
+          <Button as='div' labelPosition='right'>
+            <Button>
+              <Icon name='heart' />
+              Like
+            </Button>
+            <Label as='a' basic pointing='left'>
+              2,048
+            </Label>
+          </Button>
+          <Popup
+            content='View Comments'
+            trigger={
+              <Button
+                as='div'
+                labelPosition='right'
+                as={Link}
+                to={`/screams/${scream.id}`}
+              >
+                <Button>
+                  <Icon name='comments outline' />
+                  Comments
+                </Button>
+                <Label as='a' basic pointing='left'>
+                  1,248
+                </Label>
+              </Button>
+            }
           />
-          <Button
-            onClick={() => selectScream(scream)}
-            as={Link}
-            to={`/screams/${scream.id}`}
-            color='teal'
-            floated='right'
-            content='View'
+
+          <Popup
+            content='Delete'
+            trigger={
+              <Button
+                floated='right'
+                icon
+                onClick={() => deleteScream(scream.id)}
+                as='a'
+                color='red'
+              >
+                <Icon name='trash' />
+              </Button>
+            }
+          />
+          <Popup
+            content='Manage'
+            trigger={
+              <Button
+                floated='right'
+                icon
+                as={Link}
+                to={`/manageScream/${scream.id}`}
+              >
+                <Icon name='options' />
+              </Button>
+            }
           />
         </Segment>
       </Segment.Group>

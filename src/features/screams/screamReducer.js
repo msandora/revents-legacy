@@ -10,22 +10,22 @@ const initialState = [
   {
     id: '1',
     date: '2018-03-27',
-    body:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sollicitudin ligula eu leo tincidunt, quis scelerisque magna dapibus. Sed eget ipsum vel arcu vehicula ullamcorper.',
+    body: 'Bobbys Scream',
     hostedBy: 'Bobby',
     hostPhotoURL: 'https://randomuser.me/api/portraits/men/20.jpg',
     commentCount: 0,
     likeCount: 0,
+    category: 'food',
   },
   {
     id: '2',
     date: '2018-03-28',
-    body:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sollicitudin ligula eu leo tincidunt, quis scelerisque magna dapibus. Sed eget ipsum vel arcu vehicula ullamcorper.',
+    body: 'Tommys Scream',
     hostedBy: 'Tom',
     hostPhotoURL: 'https://randomuser.me/api/portraits/men/22.jpg',
     commentCount: 0,
     likeCount: 0,
+    category: 'music',
   },
 ];
 

@@ -2,19 +2,10 @@ import React, { Fragment } from 'react';
 import { Segment, Image, Item, Header, Button, Label } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
-
-const eventImageStyle = {
-  filter: 'brightness(30%)',
-};
-
-const eventImageTextStyle = {
-  position: 'absolute',
-  bottom: '5%',
-  left: '5%',
-  width: '100%',
-  height: 'auto',
-  color: 'white',
-};
+import {
+  imageStyle,
+  imageTextStyle,
+} from '../../../app/common/styles/DetailedHeader';
 
 const EventDetailedHeader = ({
   event,
@@ -32,10 +23,10 @@ const EventDetailedHeader = ({
         <Image
           src={`/assets/categoryImages/${event.category}.jpg`}
           fluid
-          style={eventImageStyle}
+          style={imageStyle}
         />
 
-        <Segment basic style={eventImageTextStyle}>
+        <Segment basic style={imageTextStyle}>
           <Item.Group>
             <Item>
               <Item.Content>

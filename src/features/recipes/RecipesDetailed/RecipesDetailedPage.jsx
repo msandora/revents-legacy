@@ -9,7 +9,7 @@ const staticRecipe = {
   id: '1',
   title: 'My Static Recipe',
   date: '2018-03-27',
-  category: 'food',
+  category: 'breakfast',
   description: 'Recipe Description',
   city: 'London, UK',
   venue: "Tower of London, St Katharine's & Wapping, London",

@@ -1,18 +1,9 @@
 import React from 'react';
 import { Segment, Image, Item, Header, Button } from 'semantic-ui-react';
-
-const recipeImageStyle = {
-  filter: 'brightness(30%)',
-};
-
-const recipeImageTextStyle = {
-  position: 'absolute',
-  bottom: '5%',
-  left: '2%',
-  width: '100%',
-  height: 'auto',
-  color: 'white',
-};
+import {
+  imageStyle,
+  imageTextStyle,
+} from '../../../app/common/styles/DetailedHeader';
 
 const RecipesDetailedHeader = ({ recipe }) => {
   return (
@@ -21,10 +12,10 @@ const RecipesDetailedHeader = ({ recipe }) => {
         <Image
           src={`/assets/categoryImages/${recipe.category}.jpg`}
           fluid
-          style={recipeImageStyle}
+          style={imageStyle}
         />
 
-        <Segment basic style={recipeImageTextStyle}>
+        <Segment basic style={imageTextStyle}>
           <Item.Group>
             <Item>
               <Item.Content>
@@ -33,9 +24,9 @@ const RecipesDetailedHeader = ({ recipe }) => {
                   content={recipe.title}
                   style={{ color: 'white' }}
                 />
-                <p>{recipe.date}</p>
+                {/* <p>{recipe.date}</p> */}
                 <p>
-                  Hosted by <strong>{recipe.hostedBy}</strong>
+                  Shared by <strong>{recipe.hostedBy}</strong>
                 </p>
               </Item.Content>
             </Item>
@@ -43,13 +34,8 @@ const RecipesDetailedHeader = ({ recipe }) => {
         </Segment>
       </Segment>
 
-      <Segment attached='bottom'>
-        <Button>Cancel My Place</Button>
-        <Button color='teal'>JOIN THIS EVENT</Button>
-
-        <Button color='orange' floated='right'>
-          Manage Event
-        </Button>
+      <Segment attached='bottom' clearing>
+        <Button color='teal'>Manage Recipe</Button>
       </Segment>
     </Segment.Group>
   );

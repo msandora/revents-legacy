@@ -126,6 +126,24 @@ body {
   width: auto;
 }
 
-.ui.header>.image:not(.icon), .ui.header>img {
+.ui.header > .image:not(.icon),
+.ui.header > img {
   width: 4em;
+}
+
+div.carousel {
+  padding: 0px !important;
+}
+
+div.carousel-container {
+  box-shadow: none !important;
+}
+
+div.carousel-indicators {
+  text-align: center;
+  padding-top: 5px;
+}
+
+div.carousel-indicators a {
+  padding-left: 5px;
 }

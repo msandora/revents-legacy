@@ -1,12 +1,32 @@
 import React, { Component } from 'react';
-import { Segment, Form, Button } from 'semantic-ui-react';
+import { connect } from 'react-redux';
+import { Segment, Form, Button, Icon, Popup } from 'semantic-ui-react';
+import { createScream, updateScream } from '../screamActions';
+import cuid from 'cuid';
 
-class ScreamForm extends Component {
-  state = {
+const mapState = (state, ownProps) => {
+  const screamId = ownProps.match.params.id;
+  let scream = {
     body: '',
     date: '',
     hostedBy: '',
   };
+
+  if (screamId && state.screams.length > 0) {
+    scream = state.screams.filter((scream) => scream.id === screamId)[0];
+  }
+  return {
+    scream,
+  };
+};
+
+const actions = {
+  createScream,
+  updateScream,
+};
+
+class ScreamForm extends Component {
+  state = { ...this.props.scream };
 
   componentDidMount() {
     if (this.props.selectedScream !== null) {
@@ -20,8 +40,15 @@ class ScreamForm extends Component {
     evt.preventDefault();
     if (this.state.id) {
       this.props.updateScream(this.state);
+      this.props.history.push(`/screams/${this.state.id}`);
     } else {
-      this.props.createScream(this.state);
+      const newScream = {
+        ...this.state,
+        id: cuid(),
+        hostPhotoURL: '/assets/user.png',
+      };
+      this.props.createScream(newScream);
+      this.props.history.push(`/screams`);
     }
   };
 
@@ -32,7 +59,7 @@ class ScreamForm extends Component {
   };
 
   render() {
-    const { cancelFormOpen } = this.props;
+    // const { cancelFormOpen } = this.props;
     const { body, date, hostedBy } = this.state;
     return (
       <Segment>
@@ -68,13 +95,23 @@ class ScreamForm extends Component {
           <Button positive type='submit'>
             Submit
           </Button>
-          <Button onClick={cancelFormOpen} type='button'>
-            Cancel
-          </Button>
+          <Popup
+            content='Go back'
+            trigger={
+              <Button
+                floated='right'
+                icon
+                onClick={this.props.history.goBack}
+                type='button'
+              >
+                <Icon name='cancel' />
+              </Button>
+            }
+          />
         </Form>
       </Segment>
     );
   }
 }
 
-export default ScreamForm;
+export default connect(mapState, actions)(ScreamForm);
