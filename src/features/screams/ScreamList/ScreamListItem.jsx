@@ -28,17 +28,21 @@ class ScreamListItem extends Component {
           <span style={{ whiteSpace: 'pre-wrap' }}>{scream.body}</span>
         </Segment>
         <Segment attached clearing>
-          <Button as='div' labelPosition='right'>
-            <Button>
-              <Icon name='heart' />
-              Like
-            </Button>
-            <Label as='a' basic pointing='left'>
-              2,048
-            </Label>
-          </Button>
           <Popup
-            content='View Comments'
+            content='Like'
+            trigger={
+              <Button as='div' labelPosition='right'>
+                <Button icon>
+                  <Icon name='heart' />
+                </Button>
+                <Label as='a' basic pointing='left'>
+                  24
+                </Label>
+              </Button>
+            }
+          />
+          <Popup
+            content='Comments'
             trigger={
               <Button
                 as='div'
@@ -46,12 +50,11 @@ class ScreamListItem extends Component {
                 as={Link}
                 to={`/screams/${scream.id}`}
               >
-                <Button>
+                <Button icon>
                   <Icon name='comments outline' />
-                  Comments
                 </Button>
                 <Label as='a' basic pointing='left'>
-                  1,248
+                  5
                 </Label>
               </Button>
             }
