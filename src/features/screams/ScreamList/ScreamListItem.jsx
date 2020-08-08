@@ -35,7 +35,7 @@ class ScreamListItem extends Component {
                 <Button icon>
                   <Icon name='heart' />
                 </Button>
-                <Label as='a' basic pointing='left'>
+                <Label as='div' basic pointing='left'>
                   24
                 </Label>
               </Button>
@@ -45,7 +45,6 @@ class ScreamListItem extends Component {
             content='Comments'
             trigger={
               <Button
-                as='div'
                 labelPosition='right'
                 as={Link}
                 to={`/screams/${scream.id}`}
@@ -53,13 +52,12 @@ class ScreamListItem extends Component {
                 <Button icon>
                   <Icon name='comments outline' />
                 </Button>
-                <Label as='a' basic pointing='left'>
+                <Label as='div' basic pointing='left'>
                   5
                 </Label>
               </Button>
             }
           />
-
           <Popup
             content='Delete'
             trigger={
@@ -83,7 +81,7 @@ class ScreamListItem extends Component {
                 as={Link}
                 to={`/manageScream/${scream.id}`}
               >
-                <Icon name='options' />
+                <Icon name='edit' />
               </Button>
             }
           />

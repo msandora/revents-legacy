@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Segment, Item, Button } from 'semantic-ui-react';
+import { Segment, Item, Button, Popup, Icon, Label } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
 class RecipesListItem extends Component {
   render() {
-    const { recipe, selectRecipe, deleteRecipe } = this.props;
+    const { recipe, deleteRecipe } = this.props;
     return (
       <Segment.Group>
         <Segment>
@@ -13,7 +13,7 @@ class RecipesListItem extends Component {
               <Item.Image size='tiny' circular src={recipe.hostPhotoURL} />
               <Item.Content>
                 <Item.Header as={Link} to={`/recipes/${recipe.id}`}>
-                  {recipe.title}
+                  {recipe.hostedBy}
                 </Item.Header>
                 <Item.Description>{recipe.date}</Item.Description>
               </Item.Content>
@@ -21,25 +21,66 @@ class RecipesListItem extends Component {
           </Item.Group>
         </Segment>
         <Segment>
-          <span style={{ whiteSpace: 'pre-wrap' }}>{recipe.ingredients}</span>
-          <br />
           <span style={{ whiteSpace: 'pre-wrap' }}>{recipe.body}</span>
         </Segment>
-        <Segment clearing>
-          <Button
-            onClick={() => deleteRecipe(recipe.id)}
-            as='a'
-            color='red'
-            floated='right'
-            content='Delete'
+        <Segment attached clearing>
+          <Popup
+            content='Like'
+            trigger={
+              <Button as='div' labelPosition='right'>
+                <Button icon>
+                  <Icon name='heart' />
+                </Button>
+                <Label as='div' basic pointing='left'>
+                  24
+                </Label>
+              </Button>
+            }
           />
-          <Button
-            onClick={() => selectRecipe(recipe)}
-            as={Link}
-            to={`/recipes/${recipe.id}`}
-            color='teal'
-            floated='right'
-            content='View'
+          <Popup
+            content='Comments'
+            trigger={
+              <Button
+                labelPosition='right'
+                as={Link}
+                to={`/recipes/${recipe.id}`}
+              >
+                <Button icon>
+                  <Icon name='comments outline' />
+                </Button>
+                <Label as='div' basic pointing='left'>
+                  5
+                </Label>
+              </Button>
+            }
+          />
+
+          <Popup
+            content='Delete'
+            trigger={
+              <Button
+                floated='right'
+                icon
+                onClick={() => deleteRecipe(recipe.id)}
+                as='a'
+                color='red'
+              >
+                <Icon name='trash' />
+              </Button>
+            }
+          />
+          <Popup
+            content='Manage'
+            trigger={
+              <Button
+                floated='right'
+                icon
+                as={Link}
+                to={`/manageRecipe/${recipe.id}`}
+              >
+                <Icon name='edit' />
+              </Button>
+            }
           />
         </Segment>
       </Segment.Group>

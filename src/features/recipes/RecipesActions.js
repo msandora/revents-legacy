@@ -22,11 +22,11 @@ export const updateRecipe = (recipe) => {
   };
 };
 
-export const deleteRecipe = (recipe) => {
+export const deleteRecipe = (recipeId) => {
   return {
     type: DELETE_RECIPE,
     payload: {
-      recipe,
+      recipeId,
     },
   };
 };

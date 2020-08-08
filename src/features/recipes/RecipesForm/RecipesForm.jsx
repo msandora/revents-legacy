@@ -1,80 +1,144 @@
 import React, { Component } from 'react';
-import { Segment, Form, Button } from 'semantic-ui-react';
+import { connect } from 'react-redux';
+import { reduxForm, Field } from 'redux-form';
+import {
+  combineValidators,
+  composeValidators,
+  isRequired,
+  hasLengthGreaterThan,
+} from 'revalidate';
+import { Segment, Form, Button, Grid, Header } from 'semantic-ui-react';
+import { createRecipe, updateRecipe } from '../RecipesActions';
+import TextInput from '../../../app/common/form/TextInput';
+import TextArea from '../../../app/common/form/TextArea';
+import SelectInput from '../../../app/common/form/SelectInput';
+import DateInput from '../../../app/common/form/DateInput';
+import cuid from 'cuid';
+
+const mapState = (state, ownProps) => {
+  const recipeId = ownProps.match.params.id;
+  let recipe = {
+    // body: '',
+    // date: '',
+    // hostedBy: '',
+  };
+
+  if (recipeId && state.recipes.length > 0) {
+    recipe = state.recipes.filter((recipe) => recipe.id === recipeId)[0];
+  }
+  return {
+    initialValues: recipe,
+  };
+};
+
+const actions = {
+  createRecipe,
+  updateRecipe,
+};
+
+const validate = combineValidators({
+  title: isRequired({ message: 'The event title is required' }),
+  category: isRequired({ message: 'The category is required' }),
+  description: composeValidators(
+    isRequired({ message: 'Please enter a description' }),
+    hasLengthGreaterThan(4)({
+      message: 'Description needs to be at least 5 characters',
+    })
+  )(),
+  date: isRequired('date'),
+});
+
+const category = [
+  { key: 'breakfast', text: 'Breakfast', value: 'breakfast' },
+  { key: 'desserts', text: 'Desserts', value: 'desserts' },
+  { key: 'entrees', text: 'Entrees', value: 'entrees' },
+  { key: 'beverages', text: 'Beverages', value: 'beverages' },
+];
 
 class RecipesForm extends Component {
-  state = {
-    body: '',
-    date: '',
-    hostedBy: '',
-  };
+  onFormSubmit = (values) => {
+    console.log(values);
 
-  componentDidMount() {
-    if (this.props.selectedRecipe !== null) {
-      this.setState({
-        ...this.props.selectedRecipe,
-      });
-    }
-  }
-
-  handleFormSubmit = (evt) => {
-    evt.preventDefault();
-    if (this.state.id) {
-      this.props.updateRecipe(this.state);
+    if (this.props.initialValues.id) {
+      this.props.updateRecipe(values);
+      this.props.history.push(`/recipes/${this.props.initialValues.id}`);
     } else {
-      this.props.createRecipe(this.state);
+      const newRecipe = {
+        ...values,
+        id: cuid(),
+        hostPhotoURL: '/assets/user.png',
+        hostedBy: 'Bob',
+      };
+      this.props.createRecipe(newRecipe);
+      this.props.history.push(`/recipes/${newRecipe.id}`);
     }
-  };
-
-  handleInputChange = ({ target: { name, value } }) => {
-    this.setState({
-      [name]: value,
-    });
   };
 
   render() {
-    const { cancelFormOpen } = this.props;
-    const { body, date, hostedBy } = this.state;
+    const {
+      // history,
+      // initialValues,
+      invalid,
+      submitting,
+      pristine,
+      // loading,
+    } = this.props;
     return (
-      <Segment>
-        <Form onSubmit={this.handleFormSubmit} autoComplete='off'>
-          <Form.Field>
-            <label>Say Something</label>
-            <input
-              name='body'
-              onChange={this.handleInputChange}
-              value={body}
-              placeholder='What would you like to say?'
-            />
-          </Form.Field>
-          <Form.Field>
-            <label>Recipe Date</label>
-            <input
-              name='date'
-              onChange={this.handleInputChange}
-              value={date}
-              type='date'
-              placeholder='Recipe Date'
-            />
-          </Form.Field>
-          <Form.Field>
-            <label>Hosted By</label>
-            <input
-              name='hostedBy'
-              onChange={this.handleInputChange}
-              value={hostedBy}
-              placeholder='Enter the name of person hosting'
-            />
-          </Form.Field>
-          <Button positive type='submit'>
-            Submit
-          </Button>
-          <Button onClick={cancelFormOpen} type='button'>
-            Cancel
-          </Button>
-        </Form>
-      </Segment>
+      <Grid>
+        <Grid.Column width={10}>
+          <Segment>
+            <Header sub color='teal' content='Event details' />
+            <Form
+              onSubmit={this.props.handleSubmit(this.onFormSubmit)}
+              autoComplete='off'
+            >
+              <Field
+                name='title'
+                component={TextInput}
+                placeholder='Give your event a name'
+              />
+              <Field
+                name='category'
+                component={SelectInput}
+                options={category}
+                placeholder='What is your event about?'
+              />
+              <Field
+                name='description'
+                component={TextArea}
+                rows={3}
+                placeholder='Tell us about your event'
+              />
+              <Header sub color='teal' content='Event location details' />
+              <Field
+                name='date'
+                component={DateInput}
+                dateFormat='dd LLL yyyy h:mm a'
+                placeholder='Event date'
+                showTimeSelect
+                timeFormat='HH:mm'
+              />
+              <Button
+                disabled={invalid || submitting || pristine}
+                // loading={loading}
+                positive
+                type='submit'
+              >
+                Submit
+              </Button>
+            </Form>
+          </Segment>
+        </Grid.Column>
+      </Grid>
     );
   }
 }
 
-export default RecipesForm;
+export default connect(
+  mapState,
+  actions
+)(
+  reduxForm({ form: 'recipesForm', validate, enableReinitialize: true })(
+    RecipesForm
+  )
+);

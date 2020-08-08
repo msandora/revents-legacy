@@ -6,6 +6,7 @@ import ScreamList from '../ScreamList/ScreamList';
 // import ScreamForm from '../ScreamForm/ScreamForm';
 import ScreamSidebar from '../ScreamSidebar/ScreamSidebar';
 import { createScream, updateScream, deleteScream } from '../screamActions';
+import ScreamActivity from '../ScreamActivity/ScreamActivity';
 
 const mapState = (state) => ({
   screams: state.screams,
@@ -89,6 +90,7 @@ class ScreamDashboard extends Component {
         </Grid.Column>
         <Grid.Column width={6}>
           <ScreamSidebar />
+          <ScreamActivity />
           {/*
           <Button
             onClick={this.handleCreateFormOpen}

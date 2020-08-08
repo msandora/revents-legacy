@@ -1,22 +1,33 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Segment, Form, Button, Icon, Popup } from 'semantic-ui-react';
+import { reduxForm, Field } from 'redux-form';
+import { combineValidators, isRequired } from 'revalidate';
+import {
+  Segment,
+  Form,
+  Button,
+  Icon,
+  Popup,
+  Header,
+  Grid,
+} from 'semantic-ui-react';
 import { createScream, updateScream } from '../screamActions';
+import TextArea from '../../../app/common/form/TextArea';
 import cuid from 'cuid';
 
 const mapState = (state, ownProps) => {
   const screamId = ownProps.match.params.id;
   let scream = {
-    body: '',
-    date: '',
-    hostedBy: '',
+    // body: '',
+    // date: '',
+    // hostedBy: '',
   };
 
   if (screamId && state.screams.length > 0) {
     scream = state.screams.filter((scream) => scream.id === screamId)[0];
   }
   return {
-    scream,
+    initialValues: scream,
   };
 };
 
@@ -25,93 +36,123 @@ const actions = {
   updateScream,
 };
 
+const validate = combineValidators({
+  body: isRequired({ message: 'The event title is required' }),
+});
+
 class ScreamForm extends Component {
-  state = { ...this.props.scream };
+  // state = { ...this.props.scream };
 
-  componentDidMount() {
-    if (this.props.selectedScream !== null) {
-      this.setState({
-        ...this.props.selectedScream,
-      });
-    }
-  }
+  // componentDidMount() {
+  //   if (this.props.selectedScream !== null) {
+  //     this.setState({
+  //       ...this.props.selectedScream,
+  //     });
+  //   }
+  // }
 
-  handleFormSubmit = (evt) => {
-    evt.preventDefault();
-    if (this.state.id) {
-      this.props.updateScream(this.state);
-      this.props.history.push(`/screams/${this.state.id}`);
+  onFormSubmit = (values) => {
+    console.log(values);
+
+    if (this.props.initialValues.id) {
+      this.props.updateScream(values);
+      this.props.history.push(`/screams/${this.props.initialValues.id}`);
     } else {
       const newScream = {
-        ...this.state,
+        ...values,
         id: cuid(),
         hostPhotoURL: '/assets/user.png',
+        hostedBy: 'Bob',
       };
       this.props.createScream(newScream);
-      this.props.history.push(`/screams`);
+      this.props.history.push(`/screams/${newScream.id}`);
     }
-  };
 
-  handleInputChange = ({ target: { name, value } }) => {
-    this.setState({
-      [name]: value,
-    });
+    // evt.preventDefault();
+    // if (this.state.id) {
+    //   this.props.updateScream(this.state);
+    //   this.props.history.push(`/screams/${this.state.id}`);
+    // } else {
+    //   const newScream = {
+    //     ...this.state,
+    //     id: cuid(),
+    //     hostPhotoURL: '/assets/user.png',
+    //   };
+    //   this.props.createScream(newScream);
+    //   this.props.history.push(`/screams`);
+    // }
   };
 
   render() {
     // const { cancelFormOpen } = this.props;
-    const { body, date, hostedBy } = this.state;
+    //const { body, date, hostedBy } = this.state;
+    const {
+      history,
+      initialValues,
+      invalid,
+      submitting,
+      pristine,
+      // event,
+      // cancelToggle,
+      // loading
+    } = this.props;
     return (
-      <Segment>
-        <Form onSubmit={this.handleFormSubmit} autoComplete='off'>
-          <Form.Field>
-            <label>Say Something</label>
-            <input
-              name='body'
-              onChange={this.handleInputChange}
-              value={body}
-              placeholder='What would you like to say?'
-            />
-          </Form.Field>
-          <Form.Field>
-            <label>Scream Date</label>
-            <input
-              name='date'
-              onChange={this.handleInputChange}
-              value={date}
-              type='date'
-              placeholder='Scream Date'
-            />
-          </Form.Field>
-          <Form.Field>
-            <label>Hosted By</label>
-            <input
-              name='hostedBy'
-              onChange={this.handleInputChange}
-              value={hostedBy}
-              placeholder='Enter the name of person hosting'
-            />
-          </Form.Field>
-          <Button positive type='submit'>
-            Submit
-          </Button>
-          <Popup
-            content='Go back'
-            trigger={
+      <Grid>
+        <Grid.Column width={10}>
+          <Segment>
+            <Header sub color='teal' content='Post details' />
+
+            <Form
+              onSubmit={this.props.handleSubmit(this.onFormSubmit)}
+              autoComplete='off'
+            >
+              <Field
+                name='body'
+                component={TextArea}
+                rows={3}
+                placeholder={'Body'}
+              />
+
               <Button
-                floated='right'
-                icon
-                onClick={this.props.history.goBack}
-                type='button'
+                disabled={invalid || submitting || pristine}
+                // loading={loading}
+                positive
+                type='submit'
               >
-                <Icon name='cancel' />
+                Submit
               </Button>
-            }
-          />
-        </Form>
-      </Segment>
+              <Popup
+                content='Go back'
+                trigger={
+                  <Button
+                    floated='right'
+                    icon
+                    onClick={
+                      initialValues.id
+                        ? () => history.push(`/screams/${initialValues.id}`)
+                        : () => history.push('/screams')
+                    }
+                    type='button'
+                  >
+                    <Icon name='cancel' />
+                  </Button>
+                }
+              />
+            </Form>
+          </Segment>
+        </Grid.Column>
+      </Grid>
     );
   }
 }
 
-export default connect(mapState, actions)(ScreamForm);
+export default connect(
+  mapState,
+  actions
+)(
+  reduxForm({
+    form: 'screamForm',
+    validate,
+    //, enableReinitialize: true
+  })(ScreamForm)
+);

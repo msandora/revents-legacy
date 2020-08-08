@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Grid, SegmentGroup } from 'semantic-ui-react';
+import ScreamDetailedHeader from './ScreamDetailedHeader';
 import ScreamDetailedInfo from './ScreamDetailedInfo';
 import ScreamDetailedChat from './ScreamDetailedChat';
-import ScreamDetailedHeader from './ScreamDetailedHeader';
 
 const mapState = (state, ownProps) => {
   const screamId = ownProps.match.params.id;

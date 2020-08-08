@@ -37,7 +37,7 @@ const ScreamDetailedInfo = ({ scream }) => {
             <Button
               floated='right'
               icon
-              onClick={console.log('GO BACK')}
+              onClick={() => alert('Fix this go back button')}
               type='button'
             >
               <Icon name='cancel' />
@@ -62,7 +62,7 @@ const ScreamDetailedInfo = ({ scream }) => {
               as={Link}
               to={`/manageScream/${scream.id}`}
             >
-              <Icon name='options' />
+              <Icon name='edit' />
             </Button>
           }
         />
