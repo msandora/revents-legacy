@@ -10,8 +10,8 @@ const NotFound = ({ history }) => {
         Oops - we've looked everywhere but couldn't find this.
       </Header>
       <Segment.Inline>
-        <Button onClick={() => history.push('/events')} primary>
-          Return to Events page
+        <Button onClick={() => history.push('/screams')} primary>
+          Return to Home page
         </Button>
       </Segment.Inline>
     </Segment>

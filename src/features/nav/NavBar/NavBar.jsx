@@ -43,7 +43,7 @@ class NavBar extends Component {
           <Menu.Item as={NavLink} exact to='/screams' name='Social' />
           <Menu.Item as={NavLink} to='/family-tree' name='Family Tree' />
           <Menu.Item as={NavLink} exact to='/recipes' name='Recipes' />
-          <Menu.Item as={NavLink} to='/test' name='Test' />
+          {/* <Menu.Item as={NavLink} to='/test' name='Test' /> */}
 
           {authenticated ? (
             <SignedInMenu

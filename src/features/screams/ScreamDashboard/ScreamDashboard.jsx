@@ -1,27 +1,62 @@
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 import { connect } from 'react-redux';
-import { Grid } from 'semantic-ui-react';
+import { firestoreConnect, isLoaded } from 'react-redux-firebase';
+
+import { Grid, Loader } from 'semantic-ui-react';
 import ScreamList from '../ScreamList/ScreamList';
-// import cuid from 'cuid';
-// import ScreamForm from '../ScreamForm/ScreamForm';
+import { getScreamsForDashboard } from '../screamActions';
 import ScreamSidebar from '../ScreamSidebar/ScreamSidebar';
-import { createScream, updateScream, deleteScream } from '../screamActions';
 import ScreamActivity from '../ScreamActivity/ScreamActivity';
 import LoadingComponent from '../../../app/layout/LoadingComponent';
-import { firestoreConnect } from 'react-redux-firebase';
 
 const mapState = (state) => ({
-  screams: state.firestore.ordered.screams,
+  screams: [],
   loading: state.async.loading,
 });
 
 const actions = {
-  createScream,
-  updateScream,
-  deleteScream,
+  getScreamsForDashboard,
 };
 
 class ScreamDashboard extends Component {
+  contextRef = createRef();
+
+  state = {
+    moreScreams: false,
+    loadingInitial: true,
+    loadedScreams: [],
+  };
+
+  async componentDidMount() {
+    let next = await this.props.getScreamsForDashboard();
+
+    if (next && next.docs && next.docs.length > 1) {
+      this.setState({
+        moreScreams: true,
+        loadingInitial: false,
+      });
+    }
+  }
+
+  componentDidUpdate = (prevProps) => {
+    if (this.props.screams !== prevProps.screams) {
+      this.setState({
+        loadedScreams: [...this.state.loadedScreams, ...this.props.screams],
+      });
+    }
+  };
+
+  getNextScreams = async () => {
+    const { screams } = this.props;
+    let lastScream = screams && screams[screams.length - 1];
+    let next = await this.props.getScreamsForDashboard(lastScream);
+    if (next && next.docs && next.docs.length <= 1) {
+      this.setState({
+        moreScreams: false,
+      });
+    }
+  };
+
   // state = {
   //   isOpen: false,
   //   selectedScream: null,
@@ -72,25 +107,27 @@ class ScreamDashboard extends Component {
   //   // }));
   // };
 
-  handleDeleteScream = (id) => {
-    this.props.deleteScream(id);
-    // this.setState(({ screams }) => ({
-    //   screams: screams.filter((e) => e.id !== id),
-    // }));
-  };
+  // handleDeleteScream = (id) => {
+  //   this.props.deleteScream(id);
+  //   // this.setState(({ screams }) => ({
+  //   //   screams: screams.filter((e) => e.id !== id),
+  //   // }));
+  // };
 
   render() {
     // const { isOpen, selectedScream } = this.state;
-    const { screams, loading } = this.props;
+    const { screams } = this.props;
+    const { moreScreams, loadedScreams } = this.state;
 
-    if (loading) return <LoadingComponent inverted={false} />;
+    if (!isLoaded(screams)) return <LoadingComponent />;
     return (
       <Grid>
         <Grid.Column width={10}>
           <ScreamList
-            screams={screams}
-            // selectScream={this.handleSelectScream}
-            deleteScream={this.handleDeleteScream}
+            // loading={loading}
+            screams={loadedScreams}
+            moreScreams={moreScreams}
+            getNextScreams={this.getNextScreams}
           />
         </Grid.Column>
         <Grid.Column width={6}>
@@ -111,6 +148,9 @@ class ScreamDashboard extends Component {
               cancelFormOpen={this.handleFormCancel}
             />
           )} */}
+        </Grid.Column>
+        <Grid.Column width={10}>
+          {/* <Loader active={loading} /> */}
         </Grid.Column>
       </Grid>
     );

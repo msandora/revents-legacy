@@ -15,7 +15,6 @@ import {
 import { createScream, updateScream, deleteScream } from '../screamActions';
 import TextArea from '../../../app/common/form/TextArea';
 import { withFirestore } from 'react-redux-firebase';
-import { toastr } from 'react-redux-toastr';
 
 const mapState = (state, ownProps) => {
   const screamId = ownProps.match.params.id;
@@ -58,12 +57,13 @@ class ScreamForm extends Component {
   //   }
   // }
   async componentDidMount() {
-    const { firestore, match, history } = this.props;
-    let scream = await firestore.get(`screams/${match.params.id}`);
-    if (!scream.exists) {
-      history.push('/screams');
-      toastr.error('Sorry', 'Scream not found');
-    }
+    const { firestore, match } = this.props;
+    await firestore.setListener(`screams/${match.params.id}`);
+  }
+
+  async componentWillUnmount() {
+    const { firestore, match } = this.props;
+    await firestore.unsetListener(`screams/${match.params.id}`);
   }
 
   onFormSubmit = async (values) => {
@@ -116,7 +116,7 @@ class ScreamForm extends Component {
   };
 
   render() {
-    // const { cancelFormOpen } = this.props;
+    //const { cancelFormOpen } = this.props;
     //const { body, date, hostedBy } = this.state;
     const {
       history,
@@ -124,8 +124,8 @@ class ScreamForm extends Component {
       invalid,
       submitting,
       pristine,
-      scream,
-      deleteScream,
+      //scream,
+      //deleteScream,
       loading,
     } = this.props;
     return (
