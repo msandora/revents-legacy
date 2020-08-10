@@ -33,7 +33,8 @@ export const createNewScream = (user, photoURL, scream) => {
     hostPhotoURL: photoURL || '/assets/user.png',
     createdAt: new Date(),
     likeCount: 0,
-    commentCount: 0
+    commentCount: 0,
+    screamImages: [],
     // attendees: {
     //   [user.uid]: {
     //     going: true,
@@ -46,13 +47,13 @@ export const createNewScream = (user, photoURL, scream) => {
   };
 };
 
-export const createDataTree = dataset => {
+export const createDataTree = (dataset) => {
   let hashTable = Object.create(null);
-  dataset.forEach(a => hashTable[a.id] = {...a, childNodes: []});
+  dataset.forEach((a) => (hashTable[a.id] = { ...a, childNodes: [] }));
   let dataTree = [];
-  dataset.forEach(a => {
-      if (a.parentId) hashTable[a.parentId].childNodes.push(hashTable[a.id]);
-      else dataTree.push(hashTable[a.id])
+  dataset.forEach((a) => {
+    if (a.parentId) hashTable[a.parentId].childNodes.push(hashTable[a.id]);
+    else dataTree.push(hashTable[a.id]);
   });
-  return dataTree
+  return dataTree;
 };

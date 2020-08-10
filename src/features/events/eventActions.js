@@ -107,7 +107,6 @@ export const cancelToggle = (cancelled, eventId) => async (
   }
 };
 
-
 export const getEventsForDashboard = (lastEvent) => async (
   dispatch,
   getState
@@ -128,10 +127,7 @@ export const getEventsForDashboard = (lastEvent) => async (
           .orderBy('date')
           .startAfter(startAfter)
           .limit(2))
-      : (query = eventsRef
-          .where('date', '>=', today)
-          .orderBy('date')
-          .limit(2));
+      : (query = eventsRef.where('date', '>=', today).orderBy('date').limit(2));
 
     let querySnap = await query.get();
 

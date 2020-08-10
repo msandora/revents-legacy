@@ -142,6 +142,7 @@ div.carousel-container {
 div.carousel-indicators {
   text-align: center;
   padding-top: 5px;
+  padding-bottom: 4px;
 }
 
 div.carousel-indicators a {

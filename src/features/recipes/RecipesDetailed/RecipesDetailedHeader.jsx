@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Segment, Image, Item, Header, Button } from 'semantic-ui-react';
 import {
   imageStyle,
@@ -7,7 +7,7 @@ import {
 
 const RecipesDetailedHeader = ({ recipe }) => {
   return (
-    <Segment.Group>
+    <Fragment>
       <Segment basic attached='top' style={{ padding: '0' }}>
         <Image
           src={`/assets/categoryImages/${recipe.category}.jpg`}
@@ -34,10 +34,10 @@ const RecipesDetailedHeader = ({ recipe }) => {
         </Segment>
       </Segment>
 
-      <Segment attached='bottom' clearing>
+      <Segment attached clearing>
         <Button color='teal'>Manage Recipe</Button>
       </Segment>
-    </Segment.Group>
+    </Fragment>
   );
 };
 

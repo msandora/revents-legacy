@@ -58,7 +58,8 @@ class EventListItem extends Component {
         <Segment clearing>
           {/* Arrow function allows me to not immediatly execute event */}
           <Button
-            onClick={() => deleteEvent(event.id)}
+            // onClick={() => deleteEvent(event.id)}
+            onClick={() => console.log('fix this', event.id)}
             as='a'
             color='red'
             floated='right'

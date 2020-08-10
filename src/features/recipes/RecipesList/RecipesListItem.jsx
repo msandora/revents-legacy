@@ -21,6 +21,9 @@ class RecipesListItem extends Component {
           </Item.Group>
         </Segment>
         <Segment>
+          <span style={{ whiteSpace: 'pre-wrap' }}>{recipe.ingredients}</span>
+        </Segment>
+        <Segment>
           <span style={{ whiteSpace: 'pre-wrap' }}>{recipe.body}</span>
         </Segment>
         <Segment attached clearing>
@@ -54,7 +57,6 @@ class RecipesListItem extends Component {
               </Button>
             }
           />
-
           <Popup
             content='Delete'
             trigger={

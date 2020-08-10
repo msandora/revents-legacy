@@ -19,10 +19,12 @@ class ScreamListItem extends Component {
                 <Item.Description>{scream.date}</Item.Description>
               </Item.Content>
             </Item>
-            <Item>
-              <ScreamCarousel scream={scream} />
-            </Item>
           </Item.Group>
+        </Segment>
+        <Segment style={{ padding: 0 }}>
+          <Item>
+            <ScreamCarousel scream={scream} />
+          </Item>
         </Segment>
         <Segment>
           <span style={{ whiteSpace: 'pre-wrap' }}>{scream.body}</span>

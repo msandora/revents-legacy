@@ -6,13 +6,14 @@ class ScreamList extends Component {
     const { screams, deleteScream } = this.props;
     return (
       <Fragment>
-        {screams.map((scream) => (
-          <ScreamListItem
-            key={scream.id}
-            scream={scream}
-            deleteScream={deleteScream}
-          />
-        ))}
+        {screams &&
+          screams.map((scream) => (
+            <ScreamListItem
+              key={scream.id}
+              scream={scream}
+              deleteScream={deleteScream}
+            />
+          ))}
       </Fragment>
     );
   }

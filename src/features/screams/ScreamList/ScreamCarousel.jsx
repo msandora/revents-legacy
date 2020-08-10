@@ -6,9 +6,7 @@ const ScreamImageCarousel = ({ scream }) => {
   let elements = [
     {
       render: () => {
-        return (
-          <Image src={`/assets/categoryImages/${scream.category}.jpg`} fluid />
-        );
+        return <Image src={`/assets/categoryImages/culture.jpg`} fluid />;
       },
     },
     {
@@ -18,9 +16,7 @@ const ScreamImageCarousel = ({ scream }) => {
     },
     {
       render: () => {
-        return (
-          <Image src={`/assets/categoryImages/${scream.category}.jpg`} fluid />
-        );
+        return <Image src={`/assets/categoryImages/culture.jpg`} fluid />;
       },
     },
     {

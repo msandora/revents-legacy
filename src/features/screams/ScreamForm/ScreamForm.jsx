@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+// import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
 import { combineValidators, isRequired } from 'revalidate';
@@ -11,33 +12,39 @@ import {
   Header,
   Grid,
 } from 'semantic-ui-react';
-import { createScream, updateScream } from '../screamActions';
+import { createScream, updateScream, deleteScream } from '../screamActions';
 import TextArea from '../../../app/common/form/TextArea';
-import cuid from 'cuid';
+import { withFirestore } from 'react-redux-firebase';
+import { toastr } from 'react-redux-toastr';
 
 const mapState = (state, ownProps) => {
   const screamId = ownProps.match.params.id;
-  let scream = {
-    // body: '',
-    // date: '',
-    // hostedBy: '',
-  };
+  let scream = {};
 
-  if (screamId && state.screams.length > 0) {
-    scream = state.screams.filter((scream) => scream.id === screamId)[0];
+  if (
+    state.firestore.ordered.screams &&
+    state.firestore.ordered.screams.length > 0
+  ) {
+    scream =
+      state.firestore.ordered.screams.filter(
+        (scream) => scream.id === screamId
+      )[0] || {};
   }
+
   return {
     initialValues: scream,
+    scream,
   };
 };
 
 const actions = {
   createScream,
   updateScream,
+  deleteScream,
 };
 
 const validate = combineValidators({
-  body: isRequired({ message: 'The event title is required' }),
+  body: isRequired({ message: 'body is required' }),
 });
 
 class ScreamForm extends Component {
@@ -50,23 +57,48 @@ class ScreamForm extends Component {
   //     });
   //   }
   // }
-
-  onFormSubmit = (values) => {
-    console.log(values);
-
-    if (this.props.initialValues.id) {
-      this.props.updateScream(values);
-      this.props.history.push(`/screams/${this.props.initialValues.id}`);
-    } else {
-      const newScream = {
-        ...values,
-        id: cuid(),
-        hostPhotoURL: '/assets/user.png',
-        hostedBy: 'Bob',
-      };
-      this.props.createScream(newScream);
-      this.props.history.push(`/screams/${newScream.id}`);
+  async componentDidMount() {
+    const { firestore, match, history } = this.props;
+    let scream = await firestore.get(`screams/${match.params.id}`);
+    if (!scream.exists) {
+      history.push('/screams');
+      toastr.error('Sorry', 'Scream not found');
     }
+  }
+
+  onFormSubmit = async (values) => {
+    console.log(values);
+    try {
+      if (this.props.initialValues.id) {
+        this.props.updateScream(values);
+        this.props.history.push(`/screams/${this.props.initialValues.id}`);
+      } else {
+        // const newScream = {
+        //   ...values,
+        //   id: cuid(),
+        //   hostPhotoURL: '/assets/user.png',
+        //   hostedBy: 'Bob',
+        // };
+        let createdScream = await this.props.createScream(values);
+        this.props.history.push(`/screams/${createdScream.id}`);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+
+    // if (this.props.initialValues.id) {
+    //   this.props.updateScream(values);
+    //   this.props.history.push(`/screams/${this.props.initialValues.id}`);
+    // } else {
+    //   // const newScream = {
+    //   //   ...values,
+    //   //   id: cuid(),
+    //   //   hostPhotoURL: '/assets/user.png',
+    //   //   hostedBy: 'Bob',
+    //   // };
+    //   this.props.createScream(values);
+    //   this.props.history.push(`/screams/${newScream.id}`);
+    // }
 
     // evt.preventDefault();
     // if (this.state.id) {
@@ -92,9 +124,9 @@ class ScreamForm extends Component {
       invalid,
       submitting,
       pristine,
-      // event,
-      // cancelToggle,
-      // loading
+      scream,
+      deleteScream,
+      loading,
     } = this.props;
     return (
       <Grid>
@@ -127,6 +159,7 @@ class ScreamForm extends Component {
                   <Button
                     floated='right'
                     icon
+                    disabled={loading}
                     onClick={
                       initialValues.id
                         ? () => history.push(`/screams/${initialValues.id}`)
@@ -145,14 +178,13 @@ class ScreamForm extends Component {
     );
   }
 }
-
-export default connect(
-  mapState,
-  actions
-)(
-  reduxForm({
-    form: 'screamForm',
-    validate,
-    //, enableReinitialize: true
-  })(ScreamForm)
+export default withFirestore(
+  connect(
+    mapState,
+    actions
+  )(
+    reduxForm({ form: 'screamForm', validate, enableReinitialize: true })(
+      ScreamForm
+    )
+  )
 );

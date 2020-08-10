@@ -7,12 +7,19 @@ import {
   isRequired,
   hasLengthGreaterThan,
 } from 'revalidate';
-import { Segment, Form, Button, Grid, Header } from 'semantic-ui-react';
+import {
+  Segment,
+  Form,
+  Button,
+  Icon,
+  Popup,
+  Header,
+  Grid,
+} from 'semantic-ui-react';
 import { createRecipe, updateRecipe } from '../RecipesActions';
 import TextInput from '../../../app/common/form/TextInput';
 import TextArea from '../../../app/common/form/TextArea';
 import SelectInput from '../../../app/common/form/SelectInput';
-import DateInput from '../../../app/common/form/DateInput';
 import cuid from 'cuid';
 
 const mapState = (state, ownProps) => {
@@ -37,15 +44,15 @@ const actions = {
 };
 
 const validate = combineValidators({
-  title: isRequired({ message: 'The event title is required' }),
+  title: isRequired({ message: 'The recipe title is required' }),
   category: isRequired({ message: 'The category is required' }),
-  description: composeValidators(
+  ingredients: composeValidators(
     isRequired({ message: 'Please enter a description' }),
     hasLengthGreaterThan(4)({
       message: 'Description needs to be at least 5 characters',
     })
   )(),
-  date: isRequired('date'),
+  body: isRequired({ message: 'body is required' }),
 });
 
 const category = [
@@ -53,6 +60,7 @@ const category = [
   { key: 'desserts', text: 'Desserts', value: 'desserts' },
   { key: 'entrees', text: 'Entrees', value: 'entrees' },
   { key: 'beverages', text: 'Beverages', value: 'beverages' },
+  { key: 'appetizers', text: 'Appetizers', value: 'appetizers' },
 ];
 
 class RecipesForm extends Component {
@@ -76,8 +84,8 @@ class RecipesForm extends Component {
 
   render() {
     const {
-      // history,
-      // initialValues,
+      history,
+      initialValues,
       invalid,
       submitting,
       pristine,
@@ -87,7 +95,7 @@ class RecipesForm extends Component {
       <Grid>
         <Grid.Column width={10}>
           <Segment>
-            <Header sub color='teal' content='Event details' />
+            <Header sub color='teal' content='Recipe details' />
             <Form
               onSubmit={this.props.handleSubmit(this.onFormSubmit)}
               autoComplete='off'
@@ -95,28 +103,19 @@ class RecipesForm extends Component {
               <Field
                 name='title'
                 component={TextInput}
-                placeholder='Give your event a name'
+                placeholder='Give your recipe a name'
               />
               <Field
                 name='category'
                 component={SelectInput}
                 options={category}
-                placeholder='What is your event about?'
+                placeholder='Select a category?'
               />
               <Field
-                name='description'
+                name='body'
                 component={TextArea}
                 rows={3}
-                placeholder='Tell us about your event'
-              />
-              <Header sub color='teal' content='Event location details' />
-              <Field
-                name='date'
-                component={DateInput}
-                dateFormat='dd LLL yyyy h:mm a'
-                placeholder='Event date'
-                showTimeSelect
-                timeFormat='HH:mm'
+                placeholder='How is it made?'
               />
               <Button
                 disabled={invalid || submitting || pristine}
@@ -126,6 +125,23 @@ class RecipesForm extends Component {
               >
                 Submit
               </Button>
+              <Popup
+                content='Go back'
+                trigger={
+                  <Button
+                    floated='right'
+                    icon
+                    onClick={
+                      initialValues.id
+                        ? () => history.push(`/recipes/${initialValues.id}`)
+                        : () => history.push('/recipes')
+                    }
+                    type='button'
+                  >
+                    <Icon name='cancel' />
+                  </Button>
+                }
+              />
             </Form>
           </Segment>
         </Grid.Column>

@@ -23,7 +23,7 @@ const initialState = [
     id: '2',
     title: 'Chocolate Chip Pancakes',
     date: '2018-03-28',
-    category: 'breakfast',
+    category: 'desserts',
     ingredients: 'Pancake mix, Chocolate Chips',
     body: 'I love Pancakes.',
     hostedBy: 'Tom',

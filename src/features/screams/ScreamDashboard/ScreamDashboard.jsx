@@ -7,9 +7,12 @@ import ScreamList from '../ScreamList/ScreamList';
 import ScreamSidebar from '../ScreamSidebar/ScreamSidebar';
 import { createScream, updateScream, deleteScream } from '../screamActions';
 import ScreamActivity from '../ScreamActivity/ScreamActivity';
+import LoadingComponent from '../../../app/layout/LoadingComponent';
+import { firestoreConnect } from 'react-redux-firebase';
 
 const mapState = (state) => ({
-  screams: state.screams,
+  screams: state.firestore.ordered.screams,
+  loading: state.async.loading,
 });
 
 const actions = {
@@ -78,7 +81,9 @@ class ScreamDashboard extends Component {
 
   render() {
     // const { isOpen, selectedScream } = this.state;
-    const { screams } = this.props;
+    const { screams, loading } = this.props;
+
+    if (loading) return <LoadingComponent inverted={false} />;
     return (
       <Grid>
         <Grid.Column width={10}>
@@ -112,4 +117,7 @@ class ScreamDashboard extends Component {
   }
 }
 
-export default connect(mapState, actions)(ScreamDashboard);
+export default connect(
+  mapState,
+  actions
+)(firestoreConnect([{ collection: 'screams' }])(ScreamDashboard));

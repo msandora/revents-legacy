@@ -1,13 +1,14 @@
-import React from 'react';
-import { Segment, Item, Button, Icon, Label, Popup } from 'semantic-ui-react';
+import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { Segment, Item, Button, Icon, Label, Popup } from 'semantic-ui-react';
 import ScreamCarousel from './../ScreamList/ScreamCarousel';
 // import MyButton from '../../../app/common/util/MyButton';
 
-const ScreamDetailedInfo = ({ scream }) => {
+const ScreamDetailedInfo = ({ scream, history }) => {
   return (
-    <div>
-      <Segment attached>
+    <Fragment>
+      <Segment attached style={{ padding: 0 }}>
         <Item.Group>
           <Item>
             <ScreamCarousel scream={scream} />
@@ -15,7 +16,11 @@ const ScreamDetailedInfo = ({ scream }) => {
         </Item.Group>
       </Segment>
       <Segment attached>
-        <span style={{ whiteSpace: 'pre-wrap' }}>{scream.body}</span>
+        <Item.Group>
+          <Item>
+            <span style={{ whiteSpace: 'pre-wrap' }}>{scream.body}</span>
+          </Item>
+        </Item.Group>
       </Segment>
       <Segment attached='bottom' clearing>
         <Popup
@@ -37,22 +42,23 @@ const ScreamDetailedInfo = ({ scream }) => {
             <Button
               floated='right'
               icon
-              onClick={() => alert('Fix this go back button')}
+              as={Link}
+              to={'/screams'}
               type='button'
             >
               <Icon name='cancel' />
             </Button>
           }
         />
-        {/* <MyButton
-          tip='Test MyButton'
-          floated='right'
-          onClick={() => console.log('ALERT')}
-          type='button'
-          color='red'
-        >
-          <Icon name='bell' />
-        </MyButton> */}
+
+        {/* <Popup
+          content='Cancel'
+          trigger={
+            <Button floated='right' icon to={'/screams'} type='button'>
+              <Icon name='cancel' />
+            </Button>
+          }
+        /> */}
         <Popup
           content='Manage'
           trigger={
@@ -67,8 +73,8 @@ const ScreamDetailedInfo = ({ scream }) => {
           }
         />
       </Segment>
-    </div>
+    </Fragment>
   );
 };
 
-export default ScreamDetailedInfo;
+export default connect()(ScreamDetailedInfo);
