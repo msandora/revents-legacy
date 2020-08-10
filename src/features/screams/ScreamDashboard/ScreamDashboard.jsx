@@ -57,66 +57,8 @@ class ScreamDashboard extends Component {
     }
   };
 
-  // state = {
-  //   isOpen: false,
-  //   selectedScream: null,
-  // };
-
-  // handleCreateFormOpen = () => {
-  //   this.setState({
-  //     isOpen: true,
-  //     selectedScream: null,
-  //   });
-  // };
-
-  // handleFormCancel = () => {
-  //   this.setState({
-  //     isOpen: false,
-  //   });
-  // };
-
-  // handleCreateScream = (newScream) => {
-  //   newScream.id = cuid();
-  //   newScream.hostPhotoURL = '/assets/user.png';
-  //   this.props.createScream(newScream);
-  //   // this.setState(({ screams }) => ({
-  //   //   // screams: [...screams, newScream],
-  //   //   isOpen: false,
-  //   // }));
-  // };
-
-  // handleSelectScream = (scream) => {
-  //   this.setState({
-  //     selectedScream: scream,
-  //     isOpen: true,
-  //   });
-  // };
-
-  // handleUpdateScream = (updatedScream) => {
-  //   this.props.updateScream(updatedScream);
-  //   // this.setState(({ screams }) => ({
-  //   //   // screams: screams.map((scream) => {
-  //   //   //   if (scream.id === updatedScream.id) {
-  //   //   //     return { ...updatedScream };
-  //   //   //   } else {
-  //   //   //     return scream;
-  //   //   //   }
-  //   //   // }),
-  //   //   isOpen: false,
-  //   //   selectedScream: null,
-  //   // }));
-  // };
-
-  // handleDeleteScream = (id) => {
-  //   this.props.deleteScream(id);
-  //   // this.setState(({ screams }) => ({
-  //   //   screams: screams.filter((e) => e.id !== id),
-  //   // }));
-  // };
-
   render() {
-    // const { isOpen, selectedScream } = this.state;
-    const { screams } = this.props;
+    const { screams, loading } = this.props;
     const { moreScreams, loadedScreams } = this.state;
 
     if (!isLoaded(screams)) return <LoadingComponent />;
