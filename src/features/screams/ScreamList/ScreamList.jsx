@@ -4,7 +4,15 @@ import InfiniteScroll from 'react-infinite-scroller';
 
 class ScreamList extends Component {
   render() {
-    const { screams, getNextScreams, loading, moreScreams } = this.props;
+    const {
+      screams,
+      getNextScreams,
+      loading,
+      moreScreams,
+      likes,
+      isHost,
+    } = this.props;
+
     return (
       <Fragment>
         {screams && screams.length !== 0 && (
@@ -16,7 +24,12 @@ class ScreamList extends Component {
           >
             {screams &&
               screams.map((scream) => (
-                <ScreamListItem key={scream.id} scream={scream} />
+                <ScreamListItem
+                  key={scream.id}
+                  scream={scream}
+                  isHost={isHost}
+                  likes={likes}
+                />
               ))}
           </InfiniteScroll>
         )}

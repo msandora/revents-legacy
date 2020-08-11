@@ -9,18 +9,16 @@ import LoadingComponent from '../../../app/layout/LoadingComponent';
 // import ScreamActivity from '../ScreamActivity/ScreamActivity';
 import ScreamSidebar from '../ScreamSidebar/ScreamSidebar';
 
-// const query = [
-//   {
-//     collection: 'activity',
-//     orderBy: ['timestamp', 'desc'],
-//     limit: 5,
-//   },
-// ];
+const query = [
+  {
+    collection: 'likes',
+  },
+];
 
 const mapState = (state) => ({
   screams: state.screams.screams,
   loading: state.async.loading,
-  activities: state.firestore.ordered.activity,
+  likes: state.firestore.ordered.likes,
 });
 
 const actions = {
@@ -39,7 +37,7 @@ class ScreamDashboard extends Component {
   async componentDidMount() {
     let next = await this.props.getScreamsForDashboard();
 
-    if (next && next.docs && next.docs.length > 1) {
+    if (next && next.docs && next.docs.length >= 1) {
       this.setState({
         moreScreams: true,
         loadingInitial: false,
@@ -67,7 +65,7 @@ class ScreamDashboard extends Component {
   };
 
   render() {
-    const { loading, activities } = this.props;
+    const { loading, likes } = this.props;
     const { moreScreams, loadedScreams } = this.state;
 
     if (this.state.loadingInitial) return <LoadingComponent />;
@@ -76,6 +74,8 @@ class ScreamDashboard extends Component {
         <Grid.Column width={10}>
           <div ref={this.contextRef}>
             <ScreamList
+              isHost='true'
+              likes={likes}
               loading={loading}
               screams={loadedScreams}
               moreScreams={moreScreams}
@@ -84,7 +84,7 @@ class ScreamDashboard extends Component {
           </div>
         </Grid.Column>
         <Grid.Column width={6}>
-          <ScreamSidebar activities={activities} contextRef={this.contextRef} />
+          <ScreamSidebar contextRef={this.contextRef} />
         </Grid.Column>
         <Grid.Column width={10}>
           <Loader active={loading} />
@@ -94,4 +94,7 @@ class ScreamDashboard extends Component {
   }
 }
 
-export default connect(mapState, actions)(firestoreConnect()(ScreamDashboard));
+export default connect(
+  mapState,
+  actions
+)(firestoreConnect(query)(ScreamDashboard));

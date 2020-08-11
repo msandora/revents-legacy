@@ -35,15 +35,16 @@ export const createNewScream = (user, photoURL, scream) => {
     likeCount: 0,
     commentCount: 0,
     screamImages: [],
-    // attendees: {
-    //   [user.uid]: {
-    //     going: true,
-    //     joinDate: new Date(),
-    //     photoURL: photoURL || '/assets/user.png',
-    //     displayName: user.displayName,
-    //     host: true,
-    //   },
-    // },
+  };
+};
+
+export const createNewRecipe = (user, photoURL, recipe) => {
+  return {
+    ...recipe,
+    hostUid: user.uid,
+    hostedBy: user.displayName,
+    hostPhotoURL: photoURL || '/assets/user.png',
+    createdAt: new Date(),
   };
 };
 

@@ -120,7 +120,7 @@ export const getEventsForDashboard = (lastEvent) => async (
       lastEvent &&
       (await firestore.collection('events').doc(lastEvent.id).get());
     let query;
-    console.log(today);
+    // console.log(today);
     lastEvent
       ? (query = eventsRef
           .where('date', '>=', today)

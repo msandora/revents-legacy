@@ -1,14 +1,31 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { withFirebase } from 'react-redux-firebase';
 import { Segment, Item, Button, Popup, Icon, Label } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import ScreamCarousel from './ScreamCarousel';
+import ScreamLike from '../ScreamLike/ScreamLike';
+
+const mapState = (state) => ({
+  auth: state.firebase.auth,
+});
 
 class ScreamListItem extends Component {
   render() {
     const {
       scream,
+      likes,
+      auth,
       // deleteScream
     } = this.props;
+    const isHost = scream.hostUid === auth.uid;
+
+    // console.log('likes', likes);
+    // console.log('scream', scream);
+    // console.log('host', isHost);
+    // console.log('auth', auth);
+
+    // let likeCount = likes.length;
     return (
       <Segment.Group>
         <Segment>
@@ -24,7 +41,7 @@ class ScreamListItem extends Component {
             </Item>
           </Item.Group>
         </Segment>
-        <Segment style={{ padding: 0 }}>
+        <Segment style={{ padding: 0 }} as={Link} to={`/screams/${scream.id}`}>
           <Item>
             <ScreamCarousel scream={scream} />
           </Item>
@@ -33,19 +50,7 @@ class ScreamListItem extends Component {
           <span style={{ whiteSpace: 'pre-wrap' }}>{scream.body}</span>
         </Segment>
         <Segment attached clearing>
-          <Popup
-            content='Like'
-            trigger={
-              <Button as='div' labelPosition='right'>
-                <Button icon>
-                  <Icon name='heart' />
-                </Button>
-                <Label as='div' basic pointing='left'>
-                  24
-                </Label>
-              </Button>
-            }
-          />
+          <ScreamLike screamId={scream.id} />
           <Popup
             content='Comments'
             trigger={
@@ -77,23 +82,26 @@ class ScreamListItem extends Component {
               </Button>
             }
           /> */}
-          <Popup
-            content='Manage'
-            trigger={
-              <Button
-                floated='right'
-                icon
-                as={Link}
-                to={`/manageScream/${scream.id}`}
-              >
-                <Icon name='edit' />
-              </Button>
-            }
-          />
+
+          {isHost && (
+            <Popup
+              content='Manage'
+              trigger={
+                <Button
+                  floated='right'
+                  icon
+                  as={Link}
+                  to={`/manageScream/${scream.id}`}
+                >
+                  <Icon name='edit' />
+                </Button>
+              }
+            />
+          )}
         </Segment>
       </Segment.Group>
     );
   }
 }
 
-export default ScreamListItem;
+export default withFirebase(connect(mapState, null)(ScreamListItem));

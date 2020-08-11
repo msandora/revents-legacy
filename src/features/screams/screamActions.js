@@ -1,7 +1,7 @@
 import { toastr } from 'react-redux-toastr';
 import { createNewScream } from '../../app/common/util/helpers';
 import firebase from '../../app/config/firebase';
-import { FETCH_SCREAMS } from './screamConstants';
+import { FETCH_SCREAMS, LIKE_SCREAM, UNLIKE_SCREAM } from './screamConstants';
 // import { fetchSampleData } from '../../app/data/mockApi';
 import {
   asyncActionStart,
@@ -9,6 +9,31 @@ import {
   asyncActionFinish,
 } from '../async/asyncActions';
 // import { getFirestore } from 'redux-firestore';
+
+export const likeScream = (scream) => {
+  return async (dispatch, getState, { getFirestore }) => {
+    const firestore = getFirestore();
+    try {
+      dispatch(asyncActionStart());
+      await firestore.update(`screams/${scream.id}`, scream);
+      dispatch({ type: LIKE_SCREAM });
+
+      dispatch(asyncActionFinish());
+    } catch (error) {
+      dispatch(asyncActionError());
+      toastr.error('Oops', 'Something went wrong');
+    }
+  };
+};
+
+export const unlikeScream = (screamId) => {
+  return {
+    type: UNLIKE_SCREAM,
+    payload: {
+      screamId,
+    },
+  };
+};
 
 export const createScream = (scream) => {
   return async (dispatch, getState, { getFirestore, getFirebase }) => {
