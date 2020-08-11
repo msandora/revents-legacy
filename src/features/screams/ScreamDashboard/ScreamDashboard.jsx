@@ -14,7 +14,6 @@ import ScreamActivity from '../ScreamActivity/ScreamActivity';
 
 const mapState = (state) => ({
   screams: [],
-
   // screams: state.screams,
   // screams: state.firestore.ordered.screams,
   loading: state.async.loading,
