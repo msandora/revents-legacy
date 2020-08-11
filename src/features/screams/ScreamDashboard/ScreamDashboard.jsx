@@ -1,22 +1,26 @@
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 import { connect } from 'react-redux';
-import {
-  firestoreConnect,
-  //isLoaded
-} from 'react-redux-firebase';
+import { firestoreConnect } from 'react-redux-firebase';
 
-import { Grid } from 'semantic-ui-react';
+import { Grid, Loader } from 'semantic-ui-react';
 import ScreamList from '../ScreamList/ScreamList';
 import { getScreamsForDashboard } from '../screamActions';
+import LoadingComponent from '../../../app/layout/LoadingComponent';
+// import ScreamActivity from '../ScreamActivity/ScreamActivity';
 import ScreamSidebar from '../ScreamSidebar/ScreamSidebar';
-import ScreamActivity from '../ScreamActivity/ScreamActivity';
-// import LoadingComponent from '../../../app/layout/LoadingComponent';
+
+const query = [
+  {
+    collection: 'activity',
+    orderBy: ['timestamp', 'desc'],
+    limit: 5,
+  },
+];
 
 const mapState = (state) => ({
-  screams: [],
-  // screams: state.screams,
-  // screams: state.firestore.ordered.screams,
+  screams: state.screams.screams,
   loading: state.async.loading,
+  activities: state.firestore.ordered.activity,
 });
 
 const actions = {
@@ -24,83 +28,67 @@ const actions = {
 };
 
 class ScreamDashboard extends Component {
-  // contextRef = createRef();
+  contextRef = createRef();
 
-  componentDidMount() {
-    this.props.getScreamsForDashboard();
+  state = {
+    moreScreams: false,
+    loadingInitial: true,
+    loadedScreams: [],
+  };
+
+  async componentDidMount() {
+    let next = await this.props.getScreamsForDashboard();
+
+    if (next && next.docs && next.docs.length > 1) {
+      this.setState({
+        moreScreams: true,
+        loadingInitial: false,
+      });
+    }
   }
 
-  // async componentDidMount() {
-  //   let next = await this.props.getScreamsForDashboard();
+  componentDidUpdate = (prevProps) => {
+    if (this.props.screams !== prevProps.screams) {
+      this.setState({
+        loadedScreams: [...this.state.loadedScreams, ...this.props.screams],
+      });
+    }
+  };
 
-  //   if (next && next.docs && next.docs.length > 1) {
-  //     this.setState({
-  //       moreScreams: true,
-  //       loadingInitial: false,
-  //     });
-  //   }
-  // }
-
-  // componentDidUpdate = (prevProps) => {
-  //   if (this.props.screams !== prevProps.screams) {
-  //     this.setState({
-  //       loadedScreams: [...this.state.loadedScreams, ...this.props.screams],
-  //     });
-  //   }
-  // };
-
-  // getNextScreams = async () => {
-  //   const { screams } = this.props;
-  //   let lastScream = screams && screams[screams.length - 1];
-  //   let next = await this.props.getScreamsForDashboard(lastScream);
-  //   if (next && next.docs && next.docs.length <= 1) {
-  //     this.setState({
-  //       moreScreams: false,
-  //     });
-  //   }
-  // };
+  getNextScreams = async () => {
+    const { screams } = this.props;
+    let lastScream = screams && screams[screams.length - 1];
+    let next = await this.props.getScreamsForDashboard(lastScream);
+    if (next && next.docs && next.docs.length <= 1) {
+      this.setState({
+        moreScreams: false,
+      });
+    }
+  };
 
   render() {
-    const {
-      screams,
-      //loading
-    } = this.props;
-    // const { moreScreams, loadedScreams } = this.state;
-    // console.log(screams);
-    // console.log(this.state);
+    const { loading, activities } = this.props;
+    const { moreScreams, loadedScreams } = this.state;
+    // console.log(loadedScreams);
 
-    // if (!isLoaded(screams)) return <LoadingComponent />;
+    if (this.state.loadingInitial) return <LoadingComponent />;
     return (
       <Grid>
         <Grid.Column width={10}>
-          <ScreamList
-            // loading={loading}
-            screams={screams}
-            // moreScreams={moreScreams}
-            // getNextScreams={this.getNextScreams}
-          />
+          <div ref={this.contextRef}>
+            <ScreamList
+              loading={loading}
+              screams={loadedScreams}
+              moreScreams={moreScreams}
+              getNextScreams={this.getNextScreams}
+            />
+          </div>
         </Grid.Column>
         <Grid.Column width={6}>
-          <ScreamSidebar />
-          <ScreamActivity />
-          {/*
-          <Button
-            onClick={this.handleCreateFormOpen}
-            positive
-            content='Create Scream'
-          />
-        {isOpen && (
-            <ScreamForm
-              key={selectedScream ? selectedScream.id : 0}
-              updateScream={this.handleUpdateScream}
-              selectedScream={selectedScream}
-              createScream={this.handleCreateScream}
-              cancelFormOpen={this.handleFormCancel}
-            />
-          )} */}
+          <ScreamSidebar activities={activities} contextRef={this.contextRef} />
         </Grid.Column>
         <Grid.Column width={10}>
-          {/* <Loader active={loading} /> */}
+          <Loader active={loading} />
         </Grid.Column>
       </Grid>
     );
@@ -110,4 +98,4 @@ class ScreamDashboard extends Component {
 export default connect(
   mapState,
   actions
-)(firestoreConnect([{ collection: 'screams' }])(ScreamDashboard));
+)(firestoreConnect(query)(ScreamDashboard));

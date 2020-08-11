@@ -105,70 +105,21 @@ export const updateScream = (scream) => {
 //   console.log(screamsQuery);
 // };
 
-export const getScreamsForDashboard = () => async (dispatch, getState) => {
-  let today = new Date(Date.now());
-  const firestore = firebase.firestore();
-  const screamsQuery = firestore.collection('screams');
-  // console.log(screamsQuery);
-
-  try {
-    dispatch(asyncActionStart());
-
-    let querySnap = await screamsQuery.get();
-
-    // if (querySnap.docs.length === 0) {
-    //   dispatch(asyncActionFinish());
-    //   return querySnap;
-    // }
-
-    let screams = [];
-
-    for (let i = 0; i < querySnap.docs.length; i++) {
-      let evt = { ...querySnap.docs[i].data(), id: querySnap.docs[i].id };
-      screams.push(evt);
-    }
-    console.log(screams);
-
-    dispatch({ type: FETCH_SCREAMS, payload: { screams } });
-    dispatch(asyncActionFinish());
-    return querySnap;
-  } catch (error) {
-    console.log(error);
-    dispatch(asyncActionError());
-  }
-};
-
-// export const getScreamsForDashboard = (lastScream) => async (
-//   dispatch,
-//   getState
-// ) => {
+// export const getScreamsForDashboard = () => async (dispatch, getState) => {
 //   let today = new Date(Date.now());
 //   const firestore = firebase.firestore();
-//   const screamsRef = firestore.collection('screams');
+//   const screamsQuery = firestore.collection('screams');
+//   console.log(screamsQuery);
+
 //   try {
 //     dispatch(asyncActionStart());
-//     let startAfter =
-//       lastScream &&
-//       (await firestore.collection('screams').doc(lastScream.id).get());
-//     let query;
 
-//     lastScream
-//       ? (query = screamsRef
-//           .where('date', '>=', today)
-//           .orderBy('createdAt', 'desc')
-//           .startAfter(startAfter)
-//           .limit(2))
-//       : (query = screamsRef
-//           // .where('date', '>=', today)
-//           .orderBy('createdAt', 'desc')
-//           .limit(2));
+//     let querySnap = await screamsQuery.get();
 
-//     let querySnap = await query.get();
-
-//     if (querySnap.docs.length === 0) {
-//       dispatch(asyncActionFinish());
-//       return querySnap;
-//     }
+//     // if (querySnap.docs.length === 0) {
+//     //   dispatch(asyncActionFinish());
+//     //   return querySnap;
+//     // }
 
 //     let screams = [];
 
@@ -176,7 +127,8 @@ export const getScreamsForDashboard = () => async (dispatch, getState) => {
 //       let evt = { ...querySnap.docs[i].data(), id: querySnap.docs[i].id };
 //       screams.push(evt);
 //     }
-//     console.log(query);
+//     console.log(screams);
+
 //     dispatch({ type: FETCH_SCREAMS, payload: { screams } });
 //     dispatch(asyncActionFinish());
 //     return querySnap;
@@ -185,6 +137,54 @@ export const getScreamsForDashboard = () => async (dispatch, getState) => {
 //     dispatch(asyncActionError());
 //   }
 // };
+
+export const getScreamsForDashboard = (lastScream) => async (
+  dispatch,
+  getState
+) => {
+  let today = new Date(Date.now());
+  const firestore = firebase.firestore();
+  const screamsRef = firestore.collection('screams');
+  try {
+    dispatch(asyncActionStart());
+    let startAfter =
+      lastScream &&
+      (await firestore.collection('screams').doc(lastScream.id).get());
+    let query;
+
+    lastScream
+      ? (query = screamsRef
+          // .where('date', '>=', today)
+          .orderBy('createdAt', 'desc')
+          .startAfter(startAfter)
+          .limit(2))
+      : (query = screamsRef
+          // .where('date', '>=', today)
+          .orderBy('createdAt', 'desc')
+          .limit(2));
+
+    let querySnap = await query.get();
+
+    if (querySnap.docs.length === 0) {
+      dispatch(asyncActionFinish());
+      return querySnap;
+    }
+
+    let screams = [];
+
+    for (let i = 0; i < querySnap.docs.length; i++) {
+      let evt = { ...querySnap.docs[i].data(), id: querySnap.docs[i].id };
+      screams.push(evt);
+    }
+    console.log(query);
+    dispatch({ type: FETCH_SCREAMS, payload: { screams } });
+    dispatch(asyncActionFinish());
+    return querySnap;
+  } catch (error) {
+    console.log(error);
+    dispatch(asyncActionError());
+  }
+};
 
 export const addScreamComment = (screamId, values, parentId) => async (
   dispatch,
