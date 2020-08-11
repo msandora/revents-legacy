@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import { Segment, Item, Button, Popup, Icon, Label } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
-import ScreamCarousel from './ScreamCarousel';
+// import ScreamCarousel from './ScreamCarousel';
 
 class ScreamListItem extends Component {
   render() {
-    const { scream, deleteScream } = this.props;
+    const {
+      scream,
+      // deleteScream
+    } = this.props;
     return (
       <Segment.Group>
         <Segment>
@@ -21,11 +24,11 @@ class ScreamListItem extends Component {
             </Item>
           </Item.Group>
         </Segment>
-        <Segment style={{ padding: 0 }}>
+        {/* <Segment style={{ padding: 0 }}>
           <Item>
             <ScreamCarousel scream={scream} />
           </Item>
-        </Segment>
+        </Segment> */}
         <Segment>
           <span style={{ whiteSpace: 'pre-wrap' }}>{scream.body}</span>
         </Segment>
@@ -60,7 +63,7 @@ class ScreamListItem extends Component {
               </Button>
             }
           />
-          <Popup
+          {/* <Popup
             content='Delete'
             trigger={
               <Button
@@ -73,7 +76,7 @@ class ScreamListItem extends Component {
                 <Icon name='trash' />
               </Button>
             }
-          />
+          /> */}
           <Popup
             content='Manage'
             trigger={

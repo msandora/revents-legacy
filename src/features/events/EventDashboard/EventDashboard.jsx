@@ -69,6 +69,8 @@ class EventDashboard extends Component {
   render() {
     const { loading, activities } = this.props;
     const { moreEvents, loadedEvents } = this.state;
+    // console.log(loadedEvents);
+
     if (this.state.loadingInitial) return <LoadingComponent />;
     return (
       <Grid>
