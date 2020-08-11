@@ -47,15 +47,6 @@ const validate = combineValidators({
 });
 
 class ScreamForm extends Component {
-  // state = { ...this.props.scream };
-
-  // componentDidMount() {
-  //   if (this.props.selectedScream !== null) {
-  //     this.setState({
-  //       ...this.props.selectedScream,
-  //     });
-  //   }
-  // }
   async componentDidMount() {
     const { firestore, match } = this.props;
     await firestore.setListener(`screams/${match.params.id}`);
@@ -67,65 +58,28 @@ class ScreamForm extends Component {
   }
 
   onFormSubmit = async (values) => {
-    console.log(values);
     try {
       if (this.props.initialValues.id) {
         this.props.updateScream(values);
         this.props.history.push(`/screams/${this.props.initialValues.id}`);
       } else {
-        // const newScream = {
-        //   ...values,
-        //   id: cuid(),
-        //   hostPhotoURL: '/assets/user.png',
-        //   hostedBy: 'Bob',
-        // };
         let createdScream = await this.props.createScream(values);
         this.props.history.push(`/screams/${createdScream.id}`);
       }
     } catch (error) {
       console.log(error);
     }
-
-    // if (this.props.initialValues.id) {
-    //   this.props.updateScream(values);
-    //   this.props.history.push(`/screams/${this.props.initialValues.id}`);
-    // } else {
-    //   // const newScream = {
-    //   //   ...values,
-    //   //   id: cuid(),
-    //   //   hostPhotoURL: '/assets/user.png',
-    //   //   hostedBy: 'Bob',
-    //   // };
-    //   this.props.createScream(values);
-    //   this.props.history.push(`/screams/${newScream.id}`);
-    // }
-
-    // evt.preventDefault();
-    // if (this.state.id) {
-    //   this.props.updateScream(this.state);
-    //   this.props.history.push(`/screams/${this.state.id}`);
-    // } else {
-    //   const newScream = {
-    //     ...this.state,
-    //     id: cuid(),
-    //     hostPhotoURL: '/assets/user.png',
-    //   };
-    //   this.props.createScream(newScream);
-    //   this.props.history.push(`/screams`);
-    // }
   };
 
   render() {
-    //const { cancelFormOpen } = this.props;
-    //const { body, date, hostedBy } = this.state;
     const {
       history,
       initialValues,
       invalid,
       submitting,
       pristine,
-      //scream,
-      //deleteScream,
+      // scream,
+      // deleteScream,
       loading,
     } = this.props;
     return (
@@ -147,7 +101,7 @@ class ScreamForm extends Component {
 
               <Button
                 disabled={invalid || submitting || pristine}
-                // loading={loading}
+                loading={loading}
                 positive
                 type='submit'
               >

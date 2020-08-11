@@ -9,13 +9,13 @@ import LoadingComponent from '../../../app/layout/LoadingComponent';
 // import ScreamActivity from '../ScreamActivity/ScreamActivity';
 import ScreamSidebar from '../ScreamSidebar/ScreamSidebar';
 
-const query = [
-  {
-    collection: 'activity',
-    orderBy: ['timestamp', 'desc'],
-    limit: 5,
-  },
-];
+// const query = [
+//   {
+//     collection: 'activity',
+//     orderBy: ['timestamp', 'desc'],
+//     limit: 5,
+//   },
+// ];
 
 const mapState = (state) => ({
   screams: state.screams.screams,
@@ -69,7 +69,6 @@ class ScreamDashboard extends Component {
   render() {
     const { loading, activities } = this.props;
     const { moreScreams, loadedScreams } = this.state;
-    // console.log(loadedScreams);
 
     if (this.state.loadingInitial) return <LoadingComponent />;
     return (
@@ -95,7 +94,4 @@ class ScreamDashboard extends Component {
   }
 }
 
-export default connect(
-  mapState,
-  actions
-)(firestoreConnect(query)(ScreamDashboard));
+export default connect(mapState, actions)(firestoreConnect()(ScreamDashboard));

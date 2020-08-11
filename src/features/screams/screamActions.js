@@ -1,12 +1,7 @@
 import { toastr } from 'react-redux-toastr';
 import { createNewScream } from '../../app/common/util/helpers';
 import firebase from '../../app/config/firebase';
-import {
-  // CREATE_SCREAM,
-  // UPDATE_SCREAM,
-  // DELETE_SCREAM,
-  FETCH_SCREAMS,
-} from './screamConstants';
+import { FETCH_SCREAMS } from './screamConstants';
 // import { fetchSampleData } from '../../app/data/mockApi';
 import {
   asyncActionStart,
@@ -52,12 +47,12 @@ export const deleteScream = (cancelled, screamId) => async (
 ) => {
   const firestore = getFirestore();
   const message = cancelled
-    ? 'Are you sure you want to cancel the event?'
-    : 'This will reactivate the event, are you sure?';
+    ? 'Are you sure you want to cancel the scream?'
+    : 'This will reactivate the scream, are you sure?';
   try {
     toastr.confirm(message, {
       onOk: async () =>
-        await firestore.update(`events/${screamId}`, {
+        await firestore.update(`screams/${screamId}`, {
           cancelled: cancelled,
         }),
     });
@@ -82,67 +77,11 @@ export const updateScream = (scream) => {
   };
 };
 
-// export const loadScreams = () => {
-//   return async (dispatch) => {
-//     try {
-//       dispatch(asyncActionStart());
-//       const screams = await fetchSampleData();
-//       dispatch({ type: FETCH_SCREAMS, payload: { screams } });
-//       dispatch(asyncActionFinish());
-//     } catch (error) {
-//       console.log(error);
-//       dispatch(asyncActionError());
-//     }
-//   };
-// };
-
-// export const getScreamsForDashboard = () => async (dispatch, getState) => {
-//   let today = new Date();
-//   const firestore = firebase.firestore();
-//   const screamsQuery = firestore
-//     .collection('screams')
-//     .where('date', '>=', today);
-//   console.log(screamsQuery);
-// };
-
-// export const getScreamsForDashboard = () => async (dispatch, getState) => {
-//   let today = new Date(Date.now());
-//   const firestore = firebase.firestore();
-//   const screamsQuery = firestore.collection('screams');
-//   console.log(screamsQuery);
-
-//   try {
-//     dispatch(asyncActionStart());
-
-//     let querySnap = await screamsQuery.get();
-
-//     // if (querySnap.docs.length === 0) {
-//     //   dispatch(asyncActionFinish());
-//     //   return querySnap;
-//     // }
-
-//     let screams = [];
-
-//     for (let i = 0; i < querySnap.docs.length; i++) {
-//       let evt = { ...querySnap.docs[i].data(), id: querySnap.docs[i].id };
-//       screams.push(evt);
-//     }
-//     console.log(screams);
-
-//     dispatch({ type: FETCH_SCREAMS, payload: { screams } });
-//     dispatch(asyncActionFinish());
-//     return querySnap;
-//   } catch (error) {
-//     console.log(error);
-//     dispatch(asyncActionError());
-//   }
-// };
-
 export const getScreamsForDashboard = (lastScream) => async (
   dispatch,
   getState
 ) => {
-  let today = new Date(Date.now());
+  // let today = new Date(Date.now());
   const firestore = firebase.firestore();
   const screamsRef = firestore.collection('screams');
   try {
@@ -176,7 +115,7 @@ export const getScreamsForDashboard = (lastScream) => async (
       let evt = { ...querySnap.docs[i].data(), id: querySnap.docs[i].id };
       screams.push(evt);
     }
-    console.log(query);
+    // console.log(query);
     dispatch({ type: FETCH_SCREAMS, payload: { screams } });
     dispatch(asyncActionFinish());
     return querySnap;

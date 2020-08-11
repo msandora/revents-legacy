@@ -5,7 +5,7 @@ import { Segment, Item, Button, Icon, Label, Popup } from 'semantic-ui-react';
 import ScreamCarousel from './../ScreamList/ScreamCarousel';
 // import MyButton from '../../../app/common/util/MyButton';
 
-const ScreamDetailedInfo = ({ scream, history }) => {
+const ScreamDetailedInfo = ({ scream, isHost }) => {
   return (
     <Fragment>
       <Segment attached style={{ padding: 0 }}>
@@ -36,42 +36,22 @@ const ScreamDetailedInfo = ({ scream, history }) => {
             </Button>
           }
         />
-        <Popup
-          content='Go back'
-          trigger={
-            <Button
-              floated='right'
-              icon
-              as={Link}
-              to={'/screams'}
-              type='button'
-            >
-              <Icon name='cancel' />
-            </Button>
-          }
-        />
 
-        {/* <Popup
-          content='Cancel'
-          trigger={
-            <Button floated='right' icon to={'/screams'} type='button'>
-              <Icon name='cancel' />
-            </Button>
-          }
-        /> */}
-        <Popup
-          content='Manage'
-          trigger={
-            <Button
-              floated='right'
-              icon
-              as={Link}
-              to={`/manageScream/${scream.id}`}
-            >
-              <Icon name='edit' />
-            </Button>
-          }
-        />
+        {isHost && (
+          <Popup
+            content='Manage'
+            trigger={
+              <Button
+                floated='right'
+                icon
+                as={Link}
+                to={`/manageScream/${scream.id}`}
+              >
+                <Icon name='edit' />
+              </Button>
+            }
+          />
+        )}
       </Segment>
     </Fragment>
   );
