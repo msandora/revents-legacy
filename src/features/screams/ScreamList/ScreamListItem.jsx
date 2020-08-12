@@ -41,7 +41,7 @@ class ScreamListItem extends Component {
             </Item>
           </Item.Group>
         </Segment>
-        <Segment style={{ padding: 0 }} as={Link} to={`/screams/${scream.id}`}>
+        <Segment style={{ padding: 0 }}>
           <Item>
             <ScreamCarousel scream={scream} />
           </Item>
