@@ -20,7 +20,6 @@ import TestComponent from '../../features/playground/TestComponent';
 import PeopleDashboard from '../../features/user/PeopleDashboard/PeopleDashboard';
 
 import ModalManager from '../../features/modals/ModalManager';
-import ModalGalleryExample from '../../features/playground/ModalGalleryExample';
 import { UserIsAuthenticated } from '../../features/auth/AuthWrapper';
 import NotFound from './NotFound';
 
@@ -28,7 +27,6 @@ class App extends Component {
   render() {
     return (
       <Fragment>
-        <ModalGalleryExample />
         <ModalManager />
         <Route exact path='/' component={HomePage} />
         <Route
@@ -45,7 +43,7 @@ class App extends Component {
                     component={UserIsAuthenticated(EventForm)}
                   />
                   <Route exact path='/screams' component={ScreamDashboard} />
-                  <Route path='/screams/:id' component={ScreamDetailedPage} />
+                  {/* <Route path='/screams/:id' component={ScreamDetailedPage} /> */}
                   <Route
                     path={['/createScream', '/manageScream/:id']}
                     component={UserIsAuthenticated(ScreamForm)}

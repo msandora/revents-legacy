@@ -41,8 +41,7 @@ function ModalSwitch() {
   return (
     <div>
       <Switch location={background || location}>
-        {/* <Route exact path='/' children={<Home />} /> */}
-        <Route path={['/test', '/test/:id']} children={<Gallery />} />
+        <Route path={['/test']} children={<Gallery />} />
       </Switch>
 
       {/* Show the modal when a background page is set */}

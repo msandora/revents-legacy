@@ -8,6 +8,7 @@ import SimpleMap from './SimpleMap';
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import firebase from '../../app/config/firebase';
 import { toastr } from 'react-redux-toastr';
+import ModalGalleryExample from './ModalGalleryExample';
 
 // mapStateToProps
 const mapState = (state) => ({
@@ -129,6 +130,8 @@ class TestComponent extends Component {
 
     return (
       <div>
+        <ModalGalleryExample />
+
         <h1>Test Component</h1>
         <h3>The answer is: {data}</h3>
         <Button
