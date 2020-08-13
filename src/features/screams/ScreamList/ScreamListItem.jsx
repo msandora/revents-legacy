@@ -3,8 +3,10 @@ import { connect } from 'react-redux';
 import { withFirebase } from 'react-redux-firebase';
 import { Segment, Item, Button, Popup, Icon, Label } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
-import ScreamCarousel from './ScreamCarousel';
+import ScreamDetailsCarousel from './../ScreamDetails/ScreamDetailsCarousel';
 import ScreamLike from '../ScreamLike/ScreamLike';
+import ScreamDetailsDialog from '../ScreamDetails/ScreamDetailsDialog';
+import ScreamDetailsHeader from '../ScreamDetails/ScreamDetailsHeader';
 
 const mapState = (state) => ({
   auth: state.firebase.auth,
@@ -12,38 +14,17 @@ const mapState = (state) => ({
 
 class ScreamListItem extends Component {
   render() {
-    const {
-      scream,
-      likes,
-      auth,
-      // deleteScream
-    } = this.props;
+    const { scream, auth } = this.props;
     const isHost = scream.hostUid === auth.uid;
 
-    // console.log('likes', likes);
-    // console.log('scream', scream);
-    // console.log('host', isHost);
-    // console.log('auth', auth);
-
-    // let likeCount = likes.length;
     return (
       <Segment.Group>
         <Segment>
-          <Item.Group>
-            <Item>
-              <Item.Image size='tiny' circular src={scream.hostPhotoURL} />
-              <Item.Content>
-                <Item.Header as={Link} to={`/screams/${scream.id}`}>
-                  {scream.hostedBy}
-                </Item.Header>
-                <Item.Description>{scream.date}</Item.Description>
-              </Item.Content>
-            </Item>
-          </Item.Group>
+          <ScreamDetailsHeader scream={scream} />
         </Segment>
         <Segment style={{ padding: 0 }}>
           <Item>
-            <ScreamCarousel scream={scream} />
+            <ScreamDetailsCarousel scream={scream} />
           </Item>
         </Segment>
         <Segment>
@@ -68,21 +49,7 @@ class ScreamListItem extends Component {
               </Button>
             }
           />
-          {/* <Popup
-            content='Delete'
-            trigger={
-              <Button
-                floated='right'
-                icon
-                onClick={() => deleteScream(scream.id)}
-                as='a'
-                color='red'
-              >
-                <Icon name='trash' />
-              </Button>
-            }
-          /> */}
-
+          <ScreamDetailsDialog scream={scream} />
           {isHost && (
             <Popup
               content='Manage'

@@ -2,16 +2,16 @@ import React from 'react';
 import { Image } from 'semantic-ui-react';
 import Carousel from 'semantic-ui-carousel-react';
 
-const ScreamImageCarousel = ({ scream }) => {
+const ScreamDetailsCarousel = ({ scream }) => {
   let elements = [
     {
       render: () => {
-        return <Image src={`/assets/categoryImages/culture.jpg`} fluid />;
+        return <Image src={`/assets/categoryImages/travel.jpg`} fluid />;
       },
     },
     {
       render: () => {
-        return <Image src={`/assets/categoryImages/culture.jpg`} fluid />;
+        return <Image src={`/assets/categoryImages/food.jpg`} fluid />;
       },
     },
     {
@@ -36,4 +36,4 @@ const ScreamImageCarousel = ({ scream }) => {
   );
 };
 
-export default ScreamImageCarousel;
+export default ScreamDetailsCarousel;

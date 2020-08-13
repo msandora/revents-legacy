@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Segment, Item, Button, Icon, Label, Popup } from 'semantic-ui-react';
-import ScreamCarousel from './../ScreamList/ScreamCarousel';
+import ScreamDetailsCarousel from './../ScreamDetails/ScreamDetailsCarousel';
 // import MyButton from '../../../app/common/util/MyButton';
 
 const ScreamDetailedInfo = ({ scream, isHost }) => {
@@ -11,7 +11,7 @@ const ScreamDetailedInfo = ({ scream, isHost }) => {
       <Segment attached style={{ padding: 0 }}>
         <Item.Group>
           <Item>
-            <ScreamCarousel scream={scream} />
+            <ScreamDetailsCarousel scream={scream} />
           </Item>
         </Item.Group>
       </Segment>

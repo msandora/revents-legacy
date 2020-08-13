@@ -20,6 +20,7 @@ import TestComponent from '../../features/playground/TestComponent';
 import PeopleDashboard from '../../features/user/PeopleDashboard/PeopleDashboard';
 
 import ModalManager from '../../features/modals/ModalManager';
+import ModalGalleryExample from '../../features/playground/ModalGalleryExample';
 import { UserIsAuthenticated } from '../../features/auth/AuthWrapper';
 import NotFound from './NotFound';
 
@@ -27,6 +28,7 @@ class App extends Component {
   render() {
     return (
       <Fragment>
+        <ModalGalleryExample />
         <ModalManager />
         <Route exact path='/' component={HomePage} />
         <Route

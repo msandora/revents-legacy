@@ -9,7 +9,7 @@ const modalLookup = {
   TestModal,
   LoginModal,
   RegisterModal,
-  UnauthModal
+  UnauthModal,
 };
 
 const mapState = (state) => ({
