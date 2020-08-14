@@ -43,7 +43,7 @@ class App extends Component {
                     component={UserIsAuthenticated(EventForm)}
                   />
                   <Route exact path='/screams' component={ScreamDashboard} />
-                  {/* <Route path='/screams/:id' component={ScreamDetailedPage} /> */}
+                  <Route path='/screams/:id' component={ScreamDetailedPage} />
                   <Route
                     path={['/createScream', '/manageScream/:id']}
                     component={UserIsAuthenticated(ScreamForm)}
