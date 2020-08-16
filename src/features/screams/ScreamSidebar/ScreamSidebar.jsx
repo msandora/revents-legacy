@@ -1,7 +1,7 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withFirebase } from 'react-redux-firebase';
-import { Button, Segment } from 'semantic-ui-react';
+import { Button, Segment, Sticky } from 'semantic-ui-react';
 import { Link, withRouter } from 'react-router-dom';
 
 const mapState = (state) => ({
@@ -10,10 +10,10 @@ const mapState = (state) => ({
 
 class ScreamNav extends Component {
   render() {
-    const { auth } = this.props;
+    const { auth, contextRef } = this.props;
     const authenticated = auth.isLoaded && !auth.isEmpty;
     return (
-      <Fragment>
+      <Sticky context={contextRef} offset={78} styleElement={{ zIndex: 0 }}>
         {authenticated && (
           <Segment clearing>
             <Button
@@ -25,7 +25,7 @@ class ScreamNav extends Component {
             />
           </Segment>
         )}
-      </Fragment>
+      </Sticky>
     );
   }
 }

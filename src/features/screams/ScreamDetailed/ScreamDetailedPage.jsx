@@ -1,18 +1,20 @@
 import React, { Component } from 'react';
-import { Grid } from 'semantic-ui-react';
 import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { withFirestore, firebaseConnect, isEmpty } from 'react-redux-firebase';
+
+import { Grid } from 'semantic-ui-react';
 import ScreamDetailedHeader from './ScreamDetailedHeader';
 import ScreamDetailedInfo from './ScreamDetailedInfo';
 import ScreamDetailedChat from './ScreamDetailedChat';
-import { withFirestore, firebaseConnect, isEmpty } from 'react-redux-firebase';
-import { compose } from 'redux';
+import LoadingComponent from '../../../app/layout/LoadingComponent';
+import NotFound from '../../../app/layout/NotFound';
+
 import {
   objectToArray,
   createDataTree,
 } from '../../../app/common/util/helpers';
 import { addScreamComment } from '../screamActions';
-import LoadingComponent from '../../../app/layout/LoadingComponent';
-import NotFound from '../../../app/layout/NotFound';
 
 const mapState = (state, ownProps) => {
   const screamId = ownProps.match.params.id;

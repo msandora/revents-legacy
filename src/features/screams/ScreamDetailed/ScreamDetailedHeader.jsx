@@ -13,21 +13,6 @@ const ScreamDetailedHeader = ({ scream, isHost }) => {
               {scream.hostedBy}
             </Item.Header>
             <Item.Description>{scream.date}</Item.Description>
-            <Popup
-              content='Go back'
-              trigger={
-                <Button
-                  floated='right'
-                  icon
-                  color='red'
-                  as={Link}
-                  to={'/screams'}
-                  type='button'
-                >
-                  <Icon name='cancel' />
-                </Button>
-              }
-            />
           </Item.Content>
         </Item>
       </Item.Group>

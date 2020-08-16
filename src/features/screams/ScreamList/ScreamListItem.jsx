@@ -7,6 +7,7 @@ import ScreamDetailsCarousel from './../ScreamDetails/ScreamDetailsCarousel';
 import ScreamLike from '../ScreamLike/ScreamLike';
 import ScreamDetailsDialog from '../ScreamDetails/ScreamDetailsDialog';
 import ScreamDetailsHeader from '../ScreamDetails/ScreamDetailsHeader';
+import ScreamModal from '../../modals/ScreamModal';
 
 const mapState = (state) => ({
   auth: state.firebase.auth,
@@ -49,6 +50,7 @@ class ScreamListItem extends Component {
               </Button>
             }
           />
+          <ScreamModal scream={scream} />
           <ScreamDetailsDialog scream={scream} />
           {isHost && (
             <Popup
