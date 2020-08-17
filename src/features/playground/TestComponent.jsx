@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { incrementAsync, decrementAsync } from './testActions';
-import { Button, Header } from 'semantic-ui-react';
+import { Button, Header, Segment } from 'semantic-ui-react';
 import { openModal } from '../modals/modalActions';
 import TestPlaceInput from './TestPlaceInput';
 import SimpleMap from './SimpleMap';
@@ -130,9 +130,12 @@ class TestComponent extends Component {
 
     return (
       <div>
-        <ModalGalleryExample />
-
         <h1>Test Component</h1>
+
+        <Segment>
+          <ModalGalleryExample />
+        </Segment>
+
         <h3>The answer is: {data}</h3>
         <Button
           onClick={(e) => console.log(e.target.name)}

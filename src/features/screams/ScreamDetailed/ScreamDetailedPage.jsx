@@ -9,7 +9,6 @@ import ScreamDetailedInfo from './ScreamDetailedInfo';
 import ScreamDetailedChat from './ScreamDetailedChat';
 import LoadingComponent from '../../../app/layout/LoadingComponent';
 import NotFound from '../../../app/layout/NotFound';
-
 import {
   objectToArray,
   createDataTree,

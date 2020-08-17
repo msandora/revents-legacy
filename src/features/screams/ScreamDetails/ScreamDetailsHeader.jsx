@@ -11,15 +11,15 @@ const ScreamDetailsHeader = ({ scream }) => {
         circular
         src={scream.hostPhotoURL}
         as={Link}
-        to={`/screams/${scream.id}`}
+        to={`/profile/${scream.hostUid}`}
       />
       <Header.Content>
         {scream.hostedBy}
         <Header.Subheader>
-          {/* {formatDistance(
+          {formatDistance(
             scream.createdAt && scream.createdAt.toDate(),
             Date.now()
-          )}{' '} */}
+          )}{' '}
           ago
         </Header.Subheader>
       </Header.Content>

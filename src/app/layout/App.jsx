@@ -22,7 +22,6 @@ import PeopleDashboard from '../../features/user/PeopleDashboard/PeopleDashboard
 import ModalManager from '../../features/modals/ModalManager';
 import { UserIsAuthenticated } from '../../features/auth/AuthWrapper';
 import NotFound from './NotFound';
-import ScreamModal from '../../features/modals/ScreamModal';
 
 class App extends Component {
   render() {
@@ -43,16 +42,11 @@ class App extends Component {
                     path={['/createEvent', '/manageEvent/:id']}
                     component={UserIsAuthenticated(EventForm)}
                   />
-                  <Route path='/screams' component={ScreamDashboard} />
-
-                  {/* <Route
-                    path='/screams/:id'
-                    render={({ match }) => (
-                      <ScreamModal params={match.params} />
-                    )}
-                  /> */}
-                  {/* <Route exact path='/screams' component={ScreamDashboard} />
-                  <Route path='/screams/:id' component={ScreamDetailedPage} /> */}
+                  <Route exact path='/screams' component={ScreamDashboard} />
+                  <Route
+                    path='/screams/details/:id'
+                    component={ScreamDetailedPage}
+                  />
                   <Route
                     path={['/createScream', '/manageScream/:id']}
                     component={UserIsAuthenticated(ScreamForm)}

@@ -1,55 +1,64 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
-import { Button, Icon, Modal, Popup, Label, Grid } from 'semantic-ui-react';
+import {
+  Button,
+  Icon,
+  Modal,
+  Popup,
+  Label,
+  Grid,
+  Segment,
+} from 'semantic-ui-react';
 import ScreamDetailsHeader from './ScreamDetailsHeader';
 import ScreamDetailsInfo from './ScreamDetailsInfo';
 import ScreamDetailsCarousel from './ScreamDetailsCarousel';
 import { Link, withRouter } from 'react-router-dom';
 import { addScreamComment } from '../screamActions';
-import { openModal } from '../../modals/modalActions';
 
 const actions = {
   addScreamComment,
-  openModal,
 };
 
 class ScreamDetailsDialog extends Component {
+  state = {
+    oldPath: '',
+    newPath: '',
+  };
+  // componentDidMount() {
+  //   const { match } = this.props;
+  //   console.log('match', match);
+  //   // await firestore.setListener(`screams/${match.params.id}`);
+  // }
   render() {
-    const { scream, isHost, openModal } = this.props;
-    // console.log('id', scream.id);
+    const { scream, isHost } = this.props;
+    // console.log('???', this.state);
     return (
       <Modal
         closeIcon
         onClose={() => {
-          console.log('onClose');
-          window.history.pushState({}, document.title, '/' + 'screams');
-
-          // e.preventDefault();
-          // this.props.history.push(`/screams/bar`);
-          // window.history.replaceState(null, null, `screams/123`);
-          // window.history.pushState('object or string', 'Title', `screams/123`);
+          // console.log('onClose');
+          window.history.pushState(null, null, this.state.oldPath);
         }}
         onOpen={() => {
-          console.log('onOpen');
-          // e.preventDefault();
-          // this.props.history.push(`/screams/bar`);
-          // window.history.replaceState(null, null, `screams/123`);
-          window.history.pushState('object or string', 'Title', `screams/123`);
-          // history.pushState({}, null, `screams/123`);
-          openModal('ScreamModal', { scream });
-          // console.log('CLICK', scream);
+          // console.log('onOpen');
+          const { scream, match } = this.props;
+
+          let screamId = scream.id;
+          let oldPath = window.location.pathname;
+          let userId = this.props.match.params.userId;
+
+          console.log(userId, 'scream', screamId);
+          // console.log('scream', scream.hostedBy);
+
+          const newPath = `/screams/${scream.id}`;
+
+          if (oldPath === newPath) oldPath = `/`;
+
+          window.history.pushState(null, null, newPath);
+
+          this.setState({ oldPath, newPath });
         }}
-        trigger={
-          // <Link
-          //   key={scream.id}
-          //   to={{
-          //     pathname: `/screams/${scream.id}`,
-          //   }}
-          // >
-          <Button color='teal' content='Open ScreamDetailsModal' icon />
-          // </Link>
-        }
+        trigger={<Button color='teal' content='ScreamDetailsModal' icon />}
         header={<ScreamDetailsHeader scream={scream} />}
         content={
           <Modal.Content>
@@ -64,7 +73,7 @@ class ScreamDetailsDialog extends Component {
           </Modal.Content>
         }
         actions={
-          <Modal.Actions>
+          <Segment>
             <Popup
               content='Like'
               trigger={
@@ -73,7 +82,7 @@ class ScreamDetailsDialog extends Component {
                     <Icon name='heart' />
                   </Button>
                   <Label as='a' basic pointing='left'>
-                    24
+                    {scream.likeCount}
                   </Label>
                 </Button>
               }
@@ -93,7 +102,7 @@ class ScreamDetailsDialog extends Component {
                 }
               />
             )}
-          </Modal.Actions>
+          </Segment>
         }
       />
     );

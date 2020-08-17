@@ -7,15 +7,18 @@ import ScreamDetailsCarousel from './../ScreamDetails/ScreamDetailsCarousel';
 import ScreamLike from '../ScreamLike/ScreamLike';
 import ScreamDetailsDialog from '../ScreamDetails/ScreamDetailsDialog';
 import ScreamDetailsHeader from '../ScreamDetails/ScreamDetailsHeader';
-import ScreamModal from '../../modals/ScreamModal';
+import { openModal } from '../../modals/modalActions';
 
 const mapState = (state) => ({
   auth: state.firebase.auth,
 });
+const actions = {
+  openModal,
+};
 
 class ScreamListItem extends Component {
   render() {
-    const { scream, auth } = this.props;
+    const { scream, auth, openModal } = this.props;
     const isHost = scream.hostUid === auth.uid;
 
     return (
@@ -39,18 +42,22 @@ class ScreamListItem extends Component {
               <Button
                 labelPosition='right'
                 as={Link}
-                to={`/screams/${scream.id}`}
+                to={`/screams/details/${scream.id}`}
               >
                 <Button icon>
                   <Icon name='comments outline' />
                 </Button>
                 <Label as='div' basic pointing='left'>
-                  5
+                  {scream.commentCount}
                 </Label>
               </Button>
             }
           />
-          <ScreamModal scream={scream} />
+          <Button
+            onClick={() => openModal('ScreamModal', { scream })}
+            color='teal'
+            content='Modal Manager'
+          />
           <ScreamDetailsDialog scream={scream} />
           {isHost && (
             <Popup
@@ -73,4 +80,4 @@ class ScreamListItem extends Component {
   }
 }
 
-export default withFirebase(connect(mapState, null)(ScreamListItem));
+export default withFirebase(connect(mapState, actions)(ScreamListItem));
