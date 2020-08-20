@@ -14,6 +14,8 @@ import ScreamDetailsInfo from './ScreamDetailsInfo';
 import ScreamDetailsCarousel from './ScreamDetailsCarousel';
 import { Link, withRouter } from 'react-router-dom';
 import { addScreamComment } from '../screamActions';
+// import { firebaseConnect, withFirestore } from 'react-redux-firebase';
+// import { compose } from 'redux';
 
 const actions = {
   addScreamComment,
@@ -31,7 +33,8 @@ class ScreamDetailsDialog extends Component {
   // }
   render() {
     const { scream, isHost } = this.props;
-    // console.log('???', this.state);
+    let screamId = scream.id;
+    console.log(screamId);
     return (
       <Modal
         closeIcon
@@ -41,7 +44,7 @@ class ScreamDetailsDialog extends Component {
         }}
         onOpen={() => {
           // console.log('onOpen');
-          const { scream, match } = this.props;
+          const { scream } = this.props;
 
           let screamId = scream.id;
           let oldPath = window.location.pathname;
@@ -50,7 +53,7 @@ class ScreamDetailsDialog extends Component {
           console.log(userId, 'scream', screamId);
           // console.log('scream', scream.hostedBy);
 
-          const newPath = `/screams/${scream.id}`;
+          const newPath = `/screams/${screamId}`;
 
           if (oldPath === newPath) oldPath = `/`;
 

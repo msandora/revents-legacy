@@ -1,14 +1,70 @@
 import { toastr } from 'react-redux-toastr';
-import { createNewScream } from '../../app/common/util/helpers';
-import firebase from '../../app/config/firebase';
-import { FETCH_SCREAMS, LIKE_SCREAM, UNLIKE_SCREAM } from './screamConstants';
-// import { fetchSampleData } from '../../app/data/mockApi';
 import {
   asyncActionStart,
   asyncActionError,
   asyncActionFinish,
 } from '../async/asyncActions';
-// import { getFirestore } from 'redux-firestore';
+import cuid from 'cuid';
+
+import { createNewScream } from '../../app/common/util/helpers';
+import firebase from '../../app/config/firebase';
+import { FETCH_SCREAMS, LIKE_SCREAM, UNLIKE_SCREAM } from './screamConstants';
+// import { fetchSampleData } from '../../app/data/mockApi';
+
+export const uploadScreamImage = (file, fileName, screamId) => async (
+  dispatch,
+  getState,
+  { getFirebase, getFirestore }
+) => {
+  const imageName = cuid();
+  const firebase = getFirebase();
+  const firestore = getFirestore();
+  const user = firebase.auth().currentUser;
+  console.log('user', user);
+
+  const scream = firebase.firestore().collection('scream');
+  console.log('scream', scream);
+
+  const path = `scream_images/${screamId}/images`;
+  const options = {
+    name: imageName,
+  };
+  try {
+    dispatch(asyncActionStart());
+    // upload the file to firebase storage
+    let uploadedFile = await firebase.uploadFile(path, file, null, options);
+    // get url of the image
+    let downloadURL = await uploadedFile.uploadTaskSnapshot.ref.getDownloadURL();
+    // get screamdoc
+    // let screamDoc = await firestore.get(`screams/${screamId}`);
+
+    // check if scream has photo, if not update profile
+    // if (!screamDoc.data().photoURL) {
+    //   await firebase.updateProfile({
+    //     photoURL: downloadURL,
+    //   });
+    //   await scream.updateProfile({
+    //     photoURL: downloadURL,
+    //   });
+    // }
+    // add the image to subcollections in firestore doc
+    await firestore.add(
+      {
+        collection: 'screams',
+        doc: screamId,
+        subcollections: [{ collection: 'photos' }],
+      },
+      {
+        name: imageName,
+        url: downloadURL,
+      }
+    );
+    dispatch(asyncActionFinish());
+  } catch (error) {
+    console.log(error);
+    dispatch(asyncActionError());
+  }
+};
 
 export const likeScream = (scream) => {
   return async (dispatch, getState, { getFirestore }) => {

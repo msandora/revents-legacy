@@ -15,6 +15,7 @@ import {
 import { createScream, updateScream, deleteScream } from '../screamActions';
 import TextArea from '../../../app/common/form/TextArea';
 import { withFirestore } from 'react-redux-firebase';
+import ScreamImageUpload from './ScreamImageUpload';
 
 const mapState = (state, ownProps) => {
   const screamId = ownProps.match.params.id;
@@ -61,10 +62,12 @@ class ScreamForm extends Component {
     try {
       if (this.props.initialValues.id) {
         this.props.updateScream(values);
-        this.props.history.push(`/screams/${this.props.initialValues.id}`);
+        this.props.history.push(
+          `/screams/details/${this.props.initialValues.id}`
+        );
       } else {
         let createdScream = await this.props.createScream(values);
-        this.props.history.push(`/screams/${createdScream.id}`);
+        this.props.history.push(`/screams/details/${createdScream.id}`);
       }
     } catch (error) {
       console.log(error);
@@ -78,14 +81,15 @@ class ScreamForm extends Component {
       invalid,
       submitting,
       pristine,
-      // scream,
+      scream,
       // deleteScream,
       loading,
     } = this.props;
     return (
       <Grid>
-        <Grid.Column width={10}>
+        <Grid.Column width={12}>
           <Segment>
+            <ScreamImageUpload scream={scream} />
             <Header sub color='teal' content='Post details' />
 
             <Form
@@ -116,7 +120,8 @@ class ScreamForm extends Component {
                     disabled={loading}
                     onClick={
                       initialValues.id
-                        ? () => history.push(`/screams/${initialValues.id}`)
+                        ? () =>
+                            history.push(`/screams/details/${initialValues.id}`)
                         : () => history.push('/screams')
                     }
                     type='button'

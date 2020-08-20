@@ -4,15 +4,15 @@ import 'cropperjs/dist/cropper.css';
 
 class CropperInput extends Component {
   cropImage = () => {
-      const {setImage, setCropResult} = this.props;
-      if (typeof this.refs.cropper.getCroppedCanvas() === 'undefined') {
-          return;
-      }
+    const { setImage, setCropResult } = this.props;
+    if (typeof this.refs.cropper.getCroppedCanvas() === 'undefined') {
+      return;
+    }
 
-      this.refs.cropper.getCroppedCanvas().toBlob(blob => {
-          setCropResult(URL.createObjectURL(blob));
-          setImage(blob)
-      })
+    this.refs.cropper.getCroppedCanvas().toBlob((blob) => {
+      setCropResult(URL.createObjectURL(blob));
+      setImage(blob);
+    });
   };
 
   render() {
