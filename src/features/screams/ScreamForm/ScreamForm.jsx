@@ -12,7 +12,12 @@ import {
   Header,
   Grid,
 } from 'semantic-ui-react';
-import { createScream, updateScream, deleteScream } from '../screamActions';
+import {
+  createScream,
+  updateScream,
+  deleteScream,
+  uploadScreamImage,
+} from '../screamActions';
 import TextArea from '../../../app/common/form/TextArea';
 import { withFirestore } from 'react-redux-firebase';
 import ScreamImageUpload from './ScreamImageUpload';
@@ -41,6 +46,7 @@ const actions = {
   createScream,
   updateScream,
   deleteScream,
+  uploadScreamImage,
 };
 
 const validate = combineValidators({
@@ -102,7 +108,6 @@ class ScreamForm extends Component {
                 rows={3}
                 placeholder={'Body'}
               />
-
               <Button
                 disabled={invalid || submitting || pristine}
                 loading={loading}

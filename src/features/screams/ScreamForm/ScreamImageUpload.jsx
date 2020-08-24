@@ -26,18 +26,11 @@ const actions = {
 const mapState = (state) => ({
   auth: state.firebase.auth, // whats the state?
   // scream: state.scream?
-  profile: state.firebase.profile,
   photos: state.firestore.ordered.photos,
   loading: state.async.loading,
 });
 
-const ScreamImageUpload = ({
-  uploadScreamImage,
-  photos,
-  profile,
-  scream,
-  loading,
-}) => {
+const ScreamImageUpload = ({ uploadScreamImage, photos, scream, loading }) => {
   const [files, setFiles] = useState([]);
   const [cropResult, setCropResult] = useState('');
   const [image, setImage] = useState(null);
